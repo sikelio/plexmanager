@@ -1,12 +1,13 @@
 // Dependencies
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 // Components
-import ServerList from "../components/ServerList";
+import ServerList from '../components/ServerList';
 // Functions
-import { getServer } from "../functions/ServerStorage";
+import { getServer } from '../functions/ServerStorage';
 // Style
-import style from "../style/ServerStyle";
+import style from '../style/ServerStyle';
 
 interface Server {
     name: string;
@@ -17,19 +18,21 @@ interface Server {
 const Server = () => {
     const [serverList, setServerList] = useState<Server[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const servers = await getServer();
-                if (servers) {
-                    setServerList(JSON.parse(servers));
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchData = async () => {
+                try {
+                    const servers = await getServer();
+                    if (servers) {
+                        setServerList(JSON.parse(servers));
+                    }
+                } catch (e) {
+                    console.error(e);
                 }
-            } catch (e) {
-                console.error(e);
-            }
-        };
-        fetchData();
-    }, []);
+            };
+            fetchData();
+        }, [])
+    );
 
     let isServerListEmpty: boolean = serverList.length == 0;
 

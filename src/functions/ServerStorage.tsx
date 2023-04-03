@@ -1,5 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+/**
+ * Store a server in array
+ * @param data Server data
+ */
 const storeServer = async (data: Object) => {
     try {
         const serverStorage = await AsyncStorage.getItem('servers');
@@ -17,6 +21,9 @@ const storeServer = async (data: Object) => {
     }
 }
 
+/**
+ * Get server list
+ */
 const getServer = async () => {
     try {
         return await AsyncStorage.getItem('servers');
@@ -25,6 +32,9 @@ const getServer = async () => {
     }
 }
 
+/**
+ * Delete all server from list
+ */
 const resetServer = async () => {
     try {
         return await AsyncStorage.setItem('servers', JSON.stringify([]));

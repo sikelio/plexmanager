@@ -1,8 +1,8 @@
 // Dependencies
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react';
 import { Text } from 'react-native';
 // Style
-import style from "../style/SettingStyle";
+import style from '../style/SettingStyle';
 
 const Setting = () => {
     return (

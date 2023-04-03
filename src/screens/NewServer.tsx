@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
     Text,
     TextInput,
@@ -15,7 +15,7 @@ import { useForm, Controller } from 'react-hook-form'
 // Functions
 import { storeServer, resetServer } from '../functions/ServerStorage';
 // Style
-import style from "../style/NewServerStyle";
+import style from '../style/NewServerStyle';
 
 const NewServer = () => {
     const [ modalVisible, setModalVisible ] = useState(false);

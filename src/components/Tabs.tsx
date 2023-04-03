@@ -2,8 +2,8 @@
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 // Screens
-import Server from "../screens/Server";
-import NewServer from "../screens/NewServer";
+import Server from '../screens/Server';
+import NewServer from '../screens/NewServer';
 
 const Tab = createMaterialBottomTabNavigator();
 
