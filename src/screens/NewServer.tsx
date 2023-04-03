@@ -53,7 +53,8 @@ const NewServer = () => {
                         <Text style={ style.modalText }>Server saved</Text>
                         <Pressable
                             style={ [style.button, style.buttonClose] }
-                            onPress={ () => setModalVisible(!modalVisible) }>
+                            onPress={ () => setModalVisible(!modalVisible) }
+                        >
                             <Text style={ style.textStyle }>Close</Text>
                         </Pressable>
                     </View>

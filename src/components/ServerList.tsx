@@ -2,6 +2,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text, Card, Button, Icon } from '@rneui/themed';
+// Components
+import ServerCard from './ServerCard';
 // Style
 import style from '../style/ServerStyle';
 
@@ -34,43 +36,7 @@ const ServerList: React.FC<Props> = ({ data, isEmpty }) => {
     return (
         <View>
             {data.map((server: Server, index: number) => (
-                <Card key={ index }>
-                    <Card.Title>{ server.name }</Card.Title>
-                    <Card.Divider />
-                    <View key={ index }>
-                        <Text>IP : { server.ip }</Text>
-                        <Text>PORT : { server.port }</Text>
-                        <Card.Divider />
-                        <View style={ [style.srvButtonContainer] }>
-                            <Button
-                                icon={
-                                    <Icon
-                                        name="edit"
-                                        color="#ffffff"
-                                        iconStyle={{ marginRight: 10 }}
-                                    />
-                                }
-                                buttonStyle={{
-                                    backgroundColor: "#e5a00d"
-                                }}
-                                title="Edit"
-                            />
-                            <Button
-                                icon={
-                                    <Icon
-                                        name="delete"
-                                        color="#ffffff"
-                                        iconStyle={{ marginRight: 10 }}
-                                    />
-                                }
-                                buttonStyle={{
-                                    backgroundColor: "#ff0000"
-                                }}
-                                title="Delete"
-                            />
-                        </View>
-                    </View>
-                </Card>
+                <ServerCard server={server} index={index} />
             ))}
         </View>
     );
