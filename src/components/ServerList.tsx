@@ -13,9 +13,24 @@ interface Server {
 
 interface Props {
     data: Server[];
+    isEmpty: boolean;
 }
 
-const ServerList: React.FC<Props> = ({ data }) => {
+const ServerList: React.FC<Props> = ({ data, isEmpty }) => {
+    if (isEmpty) {
+        return (
+            <View>
+                <Card>
+                    <Card.Title>No server</Card.Title>
+                    <Card.Divider></Card.Divider>
+                    <View>
+                        <Text>Add one in the "New Server" tab</Text>
+                    </View>
+                </Card>
+            </View>
+        );
+    }
+
     return (
         <View>
             {data.map((server: Server, index: number) => (
@@ -57,6 +72,7 @@ const ServerList: React.FC<Props> = ({ data }) => {
                     </View>
                 </Card>
             ))}
+            {}
         </View>
     );
 };

@@ -3,7 +3,6 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 // Screens
 import Server from "../screens/Server";
-import Setting from "../screens/Setting";
 import NewServer from "../screens/NewServer";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -14,6 +13,7 @@ const Tabs = (): JSX.Element => {
             <Tab.Screen
                 name="Server"
                 component={ Server }
+
             />
             <Tab.Screen
                 name="New Server"

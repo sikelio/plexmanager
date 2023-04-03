@@ -1,12 +1,26 @@
 // Dependencies
-import React from "react";
-import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState } from "react";
+import {
+    Text,
+    TextInput,
+    Button,
+    KeyboardAvoidingView,
+    Platform,
+    Modal,
+    Alert,
+    View,
+    Pressable
+} from 'react-native';
+import { useForm, Controller } from 'react-hook-form'
+// Functions
+import { storeServer, resetServer } from '../functions/ServerStorage';
 // Style
 import style from "../style/NewServerStyle";
 
 const NewServer = () => {
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    const [ modalVisible, setModalVisible ] = useState(false);
+
+    const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             name: '',
             ip: '',
@@ -15,11 +29,38 @@ const NewServer = () => {
     });
 
     const onSubmit = (data: Object) => {
-        console.log(data);
+        storeServer(data).then(() => {
+            setModalVisible(true);
+            reset();
+        });
     }
 
     return (
-        <View>
+        <KeyboardAvoidingView
+            behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
+            style={ style.container }
+        >
+            <Modal
+                animationType="slide"
+                transparent={ true }
+                visible={ modalVisible }
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={ style.centeredView }>
+                    <View style={ style.modalView }>
+                        <Text style={ style.modalText }>Server saved</Text>
+                        <Pressable
+                            style={ [style.button, style.buttonClose] }
+                            onPress={ () => setModalVisible(!modalVisible) }>
+                            <Text style={ style.textStyle }>Close</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
+
+            { errors.name && <Text style={ style.required }>Name is required.</Text> }
             <Controller
                 control={ control }
                 rules={{ required: true }}
@@ -30,13 +71,13 @@ const NewServer = () => {
                         onChangeText={ onChange }
                         value={ value }
                         placeholder="NAME"
-                        placeholderTextColor="#000"
+                        placeholderTextColor="#6B6B6B"
                     />
                 )}
                 name="name"
             />
-            { errors.name && <Text style={ [style.required] }>Name is required.</Text> }
 
+            { errors.ip && <Text style={ style.required }>IP is required.</Text> }
             <Controller
                 control={ control }
                 rules={{ required: true }}
@@ -48,13 +89,13 @@ const NewServer = () => {
                         value={ value }
                         keyboardType="numeric"
                         placeholder="IP"
-                        placeholderTextColor="#000"
+                        placeholderTextColor="#6B6B6B"
                     />
                 )}
                 name="ip"
             />
-            { errors.ip && <Text style={ [style.required] }>IP is required.</Text> }
 
+            { errors.port && <Text style={ style.required }>Port is required.</Text> }
             <Controller
                 control={ control }
                 rules={{ required: true }}
@@ -66,15 +107,18 @@ const NewServer = () => {
                         value={ value }
                         keyboardType="numeric"
                         placeholder="PORT"
-                        placeholderTextColor="#000"
+                        placeholderTextColor="#6B6B6B"
                     />
                 )}
                 name="port"
             />
-            { errors.port && <Text style={ [style.required] }>Port is required.</Text> }
 
-            <Button title="Submit" onPress={ handleSubmit(onSubmit) } />
-        </View>
+            <Button
+                title="Submit"
+                color="#e5a00d"
+                onPress={ handleSubmit(onSubmit) }
+            />
+        </KeyboardAvoidingView>
     );
 }
 
