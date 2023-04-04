@@ -1,6 +1,9 @@
 // Dependencies
 import React from 'react';
-import { Button, Icon } from '@rneui/themed';
+import { Button } from '@rneui/themed';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+// Style
+import style from '../style/ServerStyle';
 
 interface ServerButtonProps {
     iconName: string;
@@ -14,15 +17,16 @@ const ServerButton: React.FC<ServerButtonProps> = ({ iconName, iconColor, backgr
         <Button
             icon={
                 <Icon
-                    name={iconName}
-                    color={iconColor}
-                    iconStyle={{ marginRight: 10 }}
+                    name={ iconName }
+                    color={ iconColor }
+                    size={ 16 }
+                    style={ [style.cardBtn] }
                 />
             }
             buttonStyle={{
                 backgroundColor: backgroundColor
             }}
-            title={btnTitle}
+            title={ btnTitle }
         />
     );
 }

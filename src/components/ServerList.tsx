@@ -1,11 +1,9 @@
 // Dependencies
 import React from 'react';
 import { View } from 'react-native';
-import { Text, Card, Button, Icon } from '@rneui/themed';
+import { Text, Card } from '@rneui/themed';
 // Components
 import ServerCard from './ServerCard';
-// Style
-import style from '../style/ServerStyle';
 
 interface Server {
     name: string;

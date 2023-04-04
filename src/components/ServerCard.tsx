@@ -27,16 +27,22 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, index }) => {
                 <Card.Divider />
                 <View style={ [style.srvButtonContainer] }>
                     <ServerButton
-                        iconName={'edit'}
-                        iconColor={'#ffffff'}
-                        backgroundColor={'#e5a00d'}
-                        btnTitle={'Edit'}
+                        iconName={ 'wrench' }
+                        iconColor={ '#ffffff' }
+                        backgroundColor={ '#e5a00d' }
+                        btnTitle={ 'Manage' }
                     />
                     <ServerButton
-                        iconName={'delete'}
-                        iconColor={'#ffffff'}
-                        backgroundColor={'#ff0000'}
-                        btnTitle={'Delete'}
+                        iconName={ 'pen' }
+                        iconColor={ '#ffffff' }
+                        backgroundColor={ '#e5a00d' }
+                        btnTitle={ 'Edit' }
+                    />
+                    <ServerButton
+                        iconName={ 'trash' }
+                        iconColor={ '#ffffff' }
+                        backgroundColor={ '#ff0000' }
+                        btnTitle={ 'Delete' }
                     />
                 </View>
             </View>

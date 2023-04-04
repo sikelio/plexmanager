@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
     Text,
     TextInput,
-    Button,
     KeyboardAvoidingView,
     Platform,
     Modal,
@@ -11,7 +10,9 @@ import {
     View,
     Pressable
 } from 'react-native';
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form';
+import { Button } from '@rneui/themed';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 // Functions
 import { storeServer, resetServer } from '../functions/ServerStorage';
 // Style
@@ -118,6 +119,15 @@ const NewServer = () => {
                 title="Submit"
                 color="#e5a00d"
                 onPress={ handleSubmit(onSubmit) }
+                icon={
+                    <Icon
+                        name={ 'paper-plane' }
+                        color={ '#ffffff' }
+                        size={ 16 }
+                        style={ [style.sendBtn] }
+                        solid
+                    />
+                }
             />
         </KeyboardAvoidingView>
     );

@@ -61,6 +61,9 @@ const style = StyleSheet.create({
         color: '#000',
         marginBottom: 15,
         textAlign: 'center',
+    },
+    sendBtn: {
+        marginRight: 10
     }
 });
 
