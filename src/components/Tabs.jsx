@@ -1,19 +1,17 @@
-// Dependencies
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-// Screens
-import Server from '../screens/Server';
 import NewServer from '../screens/NewServer';
+import ServerTabStack from "./TabsStack";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const Tabs = (): JSX.Element => {
+const Tabs = () => {
     return (
         <Tab.Navigator>
             <Tab.Screen
                 name="Servers"
-                component={ Server }
+                component={ ServerTabStack }
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name={ 'server' } color={ color } size={ 16 } />

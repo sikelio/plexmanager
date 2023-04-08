@@ -1,4 +1,3 @@
-// Dependencies
 import React from "react";
 import { StyleSheet } from "react-native";
 
@@ -10,6 +9,17 @@ const style = StyleSheet.create({
         padding: 20
     },
     input: {
+        color: '#000',
+        backgroundColor: '#FFF',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#DDD',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginBottom: 10,
+        width: '100%'
+    },
+    picker: {
         color: '#000',
         backgroundColor: '#FFF',
         borderRadius: 5,

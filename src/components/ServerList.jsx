@@ -2,21 +2,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text, Card } from '@rneui/themed';
-// Components
 import ServerCard from './ServerCard';
 
-interface Server {
-    name: string;
-    ip: string;
-    port: number;
-}
-
-interface Props {
-    data: Server[];
-    isEmpty: boolean;
-}
-
-const ServerList: React.FC<Props> = ({ data, isEmpty }) => {
+const ServerList = ({ data, isEmpty, navigation }) => {
     if (isEmpty) {
         return (
             <View>
@@ -33,8 +21,8 @@ const ServerList: React.FC<Props> = ({ data, isEmpty }) => {
 
     return (
         <View>
-            {data.map((server: Server, index: number) => (
-                <ServerCard server={server} index={index} />
+            {data.map((server, index) => (
+                <ServerCard server={ server } index={ index } key={ index } navigation={ navigation } />
             ))}
         </View>
     );

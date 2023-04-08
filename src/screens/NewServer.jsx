@@ -1,4 +1,3 @@
-// Dependencies
 import React, { useState } from 'react';
 import {
     Text,
@@ -13,10 +12,14 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-// Functions
-import { storeServer, resetServer } from '../functions/ServerStorage';
-// Style
+import { storeServer } from '../functions/ServerStorage';
 import style from '../style/NewServerStyle';
+import { Picker } from '@react-native-picker/picker';
+
+const options = [
+    { label: 'HTTP', value: 'http' },
+    { label: 'HTTPS', value: 'https' },
+];
 
 const NewServer = () => {
     const [ modalVisible, setModalVisible ] = useState(false);
@@ -25,11 +28,13 @@ const NewServer = () => {
         defaultValues: {
             name: '',
             ip: '',
-            port: '3306'
+            port: '32400',
+            protocol: 'http',
+            token: ''
         }
     });
 
-    const onSubmit = (data: Object) => {
+    const onSubmit = (data) => {
         storeServer(data).then(() => {
             setModalVisible(true);
             reset();
@@ -39,7 +44,7 @@ const NewServer = () => {
     return (
         <KeyboardAvoidingView
             behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
-            style={ style.container }
+            style={ [style.container] }
         >
             <Modal
                 animationType="slide"
@@ -61,6 +66,24 @@ const NewServer = () => {
                     </View>
                 </View>
             </Modal>
+
+            { errors.protocol && <Text style={ style.required }>Protocol is required.</Text> }
+            <Controller
+                control={ control }
+                name="protocol"
+                defaultValue="http"
+                render={({ field: { onChange, value } }) => (
+                    <Picker
+                        selectedValue={ value }
+                        onValueChange={ onChange }
+                        style={ [style.picker] }
+                    >
+                        {options.map((option) => (
+                            <Picker.Item key={ option.value } label={ option.label } value={ option.value } />
+                        ))}
+                    </Picker>
+                )}
+            />
 
             { errors.name && <Text style={ style.required }>Name is required.</Text> }
             <Controller
@@ -113,6 +136,23 @@ const NewServer = () => {
                     />
                 )}
                 name="port"
+            />
+
+            { errors.token && <Text style={ style.required }>Token is required.</Text> }
+            <Controller
+                control={ control }
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        style={ [style.input] }
+                        onBlur={ onBlur }
+                        onChangeText={ onChange }
+                        value={ value }
+                        placeholder="TOKEN"
+                        placeholderTextColor="#6B6B6B"
+                    />
+                )}
+                name="token"
             />
 
             <Button

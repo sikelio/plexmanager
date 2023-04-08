@@ -1,22 +1,12 @@
-// Dependencies
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import {Button, ScrollView, View} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-// Components
 import ServerList from '../components/ServerList';
-// Functions
 import { getServer } from '../functions/ServerStorage';
-// Style
 import style from '../style/ServerStyle';
 
-interface Server {
-    name: string;
-    ip: string;
-    port: number;
-}
-
-const Server = () => {
-    const [serverList, setServerList] = useState<Server[]>([]);
+const Server = ( { navigation } ) => {
+    const [ serverList, setServerList ] = useState([]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -34,13 +24,13 @@ const Server = () => {
         }, [])
     );
 
-    let isServerListEmpty: boolean = serverList.length == 0;
+    let isServerListEmpty = serverList.length === 0;
 
     return (
         <View style={ [style.mainContainer] }>
             <ScrollView>
                 <View>
-                    <ServerList data={ serverList } isEmpty={ isServerListEmpty } />
+                    <ServerList data={ serverList } isEmpty={ isServerListEmpty } navigation={ navigation } />
                 </View>
             </ScrollView>
         </View>
