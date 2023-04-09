@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 const style = StyleSheet.create({
     title: {
