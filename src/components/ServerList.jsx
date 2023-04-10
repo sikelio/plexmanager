@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Text, Card } from '@rneui/themed';
 import ServerCard from './ServerCard';
 
-const ServerList = ({ data, isEmpty, navigation, refreshServerList }) => {
+const ServerList = ({ data, isEmpty, navigation, refreshServerList, setSpinner }) => {
     if (isEmpty) {
         return (
             <View>
@@ -28,6 +28,7 @@ const ServerList = ({ data, isEmpty, navigation, refreshServerList }) => {
                     key={ index }
                     navigation={ navigation }
                     refreshServerList={ refreshServerList }
+                    setSpinner={ setSpinner }
                 />
             ))}
         </View>

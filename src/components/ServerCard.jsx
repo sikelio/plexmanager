@@ -1,5 +1,4 @@
-// Dependencies
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, Card } from '@rneui/themed';
 import { View } from 'react-native';
 import ServerButton from './ServerButton';
@@ -7,7 +6,7 @@ import { deleteServer } from '../functions/ServerStorage';
 import style from '../style/ServerStyle';
 import axios from "axios";
 
-const ServerCard = ({ server, index, navigation, refreshServerList }) => {
+const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }) => {
     return (
         <Card key={ index }>
             <Card.Title>{ server.name }</Card.Title>
@@ -24,6 +23,8 @@ const ServerCard = ({ server, index, navigation, refreshServerList }) => {
                         backgroundColor={ '#e5a00d' }
                         btnTitle={ 'Manage' }
                         onPress={async () => {
+                            setSpinner(true);
+
                             const libraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
                             const users = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
 
@@ -33,6 +34,8 @@ const ServerCard = ({ server, index, navigation, refreshServerList }) => {
                                 libraries: libraries.data.MediaContainer.Directory,
                                 users: users.data.MediaContainer.Account
                             });
+
+                            setSpinner(false);
                         }}
                     />
                     <ServerButton

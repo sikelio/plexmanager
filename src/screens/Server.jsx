@@ -4,9 +4,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import ServerList from '../components/ServerList';
 import { getServer } from '../functions/ServerStorage';
 import style from '../style/ServerStyle';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Server = ( { navigation } ) => {
     const [ serverList, setServerList ] = useState([]);
+    const [ spinner, setSpinner ] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -33,6 +35,11 @@ const Server = ( { navigation } ) => {
 
     return (
         <View style={ [style.mainContainer] }>
+            <Spinner
+                visible={ spinner }
+                textContent={'Loading...'}
+            />
+
             <ScrollView>
                 <View>
                     <ServerList
@@ -40,6 +47,7 @@ const Server = ( { navigation } ) => {
                         isEmpty={ isServerListEmpty }
                         navigation={ navigation }
                         refreshServerList={ refreshServerList }
+                        setSpinner={ setSpinner }
                     />
                 </View>
             </ScrollView>

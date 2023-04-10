@@ -3,8 +3,6 @@ import { Button, ScrollView, View, Text } from "react-native";
 import { Card, ListItem } from '@rneui/themed';
 import { sendRequest } from "../functions/ServerRequest";
 import style from "../style/ServerManageStyle"
-import Icon from "react-native-vector-icons/FontAwesome5";
-import {Avatar} from "@rneui/base";
 
 const ServerManage = ({ route }) => {
     const server = route.params.server;
