@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Text, Card } from '@rneui/themed';
 import ServerCard from './ServerCard';
 
-const ServerList = ({ data, isEmpty, navigation }) => {
+const ServerList = ({ data, isEmpty, navigation, refreshServerList }) => {
     if (isEmpty) {
         return (
             <View>
@@ -22,7 +22,13 @@ const ServerList = ({ data, isEmpty, navigation }) => {
     return (
         <View>
             {data.map((server, index) => (
-                <ServerCard server={ server } index={ index } key={ index } navigation={ navigation } />
+                <ServerCard
+                    server={ server }
+                    index={ index }
+                    key={ index }
+                    navigation={ navigation }
+                    refreshServerList={ refreshServerList }
+                />
             ))}
         </View>
     );

@@ -7,7 +7,7 @@ import { deleteServer } from '../functions/ServerStorage';
 import style from '../style/ServerStyle';
 import axios from "axios";
 
-const ServerCard = ({ server, index, navigation }) => {
+const ServerCard = ({ server, index, navigation, refreshServerList }) => {
     return (
         <Card key={ index }>
             <Card.Title>{ server.name }</Card.Title>
@@ -24,9 +24,15 @@ const ServerCard = ({ server, index, navigation }) => {
                         backgroundColor={ '#e5a00d' }
                         btnTitle={ 'Manage' }
                         onPress={async () => {
-                            const res = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
+                            const libraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
+                            const users = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
 
-                            navigation.navigate('ServerActions', { title: server.name, server: server, libraries: res.data.MediaContainer.Directory });
+                            navigation.navigate('ServerManage', {
+                                title: server.name,
+                                server: server,
+                                libraries: libraries.data.MediaContainer.Directory,
+                                users: users.data.MediaContainer.Account
+                            });
                         }}
                     />
                     <ServerButton
@@ -35,7 +41,11 @@ const ServerCard = ({ server, index, navigation }) => {
                         backgroundColor={ '#e5a00d' }
                         btnTitle={ 'Edit' }
                         onPress={() => {
-                            console.log('pen')
+                            navigation.navigate('EditServer', {
+                                title: server.name,
+                                server: server,
+                                index: index
+                            });
                         }}
                     />
                     <ServerButton
@@ -43,8 +53,10 @@ const ServerCard = ({ server, index, navigation }) => {
                         iconColor={ '#ffffff' }
                         backgroundColor={ '#ff0000' }
                         btnTitle={ 'Delete' }
-                        onPress={async () => {
-                            await deleteServer(index);
+                        onPress={() => {
+                            deleteServer(index).then(() => {
+                                refreshServerList();
+                            })
                         }}
                     />
                 </View>

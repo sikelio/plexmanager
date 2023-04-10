@@ -24,7 +24,7 @@ const Tabs = () => {
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name={ 'plus' } color={ color } size={ 16 } />
-                    ),
+                    )
                 }}
             />
         </Tab.Navigator>

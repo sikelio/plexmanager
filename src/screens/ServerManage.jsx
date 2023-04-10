@@ -1,27 +1,17 @@
-import React from "react";
-import { Button, ScrollView, View, Alert, Text } from "react-native";
-import axios from "axios";
-import { Card } from '@rneui/themed';
+import React, { useState } from "react";
+import { Button, ScrollView, View, Text } from "react-native";
+import { Card, ListItem } from '@rneui/themed';
+import { sendRequest } from "../functions/ServerRequest";
 import style from "../style/ServerManageStyle"
+import Icon from "react-native-vector-icons/FontAwesome5";
+import {Avatar} from "@rneui/base";
 
 const ServerManage = ({ route }) => {
     const server = route.params.server;
     const libraries = route.params.libraries;
+    const users = route.params.users;
 
-    const SendRequest = (url) => {
-        axios.get(url).then((data) => {
-            switch (data.status) {
-                case 200:
-                    Alert.alert('Success', 'Request sent')
-                    break;
-                default:
-                    Alert.alert('Error', 'Something went wrong');
-                    break;
-            }
-        }).catch((err) => {
-            Alert.alert('Error', 'Something went wrong');
-        });
-    }
+    const [ userList, setUserList ] = useState(false);
 
     return (
         <ScrollView>
@@ -33,7 +23,7 @@ const ServerManage = ({ route }) => {
                         title='Update all'
                         color='#e5a00d'
                         onPress={() => {
-                            SendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
+                            sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
                         }}
                     />
                 </View>
@@ -52,7 +42,7 @@ const ServerManage = ({ route }) => {
                                 <Text
                                     style={ [style.item] }
                                 >
-                                    {lib.title}
+                                    { lib.title }
                                 </Text>
 
                                 <View style={ [style.item] }>
@@ -60,7 +50,7 @@ const ServerManage = ({ route }) => {
                                         title="Update"
                                         color='#e5a00d'
                                         onPress={() => {
-                                            SendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?X-Plex-Token=${server.token}`);
+                                            sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?X-Plex-Token=${server.token}`);
                                         }}
                                     />
                                 </View>
@@ -68,6 +58,34 @@ const ServerManage = ({ route }) => {
                         );
                     })}
                 </View>
+            </Card>
+
+            <Card>
+                <>
+                    <ListItem.Accordion
+                        content={
+                            <ListItem.Content>
+                                <ListItem.Title style={ [style.accordionTitle] }>Users</ListItem.Title>
+                            </ListItem.Content>
+                        }
+                        isExpanded={userList}
+                        onPress={() => {
+                            setUserList(!userList);
+                        }}
+                    >
+                        {users.map((user, index) => {
+                            if (user.name) {
+                                return (
+                                    <ListItem key={ index }>
+                                        <ListItem.Content>
+                                            <ListItem.Title> - { user.name }</ListItem.Title>
+                                        </ListItem.Content>
+                                    </ListItem>
+                                );
+                            }
+                        })}
+                    </ListItem.Accordion>
+                </>
             </Card>
         </ScrollView>
     );

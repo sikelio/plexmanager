@@ -21,6 +21,19 @@ const storeServer = async (data) => {
     }
 }
 
+const editServer = async (data, index) => {
+    const serverStorage = await AsyncStorage.getItem('servers');
+
+    if (serverStorage == null) {
+        await AsyncStorage.setItem('servers', JSON.stringify([data]));
+    } else {
+        const rawData = JSON.parse(serverStorage);
+        rawData[index] = data;
+
+        await AsyncStorage.setItem('servers', JSON.stringify(rawData));
+    }
+}
+
 /**
  * Get server list
  */
@@ -57,4 +70,4 @@ const resetServer = async () => {
     }
 }
 
-export { storeServer, getServer, deleteServer, resetServer };
+export { storeServer, getServer, deleteServer, editServer };

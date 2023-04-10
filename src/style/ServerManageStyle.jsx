@@ -7,11 +7,15 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'flex-start',
-        marginBottom: 5
+        marginVertical: 2.5
     },
     item: {
         color: '#000',
         width: '50%'
+    },
+    accordionTitle: {
+        fontWeight: 'bold',
+        fontSize: 14
     }
 });
 
