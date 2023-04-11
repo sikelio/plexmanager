@@ -1,26 +1,41 @@
 // Dependencies
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // Components
-import { Text, View } from 'react-native';
+import {Alert, View} from 'react-native';
+import { Text, Card, Switch } from '@rneui/themed';
+// Functions
+import { saveDarkmode, getDarkmodeSwitch } from "../functions/Darkmode";
 // Styles
 import style from '../style/SettingStyle';
 
 const Setting = () => {
-    return (
-        <View
-            style={ [style.container] }
-        >
-            <Text
-                style={ [style.item] }
-            >
-                Hello
-            </Text>
+    const [ darkmode, setDarkmode ] = useState(false);
 
-            <Text
-                style={ [style.item] }
-            >
-                Hello
-            </Text>
+    useEffect(() => {
+        getDarkmodeSwitch(setDarkmode);
+    });
+
+    return (
+        <View>
+            <Card>
+                <View
+                    style={ [style.container] }
+                >
+                    <Text
+                        style={ [style.item] }
+                    >
+                        Darkmode
+                    </Text>
+
+                    <Switch
+                        value={ darkmode }
+                        onValueChange={async (value) => {
+                            setDarkmode(value);
+                            await saveDarkmode(value);
+                        }}
+                    />
+                </View>
+            </Card>
         </View>
     );
 }
