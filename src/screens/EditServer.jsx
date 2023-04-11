@@ -1,4 +1,6 @@
+// Dependencies
 import React, { useState } from 'react';
+// Components
 import {
     Text,
     TextInput,
@@ -12,9 +14,11 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {editServer, storeServer} from '../functions/ServerStorage';
-import style from '../style/NewServerStyle';
 import { Picker } from '@react-native-picker/picker';
+// Functions
+import { editServer } from '../functions/ServerStorage';
+// Styles
+import style from '../style/NewServerStyle';
 
 const options = [
     { label: 'HTTP', value: 'http' },
@@ -153,18 +157,19 @@ const EditServer = ({ route, navigation }) => {
                         value={ value }
                         placeholder="TOKEN"
                         placeholderTextColor="#6B6B6B"
+                        secureTextEntry={ true }
                     />
                 )}
                 name="token"
             />
 
             <Button
-                title="Submit"
+                title="Save"
                 color="#e5a00d"
                 onPress={ handleSubmit(onSubmit) }
                 icon={
                     <Icon
-                        name={ 'paper-plane' }
+                        name={ 'save' }
                         color={ '#ffffff' }
                         size={ 16 }
                         style={ [style.sendBtn] }

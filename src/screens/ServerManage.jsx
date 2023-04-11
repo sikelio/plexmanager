@@ -1,7 +1,11 @@
+// Dependencies
 import React, { useState } from "react";
+// Components
 import { Button, ScrollView, View, Text } from "react-native";
 import { Card, ListItem } from '@rneui/themed';
+// Functions
 import { sendRequest } from "../functions/ServerRequest";
+// Styles
 import style from "../style/ServerManageStyle"
 
 const ServerManage = ({ route }) => {

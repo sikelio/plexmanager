@@ -1,3 +1,4 @@
+// Dependencies
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
@@ -21,6 +22,11 @@ const storeServer = async (data) => {
     }
 }
 
+/**
+ * Edit stored server
+ * @param data Edited server data
+ * @param index Server index
+ */
 const editServer = async (data, index) => {
     const serverStorage = await AsyncStorage.getItem('servers');
 

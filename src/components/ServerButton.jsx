@@ -1,6 +1,9 @@
+// Dependencies
 import React from 'react';
+// Components
 import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+// Styles
 import style from '../style/ServerStyle';
 
 const ServerButton = ({iconName, iconColor, backgroundColor, btnTitle, onPress }) => {

@@ -1,4 +1,6 @@
+// Dependencies
 import React from "react";
+// Components
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Server from "../screens/Server";
 import ServerManage from "../screens/ServerManage";

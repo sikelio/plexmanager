@@ -1,6 +1,8 @@
+// Dependencies
 import React from "react";
-import { Alert } from "react-native";
 import axios from "axios";
+// Components
+import { Alert } from "react-native";
 
 const sendRequest = (url) => {
     axios.get(url).then((data) => {

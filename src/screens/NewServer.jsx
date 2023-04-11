@@ -1,4 +1,6 @@
+// Dependencies
 import React, { useState } from 'react';
+// Components
 import {
     Text,
     TextInput,
@@ -12,9 +14,11 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { storeServer } from '../functions/ServerStorage';
-import style from '../style/NewServerStyle';
 import { Picker } from '@react-native-picker/picker';
+// Functions
+import { storeServer } from '../functions/ServerStorage';
+// Styles
+import style from '../style/NewServerStyle';
 
 const options = [
     { label: 'HTTP', value: 'http' },
@@ -150,6 +154,7 @@ const NewServer = () => {
                         value={ value }
                         placeholder="TOKEN"
                         placeholderTextColor="#6B6B6B"
+                        secureTextEntry={ true }
                     />
                 )}
                 name="token"

@@ -1,10 +1,27 @@
+// Dependencies
 import React from 'react';
-import { Text } from 'react-native';
+// Components
+import { Text, View } from 'react-native';
+// Styles
 import style from '../style/SettingStyle';
 
 const Setting = () => {
     return (
-        <Text style={ [style.title] }>Setting page</Text>
+        <View
+            style={ [style.container] }
+        >
+            <Text
+                style={ [style.item] }
+            >
+                Hello
+            </Text>
+
+            <Text
+                style={ [style.item] }
+            >
+                Hello
+            </Text>
+        </View>
     );
 }
 

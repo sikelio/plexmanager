@@ -1,8 +1,11 @@
+// Dependencies
 import React from 'react';
+// Components
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import NewServer from '../screens/NewServer';
 import ServerTabStack from "./TabsStack";
+import Setting from "../screens/Setting";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,6 +27,15 @@ const Tabs = () => {
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name={ 'plus' } color={ color } size={ 16 } />
+                    )
+                }}
+            />
+            <Tab.Screen
+                name="Settings"
+                component={ Setting }
+                options={{
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name={ 'wrench' } color={ color } size={ 16 } />
                     )
                 }}
             />

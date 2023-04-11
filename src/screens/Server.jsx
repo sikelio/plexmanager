@@ -1,10 +1,14 @@
+// Dependencies
 import React, { useState } from 'react';
+// Components
 import { ScrollView, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import ServerList from '../components/ServerList';
-import { getServer } from '../functions/ServerStorage';
-import style from '../style/ServerStyle';
 import Spinner from 'react-native-loading-spinner-overlay';
+import ServerList from '../components/ServerList';
+// Functions
+import { getServer } from '../functions/ServerStorage';
+// Styles
+import style from '../style/ServerStyle';
 
 const Server = ( { navigation } ) => {
     const [ serverList, setServerList ] = useState([]);

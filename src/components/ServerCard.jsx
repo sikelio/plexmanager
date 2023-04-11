@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
-import { Text, Card } from '@rneui/themed';
-import { View } from 'react-native';
-import ServerButton from './ServerButton';
-import { deleteServer } from '../functions/ServerStorage';
-import style from '../style/ServerStyle';
+// Dependencies
+import React from 'react';
 import axios from "axios";
+// Components
+import { Text, Card } from '@rneui/themed';
+import { Alert, View } from 'react-native';
+import ServerButton from './ServerButton';
+// Functions
+import { deleteServer } from '../functions/ServerStorage';
+// Styles
+import style from '../style/ServerStyle';
 
 const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }) => {
+    axios.interceptors.response.use(
+        response => response,
+        error => {
+            if (!error.response) {
+                return Promise.reject(new Error('Network Error'));
+            }
+            return Promise.reject(error);
+        }
+    );
+
     return (
         <Card key={ index }>
             <Card.Title>{ server.name }</Card.Title>
@@ -25,15 +39,47 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                         onPress={async () => {
                             setSpinner(true);
 
-                            const libraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
-                            const users = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
+                            axios.interceptors.response.use(
+                                response => response,
+                                error => {
+                                    if (!error.response) {
+                                        return Promise.reject(new Error('Network Error'));
+                                    }
+                                    return Promise.reject(error);
+                                }
+                            );
 
-                            navigation.navigate('ServerManage', {
-                                title: server.name,
-                                server: server,
-                                libraries: libraries.data.MediaContainer.Directory,
-                                users: users.data.MediaContainer.Account
-                            });
+                            try {
+                                const libraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
+                                const users = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
+
+                                navigation.navigate('ServerManage', {
+                                    title: server.name,
+                                    server: server,
+                                    libraries: libraries.data.MediaContainer.Directory,
+                                    users: users.data.MediaContainer.Account
+                                });
+                            } catch (e) {
+                                if (e.message === 'Network Error') {
+                                    Alert.alert(
+                                        'Network Error',
+                                        'Please check your network connection and try again.',
+                                        [{ text: 'OK' }]
+                                    );
+                                } else if (e.response && e.response.status === 401) {
+                                    Alert.alert(
+                                        'Unauthorized',
+                                        'It seems you are unauthorized, check if you\'re plex token is valid.',
+                                        [{ text: 'OK' }]
+                                    );
+                                } else {
+                                    Alert.alert(
+                                        'Error',
+                                        'Something went wrong, check all credentials you have provided.',
+                                        [{ text: 'OK' }]
+                                    );
+                                }
+                            }
 
                             setSpinner(false);
                         }}

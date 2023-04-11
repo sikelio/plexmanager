@@ -1,5 +1,6 @@
 // Dependencies
 import React from 'react';
+// Components
 import { View } from 'react-native';
 import { Text, Card } from '@rneui/themed';
 import ServerCard from './ServerCard';
