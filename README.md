@@ -1,11 +1,11 @@
 
 # Plex Manager
 
-A cross platform app build in [React Native](https://reactnative.dev/), based on the [Plex API](https://www.plexopedia.com/plex-media-server/api/) for managing Plex Media Servers from a phone.
+A cross-platform app build in [React Native](https://reactnative.dev/), based on the [Plex API](https://www.plexopedia.com/plex-media-server/api/) for managing Plex Media Servers from a phone.
 ## Install
 
-- Play Store : Comming soon
-- App Store : [One day may be...](##Supports###iOS)
+- Play Store : Coming soon
+- App Store : [One day may be...](#ios)
 ## Run
 
 Clone the project
@@ -40,7 +40,7 @@ yarn ios
 
 ## Documentation
 
-Comming soon...
+Coming soon...
 
 ## Features
 
