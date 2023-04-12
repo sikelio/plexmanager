@@ -5,7 +5,7 @@ A cross platform app build in [React Native](https://reactnative.dev/), based on
 ## Install
 
 - Play Store : Comming soon
-- App Store : [One day may be...](##Supports###iOS)
+- App Store : [One day may be...](#ios)
 ## Run
 
 Clone the project
