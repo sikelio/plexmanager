@@ -70,12 +70,22 @@ const ServerManage = ({ route }) => {
                                     { lib.title }
                                 </Text>
 
-                                <View style={ [style.item] }>
+                                <View style={ [style.actionBtn] }>
                                     <Button
                                         title="Update"
                                         color='#e5a00d'
                                         onPress={() => {
                                             sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?X-Plex-Token=${server.token}`);
+                                        }}
+                                    />
+                                </View>
+
+                                <View style={ [style.actionBtn] }>
+                                    <Button
+                                        title="Metadata"
+                                        color='#e5a00d'
+                                        onPress={() => {
+                                            sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?force=1&X-Plex-Token=${server.token}`);
                                         }}
                                     />
                                 </View>
