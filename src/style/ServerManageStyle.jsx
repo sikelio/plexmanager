@@ -12,6 +12,9 @@ const style = StyleSheet.create({
         alignItems: 'flex-start',
         marginVertical: 2.5
     },
+    itemHalf: {
+        width: '50%'
+    },
     item: {
         color: '#000',
         width: '33%'

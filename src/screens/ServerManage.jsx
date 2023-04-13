@@ -14,6 +14,7 @@ const ServerManage = ({ route }) => {
 
     const [ libraries, setLibraries ] = useState(route.params.libraries);
     const [ users, setUsers ] = useState(route.params.users);
+    const [ identity, setIdentity ] = useState(route.params.identity);
     const [ userList, setUserList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
 
@@ -21,9 +22,11 @@ const ServerManage = ({ route }) => {
         try {
             const updatedLibraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
             const updatedUsers = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
+            const updatedIdentity = await axios.get(`${server.protocol}://${server.ip}:${server.port}/identity/?X-Plex-Token=${server.token}`);
 
             setLibraries(updatedLibraries.data.MediaContainer.Directory);
             setUsers(updatedUsers.data.MediaContainer.Account);
+            setIdentity(updatedIdentity.data.MediaContainer);
         } catch (error) {
             console.log(error);
         }
@@ -40,10 +43,25 @@ const ServerManage = ({ route }) => {
         <ScrollView refreshControl={
             <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
         }>
-            <Card key='Update all card'>
+            <Card>
+                <Card.Title>Server identity</Card.Title>
+                <Card.Divider />
+                <View style={ [style.container] }>
+                    <Text style={ [style.itemHalf] }>Plex Media Server Version</Text>
+                    <Text style={ [style.itemHalf] }>: { identity.version }</Text>
+
+                    <Text style={ [style.itemHalf] }>Machine identifier</Text>
+                    <Text style={ [style.itemHalf] }>: { identity.machineIdentifier }</Text>
+
+                    <Text style={ [style.itemHalf] }>Claimed</Text>
+                    <Text style={ [style.itemHalf] }>: { identity.claimed.toString() }</Text>
+                </View>
+            </Card>
+
+            <Card>
                 <Card.Title>Scan all libraries</Card.Title>
                 <Card.Divider />
-                <View key='Update all'>
+                <View>
                     <Button
                         title='Update all'
                         color='#e5a00d'
@@ -54,7 +72,7 @@ const ServerManage = ({ route }) => {
                 </View>
             </Card>
 
-            <Card key='Update single card'>
+            <Card>
                 <Card.Title>Scan single library</Card.Title>
                 <Card.Divider />
                 <View>

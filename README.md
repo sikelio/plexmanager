@@ -46,7 +46,7 @@ Coming soon...
 
 - Server
     - [ ] Server Capabilities
-    - [ ] Server Identity
+    - [X] Server Identity
     - [ ] Server Preferences
     - [X] Get Accounts
     - [ ] Get a Single Account
@@ -62,7 +62,7 @@ Coming soon...
     - [X] Get Libraries
     - [X] Scan All Libraries
     - [X] Scan a Single Library
-    - [ ] Refresh Metadata for a Library
+    - [X] Refresh Metadata for a Library
 - Media
     - [ ] Get All Movies
     - [ ] Get Newest Movies

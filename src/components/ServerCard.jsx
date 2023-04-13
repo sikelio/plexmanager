@@ -52,12 +52,14 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                             try {
                                 const libraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
                                 const users = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
+                                const identity = await axios.get(`${server.protocol}://${server.ip}:${server.port}/identity/?X-Plex-Token=${server.token}`);
 
                                 navigation.navigate('ServerManage', {
                                     title: server.name,
                                     server: server,
                                     libraries: libraries.data.MediaContainer.Directory,
-                                    users: users.data.MediaContainer.Account
+                                    users: users.data.MediaContainer.Account,
+                                    identity: identity.data.MediaContainer
                                 });
                             } catch (e) {
                                 if (e.message === 'Network Error') {
