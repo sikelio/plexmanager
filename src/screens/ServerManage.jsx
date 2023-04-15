@@ -83,7 +83,7 @@ const ServerManage = ({ route }) => {
             </Card>
 
             <Card>
-                <Card.Title>Scan single library</Card.Title>
+                <Card.Title>Scan single library & Refresh metadata</Card.Title>
                 <Card.Divider />
                 <View>
                     {libraries.map((lib, index) => {

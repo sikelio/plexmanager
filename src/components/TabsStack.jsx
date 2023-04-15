@@ -2,6 +2,7 @@
 import React from "react";
 // Components
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// Screens
 import Server from "../screens/Server";
 import ServerManage from "../screens/ServerManage";
 import EditServer from "../screens/EditServer";
