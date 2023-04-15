@@ -3,34 +3,51 @@ import React, { useState } from "react";
 import axios from "axios";
 // Components
 import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
-import { Card, ListItem } from '@rneui/themed';
+import { Card, ListItem, Avatar } from '@rneui/themed';
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
+import { timestampParser } from "../functions/GlobalUtiles";
+import { sessionTitle } from "../functions/ServerManageUtiles";
 // Styles
 import style from "../style/ServerManageStyle"
 
 const ServerManage = ({ route }) => {
     const server = route.params.server;
 
+    // Route params
     const [ libraries, setLibraries ] = useState(route.params.libraries);
     const [ users, setUsers ] = useState(route.params.users);
     const [ identity, setIdentity ] = useState(route.params.identity);
     const [ devices, setDevices ] = useState(route.params.devices);
+    const [ activeSessions, setActiveSessions ] = useState(route.params.activeSessions);
+
+    // Boolean components
     const [ userList, setUserList ] = useState(false);
     const [ devicesList, setDevicesList ] = useState(false);
+    const [ sessionsList, setSessionsList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
 
     const updateData = async () => {
         try {
-            const updatedLibraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
-            const updatedUsers = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
-            const updatedIdentity = await axios.get(`${server.protocol}://${server.ip}:${server.port}/identity/?X-Plex-Token=${server.token}`);
-            const updatedDevices = await axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`);
+            const [
+                updatedLibraries,
+                updatedUsers,
+                updatedIdentity,
+                updatedDevices,
+                updatedActiveSessions
+            ] = await Promise.all([
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`),
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`),
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/identity/?X-Plex-Token=${server.token}`),
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`),
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`)
+            ]);
 
             setLibraries(updatedLibraries.data.MediaContainer.Directory);
             setUsers(updatedUsers.data.MediaContainer.Account);
             setIdentity(updatedIdentity.data.MediaContainer);
-            setDevices(updatedDevices.data.MediaContainer.Device)
+            setDevices(updatedDevices.data.MediaContainer.Device);
+            setActiveSessions(updatedActiveSessions.data.MediaContainer.Metadata);
         } catch (error) {
             console.log(error);
         }
@@ -42,12 +59,6 @@ const ServerManage = ({ route }) => {
             setRefreshing(false);
         });
     }, []);
-
-    const timestampParser = (timestamp) => {
-        const date = new Date(timestamp * 1000);
-
-        return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
-    }
 
     return (
         <ScrollView refreshControl={
@@ -177,6 +188,52 @@ const ServerManage = ({ route }) => {
                                 );
                             }
                         })}
+                    </ListItem.Accordion>
+                </>
+            </Card>
+
+            <Card>
+                <>
+                    <ListItem.Accordion
+                        content={
+                            <ListItem.Content>
+                                <ListItem.Title style={ [style.accordionTitle] }>Sessions</ListItem.Title>
+                            </ListItem.Content>
+                        }
+                        isExpanded={ sessionsList }
+                        onPress={() => {
+                            setSessionsList(!sessionsList);
+                        }}
+                    >
+                        {!activeSessions ? (
+                            <ListItem>
+                                <ListItem.Content>
+                                    <ListItem.Title>No sessions</ListItem.Title>
+                                </ListItem.Content>
+                            </ListItem>
+                        ) : (
+                            activeSessions.length > 0 && activeSessions.map((session, index) => {
+                                return (
+                                    <ListItem
+                                        key={ index + 1 }
+                                        bottomDivider
+                                    >
+                                        <Avatar
+                                            rounded
+                                            source={{ uri: session.User.thumb }}
+                                        />
+                                        <ListItem.Content>
+                                            <ListItem.Title>{ sessionTitle(session) }</ListItem.Title>
+                                            <ListItem.Subtitle>{ session.Player.state }</ListItem.Subtitle>
+                                            <ListItem.Subtitle>{ session.Player.address }</ListItem.Subtitle>
+                                            <ListItem.Subtitle>{ session.Player.product }</ListItem.Subtitle>
+                                            <ListItem.Subtitle>{ session.Player.version }</ListItem.Subtitle>
+                                        </ListItem.Content>
+                                        <ListItem.Chevron />
+                                    </ListItem>
+                                );
+                            })
+                        )}
                     </ListItem.Accordion>
                 </>
             </Card>

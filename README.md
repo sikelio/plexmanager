@@ -52,7 +52,7 @@ Coming soon...
     - [ ] Get a Single Account
     - [X] Get Devices
     - [ ] Get a Single Device
-    - [ ] Get All Activities
+    - [X] Get All Activities
     - [ ] Stop an Activity
 - Session
     - [ ] Get Active Sessions
