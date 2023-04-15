@@ -15,7 +15,9 @@ const ServerManage = ({ route }) => {
     const [ libraries, setLibraries ] = useState(route.params.libraries);
     const [ users, setUsers ] = useState(route.params.users);
     const [ identity, setIdentity ] = useState(route.params.identity);
+    const [ devices, setDevices ] = useState(route.params.devices);
     const [ userList, setUserList ] = useState(false);
+    const [ devicesList, setDevicesList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
 
     const updateData = async () => {
@@ -23,10 +25,12 @@ const ServerManage = ({ route }) => {
             const updatedLibraries = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`);
             const updatedUsers = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`);
             const updatedIdentity = await axios.get(`${server.protocol}://${server.ip}:${server.port}/identity/?X-Plex-Token=${server.token}`);
+            const updatedDevices = await axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`);
 
             setLibraries(updatedLibraries.data.MediaContainer.Directory);
             setUsers(updatedUsers.data.MediaContainer.Account);
             setIdentity(updatedIdentity.data.MediaContainer);
+            setDevices(updatedDevices.data.MediaContainer.Device)
         } catch (error) {
             console.log(error);
         }
@@ -38,6 +42,12 @@ const ServerManage = ({ route }) => {
             setRefreshing(false);
         });
     }, []);
+
+    const timestampParser = (timestamp) => {
+        const date = new Date(timestamp * 1000);
+
+        return `${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}/${date.getFullYear()}`;
+    }
 
     return (
         <ScrollView refreshControl={
@@ -132,6 +142,36 @@ const ServerManage = ({ route }) => {
                                     <ListItem key={ index }>
                                         <ListItem.Content>
                                             <ListItem.Title> - { user.name }</ListItem.Title>
+                                        </ListItem.Content>
+                                    </ListItem>
+                                );
+                            }
+                        })}
+                    </ListItem.Accordion>
+                </>
+            </Card>
+
+            <Card>
+                <>
+                    <ListItem.Accordion
+                        content={
+                            <ListItem.Content>
+                                <ListItem.Title style={ [style.accordionTitle] }>Devices</ListItem.Title>
+                            </ListItem.Content>
+                        }
+                        isExpanded={ devicesList }
+                        onPress={() => {
+                            setDevicesList(!devicesList);
+                        }}
+                    >
+                        {devices.map((device, index) => {
+                            if (device.name) {
+                                return (
+                                    <ListItem key={ index + 1 }>
+                                        <ListItem.Content>
+                                            <ListItem.Title>{ device.name } - { device.platform }</ListItem.Title>
+                                            <ListItem.Subtitle>Client ID : { device.clientIdentifier } </ListItem.Subtitle>
+                                            <ListItem.Subtitle>Created at : { timestampParser(device.createdAt) } </ListItem.Subtitle>
                                         </ListItem.Content>
                                     </ListItem>
                                 );

@@ -50,7 +50,7 @@ Coming soon...
     - [ ] Server Preferences
     - [X] Get Accounts
     - [ ] Get a Single Account
-    - [ ] Get Devices
+    - [X] Get Devices
     - [ ] Get a Single Device
     - [ ] Get All Activities
     - [ ] Stop an Activity
