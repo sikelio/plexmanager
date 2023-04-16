@@ -11,7 +11,7 @@ import { sessionTitle } from "../functions/ServerManageUtiles";
 // Styles
 import style from "../style/ServerManageStyle"
 
-const ServerManage = ({ route }) => {
+const ServerManage = ({ route, navigation }) => {
     const server = route.params.server;
 
     // Route params
@@ -217,6 +217,13 @@ const ServerManage = ({ route }) => {
                                     <ListItem
                                         key={ index + 1 }
                                         bottomDivider
+                                        onPress={() => {
+                                            navigation.navigate('SessionManage', {
+                                                title: session.Session.id,
+                                                server: server,
+                                                session: session
+                                            })
+                                        }}
                                     >
                                         <Avatar
                                             rounded
