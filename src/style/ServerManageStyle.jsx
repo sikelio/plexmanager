@@ -12,8 +12,11 @@ const style = StyleSheet.create({
         alignItems: 'flex-start',
         marginVertical: 2.5
     },
-    itemHalf: {
-        width: '50%'
+    serverIdLabel: {
+        width: '30%'
+    },
+    serverIdValue: {
+        width: '70%'
     },
     item: {
         color: '#000',

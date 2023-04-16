@@ -51,21 +51,24 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
 
                             try {
                                 const [
+                                    plexInfoApi,
                                     libraries,
                                     users,
                                     identity,
                                     devices,
                                     activeSessions
                                 ] = await Promise.all([
+                                    axios.get('https://plex.tv/api/downloads/5.json'),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`),
-                                    axios.get(`${server.protocol}://${server.ip}:${server.port}/identity/?X-Plex-Token=${server.token}`),
+                                    axios.get(`${server.protocol}://${server.ip}:${server.port}/?X-Plex-Token=${server.token}`),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`)
                                 ]);
 
                                 navigation.navigate('ServerManage', {
                                     title: server.name,
+                                    plexInfo: plexInfoApi.data[server.serverType][identity.data.MediaContainer.platform],
                                     server: server,
                                     libraries: libraries.data.MediaContainer.Directory,
                                     users: users.data.MediaContainer.Account,

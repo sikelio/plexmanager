@@ -15,6 +15,7 @@ const ServerManage = ({ route, navigation }) => {
     const server = route.params.server;
 
     // Route params
+    const [ plexInfo, setPlexInfo ] = useState(route.params.plexInfo);
     const [ libraries, setLibraries ] = useState(route.params.libraries);
     const [ users, setUsers ] = useState(route.params.users);
     const [ identity, setIdentity ] = useState(route.params.identity);
@@ -30,19 +31,22 @@ const ServerManage = ({ route, navigation }) => {
     const updateData = async () => {
         try {
             const [
+                updatedPlexInfo,
                 updatedLibraries,
                 updatedUsers,
                 updatedIdentity,
                 updatedDevices,
                 updatedActiveSessions
             ] = await Promise.all([
+                axios.get('https://plex.tv/api/downloads/5.json'),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`),
-                axios.get(`${server.protocol}://${server.ip}:${server.port}/identity/?X-Plex-Token=${server.token}`),
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/?X-Plex-Token=${server.token}`),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`)
             ]);
 
+            setPlexInfo(updatedPlexInfo.data[server.serverType][updatedIdentity.data.MediaContainer.platform]);
             setLibraries(updatedLibraries.data.MediaContainer.Directory);
             setUsers(updatedUsers.data.MediaContainer.Account);
             setIdentity(updatedIdentity.data.MediaContainer);
@@ -60,6 +64,14 @@ const ServerManage = ({ route, navigation }) => {
         });
     }, []);
 
+    const checkPlexVersion = (installedVersion, fetchVersion) => {
+        if (fetchVersion > installedVersion) {
+            return `${installedVersion} - Update available`;
+        }
+
+        return `${installedVersion}`;
+    }
+
     return (
         <ScrollView refreshControl={
             <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
@@ -68,14 +80,14 @@ const ServerManage = ({ route, navigation }) => {
                 <Card.Title>Server identity</Card.Title>
                 <Card.Divider />
                 <View style={ [style.container] }>
-                    <Text style={ [style.itemHalf] }>Plex Media Server Version</Text>
-                    <Text style={ [style.itemHalf] }>: { identity.version }</Text>
+                    <Text style={ [style.serverIdLabel] }>PMS Version</Text>
+                    <Text style={ [style.serverIdValue] }>: { checkPlexVersion(identity.version, plexInfo.version) }</Text>
 
-                    <Text style={ [style.itemHalf] }>Machine identifier</Text>
-                    <Text style={ [style.itemHalf] }>: { identity.machineIdentifier }</Text>
+                    <Text style={ [style.serverIdLabel] }>Machine ID</Text>
+                    <Text style={ [style.serverIdValue] }>: { identity.machineIdentifier }</Text>
 
-                    <Text style={ [style.itemHalf] }>Claimed</Text>
-                    <Text style={ [style.itemHalf] }>: { identity.claimed.toString() }</Text>
+                    <Text style={ [style.serverIdLabel] }>Plex Pass</Text>
+                    <Text style={ [style.serverIdValue] }>: { identity.myPlexSubscription.toString() }</Text>
                 </View>
             </Card>
 
