@@ -13,10 +13,12 @@ const style = StyleSheet.create({
         marginVertical: 2.5
     },
     serverIdLabel: {
-        width: '30%'
+        width: '30%',
+        color: '#000000'
     },
     serverIdValue: {
-        width: '70%'
+        width: '70%',
+        color: '#000000'
     },
     item: {
         color: '#000',
