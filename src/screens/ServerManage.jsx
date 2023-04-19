@@ -7,7 +7,7 @@ import { Card, ListItem, Avatar } from '@rneui/themed';
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 import { timestampParser } from "../functions/GlobalUtiles";
-import { sessionTitle } from "../functions/ServerManageUtiles";
+import {getDeviceIcon, sessionTitle} from "../functions/ServerManageUtiles";
 // Styles
 import style from "../style/ServerManageStyle"
 
@@ -162,9 +162,21 @@ const ServerManage = ({ route, navigation }) => {
                         {users.map((user, index) => {
                             if (user.name) {
                                 return (
-                                    <ListItem key={ index }>
+                                    <ListItem
+                                        key={ index }
+                                        bottomDivider
+                                    >
+                                        <Avatar
+                                            rounded
+                                            icon={{
+                                                name: 'user',
+                                                type: 'font-awesome',
+                                                size: 26,
+                                            }}
+                                            containerStyle={{ backgroundColor: '#c2c2c2' }}
+                                        />
                                         <ListItem.Content>
-                                            <ListItem.Title> - { user.name }</ListItem.Title>
+                                            <ListItem.Title>{ user.name }</ListItem.Title>
                                         </ListItem.Content>
                                     </ListItem>
                                 );
@@ -190,7 +202,18 @@ const ServerManage = ({ route, navigation }) => {
                         {devices.map((device, index) => {
                             if (device.name) {
                                 return (
-                                    <ListItem key={ index + 1 }>
+                                    <ListItem
+                                        key={ index + 1 }
+                                    >
+                                        <Avatar
+                                            rounded
+                                            icon={{
+                                                name: getDeviceIcon(device.platform),
+                                                type: 'font-awesome',
+                                                size: 20,
+                                            }}
+                                            containerStyle={{ backgroundColor: '#c2c2c2' }}
+                                        />
                                         <ListItem.Content>
                                             <ListItem.Title>{ device.name } - { device.platform }</ListItem.Title>
                                             <ListItem.Subtitle>Client ID : { device.clientIdentifier } </ListItem.Subtitle>
