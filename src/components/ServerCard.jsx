@@ -56,14 +56,16 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                                     users,
                                     identity,
                                     devices,
-                                    activeSessions
+                                    activeSessions,
+                                    sessionHistory
                                 ] = await Promise.all([
                                     axios.get('https://plex.tv/api/downloads/5.json'),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/?X-Plex-Token=${server.token}`),
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`),
-                                    axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`)
+                                    axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`),
+                                    axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions/history/all?X-Plex-Token=${server.token}`)
                                 ]);
 
                                 navigation.navigate('ServerManage', {
@@ -74,7 +76,8 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                                     users: users.data.MediaContainer.Account,
                                     identity: identity.data.MediaContainer,
                                     devices: devices.data.MediaContainer.Device,
-                                    activeSessions: activeSessions.data.MediaContainer.Metadata
+                                    activeSessions: activeSessions.data.MediaContainer.Metadata,
+                                    sessionHistory: sessionHistory.data.MediaContainer.Metadata
                                 });
                             } catch (e) {
                                 if (e.message === 'Network Error') {

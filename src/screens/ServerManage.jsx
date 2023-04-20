@@ -6,8 +6,8 @@ import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
-import { timestampParser } from "../functions/GlobalUtiles";
-import {getDeviceIcon, sessionTitle} from "../functions/ServerManageUtiles";
+import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
+import {getDeviceIcon, getHistoryUser, historyTitle, sessionTitle} from "../functions/ServerManageUtiles";
 // Styles
 import style from "../style/ServerManageStyle"
 
@@ -21,11 +21,13 @@ const ServerManage = ({ route, navigation }) => {
     const [ identity, setIdentity ] = useState(route.params.identity);
     const [ devices, setDevices ] = useState(route.params.devices);
     const [ activeSessions, setActiveSessions ] = useState(route.params.activeSessions);
+    const [ sessionHistory, setSessionHistory ] = useState(route.params.sessionHistory);
 
     // Boolean components
     const [ userList, setUserList ] = useState(false);
     const [ devicesList, setDevicesList ] = useState(false);
     const [ sessionsList, setSessionsList ] = useState(false);
+    const [ sessionHistoryList, setSessionHistoryList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
 
     const updateData = async () => {
@@ -36,14 +38,16 @@ const ServerManage = ({ route, navigation }) => {
                 updatedUsers,
                 updatedIdentity,
                 updatedDevices,
-                updatedActiveSessions
+                updatedActiveSessions,
+                updatedSessionHistory
             ] = await Promise.all([
                 axios.get('https://plex.tv/api/downloads/5.json'),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/?X-Plex-Token=${server.token}`),
                 axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`),
-                axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`)
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`),
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions/history/all?X-Plex-Token=${server.token}`)
             ]);
 
             setPlexInfo(updatedPlexInfo.data[server.serverType][updatedIdentity.data.MediaContainer.platform]);
@@ -52,6 +56,7 @@ const ServerManage = ({ route, navigation }) => {
             setIdentity(updatedIdentity.data.MediaContainer);
             setDevices(updatedDevices.data.MediaContainer.Device);
             setActiveSessions(updatedActiveSessions.data.MediaContainer.Metadata);
+            setSessionHistory(updatedSessionHistory.data.MediaContainer.Metadata)
         } catch (error) {
             console.log(error);
         }
@@ -217,7 +222,7 @@ const ServerManage = ({ route, navigation }) => {
                                         <ListItem.Content>
                                             <ListItem.Title>{ device.name } - { device.platform }</ListItem.Title>
                                             <ListItem.Subtitle>Client ID : { device.clientIdentifier } </ListItem.Subtitle>
-                                            <ListItem.Subtitle>Created at : { timestampParser(device.createdAt) } </ListItem.Subtitle>
+                                            <ListItem.Subtitle>Created at : { getDateFromTimestamp(device.createdAt) } </ListItem.Subtitle>
                                         </ListItem.Content>
                                     </ListItem>
                                 );
@@ -276,6 +281,36 @@ const ServerManage = ({ route, navigation }) => {
                                 );
                             })
                         )}
+                    </ListItem.Accordion>
+                </>
+            </Card>
+
+            <Card>
+                <>
+                    <ListItem.Accordion
+                        content={
+                            <ListItem.Content>
+                                <ListItem.Title style={ [style.accordionTitle] }>Session History</ListItem.Title>
+                            </ListItem.Content>
+                        }
+                        isExpanded={ sessionHistoryList }
+                        onPress={() => {
+                            setSessionHistoryList(!sessionHistoryList);
+                        }}
+                    >
+                        {sessionHistory.map((session, index) => {
+                            return (
+                                <ListItem
+                                    key={ index }
+                                >
+                                    <ListItem.Content>
+                                        <ListItem.Title>{ historyTitle(session) }</ListItem.Title>
+                                        <ListItem.Subtitle>Viewed at : { getTimeFromTimestamp(session.viewedAt) } - { getDateFromTimestamp(session.viewedAt) }</ListItem.Subtitle>
+                                        <ListItem.Subtitle>By : { getHistoryUser(session, users) }</ListItem.Subtitle>
+                                    </ListItem.Content>
+                                </ListItem>
+                            );
+                        })}
                     </ListItem.Accordion>
                 </>
             </Card>

@@ -6,6 +6,14 @@ export const sessionTitle = (session) => {
     return session.originalTitle;
 }
 
+export const historyTitle = (session) => {
+    if (session.type === 'episode') {
+        return `${session.grandparentTitle} - ${session.title}`;
+    }
+
+    return session.title;
+}
+
 export const getDeviceIcon = (device) => {
     let icon;
 
@@ -44,4 +52,12 @@ export const getDeviceIcon = (device) => {
     }
 
     return icon;
+}
+
+export const getHistoryUser = (session, users) => {
+    let sessionUser = users.filter((user) => {
+        return session.accountID === user.id;
+    });
+
+    return sessionUser[0].name;
 }
