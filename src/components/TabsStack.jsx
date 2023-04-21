@@ -7,6 +7,7 @@ import Server from "../screens/Server";
 import ServerManage from "../screens/ServerManage";
 import EditServer from "../screens/EditServer";
 import SessionManage from "../screens/SessionManage";
+import SingleAccount from "../screens/SingleAccount";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ const ServerTabStack = () => {
                 name="SessionManage"
                 component={ SessionManage }
                 options={({ route }) => ({ title: `Manage session - ${route.params.title}` })}
+            />
+            <Stack.Screen
+                name="SingleAccount"
+                component={ SingleAccount }
+                options={({ route }) => ({ title: `User : ${route.params.title}` })}
             />
         </Stack.Navigator>
     );

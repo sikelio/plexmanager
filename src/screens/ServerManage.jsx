@@ -4,10 +4,11 @@ import axios from "axios";
 // Components
 import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
+import Spinner from "react-native-loading-spinner-overlay";
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
-import {getDeviceIcon, getHistoryUser, historyTitle, sessionTitle} from "../functions/ServerManageUtiles";
+import { getDeviceIcon, getHistoryUser, historyTitle, sessionTitle } from "../functions/ServerManageUtiles";
 // Styles
 import style from "../style/ServerManageStyle"
 
@@ -29,6 +30,7 @@ const ServerManage = ({ route, navigation }) => {
     const [ sessionsList, setSessionsList ] = useState(false);
     const [ sessionHistoryList, setSessionHistoryList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
+    const [ spinner, setSpinner ] = useState(false);
 
     const updateData = async () => {
         try {
@@ -78,243 +80,268 @@ const ServerManage = ({ route, navigation }) => {
     }
 
     return (
-        <ScrollView refreshControl={
-            <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
-        }>
-            <Card>
-                <Card.Title>Server identity</Card.Title>
-                <Card.Divider />
-                <View style={ [style.container] }>
-                    <Text style={ [style.serverIdLabel] }>PMS Version</Text>
-                    <Text style={ [style.serverIdValue] }>: { checkPlexVersion(identity.version, plexInfo.version) }</Text>
+        <View style={ [style.manageContainer] }>
+            <Spinner
+                visible={ spinner }
+                textContent={'Loading...'}
+            />
 
-                    <Text style={ [style.serverIdLabel] }>Machine ID</Text>
-                    <Text style={ [style.serverIdValue] }>: { identity.machineIdentifier }</Text>
+            <ScrollView refreshControl={
+                <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
+            }>
+                <Card>
+                    <Card.Title>Server identity</Card.Title>
+                    <Card.Divider />
+                    <View style={ [style.container] }>
+                        <Text style={ [style.serverIdLabel] }>PMS Version</Text>
+                        <Text style={ [style.serverIdValue] }>: { checkPlexVersion(identity.version, plexInfo.version) }</Text>
 
-                    <Text style={ [style.serverIdLabel] }>Plex Pass</Text>
-                    <Text style={ [style.serverIdValue] }>: { identity.myPlexSubscription.toString() }</Text>
-                </View>
-            </Card>
+                        <Text style={ [style.serverIdLabel] }>Machine ID</Text>
+                        <Text style={ [style.serverIdValue] }>: { identity.machineIdentifier }</Text>
 
-            <Card>
-                <Card.Title>Scan all libraries</Card.Title>
-                <Card.Divider />
-                <View>
-                    <Button
-                        title='Update all'
-                        color='#e5a00d'
-                        onPress={() => {
-                            sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
-                        }}
-                    />
-                </View>
-            </Card>
+                        <Text style={ [style.serverIdLabel] }>Plex Pass</Text>
+                        <Text style={ [style.serverIdValue] }>: { identity.myPlexSubscription.toString() }</Text>
+                    </View>
+                </Card>
 
-            <Card>
-                <Card.Title>Scan single library & Refresh metadata</Card.Title>
-                <Card.Divider />
-                <View>
-                    {libraries.map((lib, index) => {
-                        return (
-                            <View
-                                key={ index }
-                                style={ [style.container] }
-                            >
-                                <Text
-                                    style={ [style.item] }
+                <Card>
+                    <Card.Title>Scan all libraries</Card.Title>
+                    <Card.Divider />
+                    <View>
+                        <Button
+                            title='Update all'
+                            color='#e5a00d'
+                            onPress={() => {
+                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
+                            }}
+                        />
+                    </View>
+                </Card>
+
+                <Card>
+                    <Card.Title>Scan single library & Refresh metadata</Card.Title>
+                    <Card.Divider />
+                    <View>
+                        {libraries.map((lib, index) => {
+                            return (
+                                <View
+                                    key={ index }
+                                    style={ [style.container] }
                                 >
-                                    { lib.title }
-                                </Text>
+                                    <Text
+                                        style={ [style.item] }
+                                    >
+                                        { lib.title }
+                                    </Text>
 
-                                <View style={ [style.actionBtn] }>
-                                    <Button
-                                        title="Update"
-                                        color='#e5a00d'
-                                        onPress={() => {
-                                            sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?X-Plex-Token=${server.token}`);
-                                        }}
-                                    />
+                                    <View style={ [style.actionBtn] }>
+                                        <Button
+                                            title="Update"
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
+
+                                    <View style={ [style.actionBtn] }>
+                                        <Button
+                                            title="Metadata"
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?force=1&X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
                                 </View>
+                            );
+                        })}
+                    </View>
+                </Card>
 
-                                <View style={ [style.actionBtn] }>
-                                    <Button
-                                        title="Metadata"
-                                        color='#e5a00d'
-                                        onPress={() => {
-                                            sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?force=1&X-Plex-Token=${server.token}`);
-                                        }}
-                                    />
-                                </View>
-                            </View>
-                        );
-                    })}
-                </View>
-            </Card>
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Users</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={userList}
+                            onPress={() => {
+                                setUserList(!userList);
+                            }}
+                        >
+                            {users.map((user, index) => {
+                                if (user.name) {
+                                    return (
+                                        <ListItem
+                                            key={ index }
+                                            bottomDivider
+                                        >
+                                            <Avatar
+                                                rounded
+                                                icon={{
+                                                    name: 'person',
+                                                    type: 'material',
+                                                    size: 26,
+                                                }}
+                                                containerStyle={{ backgroundColor: '#c2c2c2' }}
+                                            />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{ user.name }</ListItem.Title>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron
+                                                onPress={async () => {
+                                                    try {
+                                                        setSpinner(true);
+                                                        const userDetails = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/${user.id}?X-Plex-Token=${server.token}`);
 
-            <Card>
-                <>
-                    <ListItem.Accordion
-                        content={
-                            <ListItem.Content>
-                                <ListItem.Title style={ [style.accordionTitle] }>Users</ListItem.Title>
-                            </ListItem.Content>
-                        }
-                        isExpanded={userList}
-                        onPress={() => {
-                            setUserList(!userList);
-                        }}
-                    >
-                        {users.map((user, index) => {
-                            if (user.name) {
+                                                        navigation.navigate('SingleAccount', {
+                                                            title: user.name,
+                                                            user: user,
+                                                            userDetails: userDetails.data.MediaContainer.Account[0]
+                                                        });
+
+                                                        setSpinner(false);
+                                                    } catch (e) {
+                                                        console.error(e)
+                                                    }
+                                                }}
+                                            />
+                                        </ListItem>
+                                    );
+                                }
+                            })}
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Devices</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ devicesList }
+                            onPress={() => {
+                                setDevicesList(!devicesList);
+                            }}
+                        >
+                            {devices.map((device, index) => {
+                                if (device.name) {
+                                    return (
+                                        <ListItem
+                                            key={ index + 1 }
+                                        >
+                                            <Avatar
+                                                rounded
+                                                icon={{
+                                                    name: getDeviceIcon(device.platform),
+                                                    type: 'font-awesome',
+                                                    size: 20,
+                                                }}
+                                                containerStyle={{ backgroundColor: '#c2c2c2' }}
+                                            />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{ device.name } - { device.platform }</ListItem.Title>
+                                                <ListItem.Subtitle>Client ID : { device.clientIdentifier } </ListItem.Subtitle>
+                                                <ListItem.Subtitle>Created at : { getDateFromTimestamp(device.createdAt) } </ListItem.Subtitle>
+                                            </ListItem.Content>
+                                        </ListItem>
+                                    );
+                                }
+                            })}
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Sessions</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ sessionsList }
+                            onPress={() => {
+                                setSessionsList(!sessionsList);
+                            }}
+                        >
+                            {!activeSessions ? (
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <ListItem.Title>No sessions</ListItem.Title>
+                                    </ListItem.Content>
+                                </ListItem>
+                            ) : (
+                                activeSessions.length > 0 && activeSessions.map((session, index) => {
+                                    return (
+                                        <ListItem
+                                            key={ index + 1 }
+                                            bottomDivider
+                                            onPress={() => {
+                                                navigation.navigate('SessionManage', {
+                                                    title: session.Session.id,
+                                                    server: server,
+                                                    session: session
+                                                })
+                                            }}
+                                        >
+                                            <Avatar
+                                                rounded
+                                                source={{ uri: session.User.thumb }}
+                                            />
+                                            <ListItem.Content>
+                                                <ListItem.Title>{ sessionTitle(session) }</ListItem.Title>
+                                                <ListItem.Subtitle>{ session.Player.state }</ListItem.Subtitle>
+                                                <ListItem.Subtitle>{ session.Player.address }</ListItem.Subtitle>
+                                                <ListItem.Subtitle>{ session.Player.product }</ListItem.Subtitle>
+                                                <ListItem.Subtitle>{ session.Player.version }</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron />
+                                        </ListItem>
+                                    );
+                                })
+                            )}
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Session History</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ sessionHistoryList }
+                            onPress={() => {
+                                setSessionHistoryList(!sessionHistoryList);
+                            }}
+                        >
+                            {sessionHistory.map((session, index) => {
                                 return (
                                     <ListItem
                                         key={ index }
-                                        bottomDivider
                                     >
-                                        <Avatar
-                                            rounded
-                                            icon={{
-                                                name: 'user',
-                                                type: 'font-awesome',
-                                                size: 26,
-                                            }}
-                                            containerStyle={{ backgroundColor: '#c2c2c2' }}
-                                        />
                                         <ListItem.Content>
-                                            <ListItem.Title>{ user.name }</ListItem.Title>
+                                            <ListItem.Title>{ historyTitle(session) }</ListItem.Title>
+                                            <ListItem.Subtitle>Viewed at : { getTimeFromTimestamp(session.viewedAt) } - { getDateFromTimestamp(session.viewedAt) }</ListItem.Subtitle>
+                                            <ListItem.Subtitle>By : { getHistoryUser(session, users) }</ListItem.Subtitle>
                                         </ListItem.Content>
                                     </ListItem>
                                 );
-                            }
-                        })}
-                    </ListItem.Accordion>
-                </>
-            </Card>
-
-            <Card>
-                <>
-                    <ListItem.Accordion
-                        content={
-                            <ListItem.Content>
-                                <ListItem.Title style={ [style.accordionTitle] }>Devices</ListItem.Title>
-                            </ListItem.Content>
-                        }
-                        isExpanded={ devicesList }
-                        onPress={() => {
-                            setDevicesList(!devicesList);
-                        }}
-                    >
-                        {devices.map((device, index) => {
-                            if (device.name) {
-                                return (
-                                    <ListItem
-                                        key={ index + 1 }
-                                    >
-                                        <Avatar
-                                            rounded
-                                            icon={{
-                                                name: getDeviceIcon(device.platform),
-                                                type: 'font-awesome',
-                                                size: 20,
-                                            }}
-                                            containerStyle={{ backgroundColor: '#c2c2c2' }}
-                                        />
-                                        <ListItem.Content>
-                                            <ListItem.Title>{ device.name } - { device.platform }</ListItem.Title>
-                                            <ListItem.Subtitle>Client ID : { device.clientIdentifier } </ListItem.Subtitle>
-                                            <ListItem.Subtitle>Created at : { getDateFromTimestamp(device.createdAt) } </ListItem.Subtitle>
-                                        </ListItem.Content>
-                                    </ListItem>
-                                );
-                            }
-                        })}
-                    </ListItem.Accordion>
-                </>
-            </Card>
-
-            <Card>
-                <>
-                    <ListItem.Accordion
-                        content={
-                            <ListItem.Content>
-                                <ListItem.Title style={ [style.accordionTitle] }>Sessions</ListItem.Title>
-                            </ListItem.Content>
-                        }
-                        isExpanded={ sessionsList }
-                        onPress={() => {
-                            setSessionsList(!sessionsList);
-                        }}
-                    >
-                        {!activeSessions ? (
-                            <ListItem>
-                                <ListItem.Content>
-                                    <ListItem.Title>No sessions</ListItem.Title>
-                                </ListItem.Content>
-                            </ListItem>
-                        ) : (
-                            activeSessions.length > 0 && activeSessions.map((session, index) => {
-                                return (
-                                    <ListItem
-                                        key={ index + 1 }
-                                        bottomDivider
-                                        onPress={() => {
-                                            navigation.navigate('SessionManage', {
-                                                title: session.Session.id,
-                                                server: server,
-                                                session: session
-                                            })
-                                        }}
-                                    >
-                                        <Avatar
-                                            rounded
-                                            source={{ uri: session.User.thumb }}
-                                        />
-                                        <ListItem.Content>
-                                            <ListItem.Title>{ sessionTitle(session) }</ListItem.Title>
-                                            <ListItem.Subtitle>{ session.Player.state }</ListItem.Subtitle>
-                                            <ListItem.Subtitle>{ session.Player.address }</ListItem.Subtitle>
-                                            <ListItem.Subtitle>{ session.Player.product }</ListItem.Subtitle>
-                                            <ListItem.Subtitle>{ session.Player.version }</ListItem.Subtitle>
-                                        </ListItem.Content>
-                                        <ListItem.Chevron />
-                                    </ListItem>
-                                );
-                            })
-                        )}
-                    </ListItem.Accordion>
-                </>
-            </Card>
-
-            <Card>
-                <>
-                    <ListItem.Accordion
-                        content={
-                            <ListItem.Content>
-                                <ListItem.Title style={ [style.accordionTitle] }>Session History</ListItem.Title>
-                            </ListItem.Content>
-                        }
-                        isExpanded={ sessionHistoryList }
-                        onPress={() => {
-                            setSessionHistoryList(!sessionHistoryList);
-                        }}
-                    >
-                        {sessionHistory.map((session, index) => {
-                            return (
-                                <ListItem
-                                    key={ index }
-                                >
-                                    <ListItem.Content>
-                                        <ListItem.Title>{ historyTitle(session) }</ListItem.Title>
-                                        <ListItem.Subtitle>Viewed at : { getTimeFromTimestamp(session.viewedAt) } - { getDateFromTimestamp(session.viewedAt) }</ListItem.Subtitle>
-                                        <ListItem.Subtitle>By : { getHistoryUser(session, users) }</ListItem.Subtitle>
-                                    </ListItem.Content>
-                                </ListItem>
-                            );
-                        })}
-                    </ListItem.Accordion>
-                </>
-            </Card>
-        </ScrollView>
+                            })}
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+            </ScrollView>
+        </View>
     );
 }
 
