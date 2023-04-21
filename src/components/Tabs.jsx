@@ -3,8 +3,9 @@ import React from 'react';
 // Components
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import NewServer from '../screens/NewServer';
 import ServerTabStack from "./TabsStack";
+// Screens
+import NewServer from '../screens/NewServer';
 import Setting from "../screens/Setting";
 
 const Tab = createMaterialBottomTabNavigator();

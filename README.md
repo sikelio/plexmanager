@@ -46,13 +46,13 @@ Coming soon...
 
 - Server
     - [ ] Server Capabilities
-    - [ ] Server Identity
+    - [X] Server Identity
     - [ ] Server Preferences
     - [X] Get Accounts
     - [ ] Get a Single Account
-    - [ ] Get Devices
+    - [X] Get Devices
     - [ ] Get a Single Device
-    - [ ] Get All Activities
+    - [X] Get All Activities
     - [ ] Stop an Activity
 - Session
     - [ ] Get Active Sessions
@@ -62,7 +62,7 @@ Coming soon...
     - [X] Get Libraries
     - [X] Scan All Libraries
     - [X] Scan a Single Library
-    - [ ] Refresh Metadata for a Library
+    - [X] Refresh Metadata for a Library
 - Media
     - [ ] Get All Movies
     - [ ] Get Newest Movies

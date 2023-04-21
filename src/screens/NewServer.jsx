@@ -20,20 +20,26 @@ import { storeServer } from '../functions/ServerStorage';
 // Styles
 import style from '../style/NewServerStyle';
 
-const options = [
+const protocolOptions = [
     { label: 'HTTP', value: 'http' },
-    { label: 'HTTPS', value: 'https' },
+    { label: 'HTTPS', value: 'https' }
 ];
+
+const serverTypeOptions = [
+    { label: 'Computer', value: 'computer' },
+    { label: 'NAS', value: 'nas' }
+]
 
 const NewServer = () => {
     const [ modalVisible, setModalVisible ] = useState(false);
 
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
+            protocol: 'http',
+            serverType: 'computer',
             name: '',
             ip: '',
             port: '32400',
-            protocol: 'http',
             token: ''
         }
     });
@@ -82,7 +88,25 @@ const NewServer = () => {
                         onValueChange={ onChange }
                         style={ [style.picker] }
                     >
-                        {options.map((option) => (
+                        {protocolOptions.map((option) => (
+                            <Picker.Item key={ option.value } label={ option.label } value={ option.value } />
+                        ))}
+                    </Picker>
+                )}
+            />
+
+            { errors.serverType && <Text style={ style.required }>Server type is required.</Text> }
+            <Controller
+                control={ control }
+                name="protocol"
+                defaultValue="computer"
+                render={({ field: { onChange, value } }) => (
+                    <Picker
+                        selectedValue={ value }
+                        onValueChange={ onChange }
+                        style={ [style.picker] }
+                    >
+                        {serverTypeOptions.map((option) => (
                             <Picker.Item key={ option.value } label={ option.label } value={ option.value } />
                         ))}
                     </Picker>

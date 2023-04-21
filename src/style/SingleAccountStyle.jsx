@@ -4,9 +4,6 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 const style = StyleSheet.create({
-    manageContainer: {
-        flex: 1
-    },
     container: {
         flex: 1,
         flexDirection: 'row',
@@ -15,24 +12,13 @@ const style = StyleSheet.create({
         alignItems: 'flex-start',
         marginVertical: 2.5
     },
-    serverIdLabel: {
-        width: '30%',
+    userPreferencesLabel: {
+        width: '50%',
         color: '#000000'
     },
-    serverIdValue: {
-        width: '70%',
+    userPreferencesValue: {
+        width: '50%',
         color: '#000000'
-    },
-    item: {
-        color: '#000',
-        width: '33%'
-    },
-    actionBtn: {
-        width: '33%'
-    },
-    accordionTitle: {
-        fontWeight: 'bold',
-        fontSize: 14
     }
 });
 

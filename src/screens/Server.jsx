@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback, Component} from 'react';
 // Components
 import { ScrollView, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -15,7 +15,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Server = ( { navigation } ) => {
     const [ serverList, setServerList ] = useState([]);
     const [ spinner, setSpinner ] = useState(false);
-    const [ darkmode, setDarkmode ] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -37,14 +36,6 @@ const Server = ( { navigation } ) => {
             fetchData();
         }, [])
     );
-
-    useFocusEffect(
-        useCallback(() => {
-            getDarkmode().then((value) => {
-                setDarkmode(value);
-            })
-        }, [])
-    )
 
     let isServerListEmpty = serverList.length === 0;
 
