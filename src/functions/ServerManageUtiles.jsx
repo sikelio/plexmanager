@@ -60,6 +60,30 @@ export const getDeviceIcon = (device) => {
     return icon;
 }
 
+export const getLibraryIcon = (type) => {
+    let icon;
+
+    switch (type) {
+        case 'movie':
+            icon = require('../assets/icons/movie.png');
+            break;
+        case 'show':
+            icon = require('../assets/icons/tv-show.png');
+            break;
+        case 'artist':
+            icon = require('../assets/icons/music.png');
+            break;
+        case 'photo':
+            icon = require('../assets/icons/photo.png');
+            break;
+        default:
+            icon = require('../assets/icons/unknown.png');
+            break;
+    }
+
+    return icon;
+}
+
 export const getHistoryUser = (session, users) => {
     let sessionUser = users.filter((user) => {
         return session.accountID === user.id;

@@ -8,7 +8,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
-import { getDeviceIcon, getHistoryUser, historyTitle, sessionTitle } from "../functions/ServerManageUtiles";
+import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTitle } from "../functions/ServerManageUtiles";
 // Styles
 import style from "../style/ServerManageStyle"
 
@@ -160,6 +160,26 @@ const ServerManage = ({ route, navigation }) => {
                                         key={ index }
                                         bottomDivider
                                     >
+                                        <Avatar
+                                            containerStyle={{ backgroundColor: '#E3E3E3' }}
+                                            rounded
+                                            ImageComponent={() => (
+                                                <Image
+                                                    resizeMode="contain"
+                                                    style={{
+                                                        height: 22.5,
+                                                        width: 22.5,
+                                                        position: 'absolute',
+                                                    }}
+                                                    source={ getLibraryIcon(library.type) }
+                                                />
+                                            )}
+                                            overlayContainerStyle={{
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                        />
+
                                         <ListItem.Content>
                                             <ListItem.Title>{ library.title }</ListItem.Title>
                                         </ListItem.Content>
