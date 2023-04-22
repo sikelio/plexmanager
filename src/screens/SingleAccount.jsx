@@ -18,7 +18,7 @@ const SingleAccount = ({ route, navigation }) => {
                 <Card.Divider />
                 <View style={ [style.container] }>
                     <Text style={ [style.userPreferencesLabel] }>Auto select audio</Text>
-                    <Text style={ [style.userPreferencesValue] }>: { userDetails.autoSelectAudio.toString() }</Text>
+                    <Text style={ [style.userPreferencesValue] }>{ userDetails.autoSelectAudio.toString() }</Text>
 
                     <Text style={ [style.userPreferencesLabel] }>Default audio language</Text>
                     <Image
@@ -37,7 +37,7 @@ const SingleAccount = ({ route, navigation }) => {
                     />
 
                     <Text style={ [style.userPreferencesLabel] }>Subtitle mode</Text>
-                    <Text style={ [style.userPreferencesValue] }>: { userDetails.subtitleMode }</Text>
+                    <Text style={ [style.userPreferencesValue] }>{ userDetails.subtitleMode }</Text>
                 </View>
             </Card>
         </ScrollView>

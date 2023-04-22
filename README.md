@@ -49,7 +49,7 @@ Coming soon...
     - [X] Server Identity
     - [ ] Server Preferences
     - [X] Get Accounts
-    - [ ] Get a Single Account
+    - [X] Get a Single Account
     - [X] Get Devices
     - [ ] Get a Single Device
     - [X] Get All Activities
