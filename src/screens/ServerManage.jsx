@@ -2,18 +2,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 // Components
-import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
+import { Button, ScrollView, View, Text, RefreshControl, Image } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
-import { getDeviceIcon, getHistoryUser, historyTitle, sessionTitle } from "../functions/ServerManageUtiles";
+import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTitle } from "../functions/ServerManageUtiles";
 // Styles
 import style from "../style/ServerManageStyle"
 
 const ServerManage = ({ route, navigation }) => {
-    const server = route.params.server;
+    const { server } = route.params;
 
     // Route params
     const [ plexInfo, setPlexInfo ] = useState(route.params.plexInfo);
@@ -31,6 +31,7 @@ const ServerManage = ({ route, navigation }) => {
     const [ sessionHistoryList, setSessionHistoryList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
     const [ spinner, setSpinner ] = useState(false);
+    const [ librariesList, setLibrariesList ] = useState(false);
 
     const updateData = async () => {
         try {
@@ -90,7 +91,7 @@ const ServerManage = ({ route, navigation }) => {
                 <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
             }>
                 <Card>
-                    <Card.Title>Server identity</Card.Title>
+                    <Card.Title>Identity</Card.Title>
                     <Card.Divider />
                     <View style={ [style.container] }>
                         <Text style={ [style.serverIdLabel] }>PMS Version</Text>
@@ -101,6 +102,28 @@ const ServerManage = ({ route, navigation }) => {
 
                         <Text style={ [style.serverIdLabel] }>Plex Pass</Text>
                         <Text style={ [style.serverIdValue] }>: { identity.myPlexSubscription.toString() }</Text>
+                    </View>
+
+                    <View>
+                        <Button
+                            title='Preferences'
+                            color='#e5a00d'
+                            onPress={async () => {
+                                try {
+                                    setSpinner(true);
+
+                                    let preferences = await axios.get(`${server.protocol}://${server.ip}:${server.port}/:/prefs?X-Plex-Token=${server.token}`);
+
+                                    navigation.navigate('ServerPreferences', {
+                                        preferences: preferences.data.MediaContainer.Setting
+                                    });
+
+                                    setSpinner(false);
+                                } catch (e) {
+                                    console.error(e)
+                                }
+                            }}
+                        />
                     </View>
                 </Card>
 
@@ -119,44 +142,70 @@ const ServerManage = ({ route, navigation }) => {
                 </Card>
 
                 <Card>
-                    <Card.Title>Scan single library & Refresh metadata</Card.Title>
-                    <Card.Divider />
-                    <View>
-                        {libraries.map((lib, index) => {
-                            return (
-                                <View
-                                    key={ index }
-                                    style={ [style.container] }
-                                >
-                                    <Text
-                                        style={ [style.item] }
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Libraries</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ librariesList }
+                            onPress={() => {
+                                setLibrariesList(!librariesList);
+                            }}
+                        >
+                            {libraries.map((library, index) => {
+                                return (
+                                    <ListItem
+                                        key={ index }
+                                        bottomDivider
                                     >
-                                        { lib.title }
-                                    </Text>
-
-                                    <View style={ [style.actionBtn] }>
-                                        <Button
-                                            title="Update"
-                                            color='#e5a00d'
-                                            onPress={() => {
-                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?X-Plex-Token=${server.token}`);
+                                        <Avatar
+                                            containerStyle={{ backgroundColor: '#E3E3E3' }}
+                                            rounded
+                                            ImageComponent={() => (
+                                                <Image
+                                                    resizeMode="contain"
+                                                    style={{
+                                                        height: 22.5,
+                                                        width: 22.5,
+                                                        position: 'absolute',
+                                                    }}
+                                                    source={ getLibraryIcon(library.type) }
+                                                />
+                                            )}
+                                            overlayContainerStyle={{
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
                                             }}
                                         />
-                                    </View>
 
-                                    <View style={ [style.actionBtn] }>
-                                        <Button
-                                            title="Metadata"
-                                            color='#e5a00d'
-                                            onPress={() => {
-                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?force=1&X-Plex-Token=${server.token}`);
+                                        <ListItem.Content>
+                                            <ListItem.Title>{ library.title }</ListItem.Title>
+                                        </ListItem.Content>
+                                        <ListItem.Chevron
+                                            onPress={async () => {
+                                                try {
+                                                    setSpinner(true);
+
+                                                    let items = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`);
+
+                                                    navigation.navigate('LibraryManage', {
+                                                        title: library.title,
+                                                        library: library,
+                                                        server: server,
+                                                        medias: items.data.MediaContainer.Metadata
+                                                    });
+
+                                                    setSpinner(false);
+                                                } catch (e) {}
                                             }}
                                         />
-                                    </View>
-                                </View>
-                            );
-                        })}
-                    </View>
+                                    </ListItem>
+                                );
+                            })}
+                        </ListItem.Accordion>
+                    </>
                 </Card>
 
                 <Card>
@@ -180,14 +229,26 @@ const ServerManage = ({ route, navigation }) => {
                                             bottomDivider
                                         >
                                             <Avatar
+                                                containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
-                                                icon={{
-                                                    name: 'person',
-                                                    type: 'material',
-                                                    size: 26,
+                                                ImageComponent={() => (
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={{
+                                                            height: 26,
+                                                            width: 26,
+                                                            borderRadius: 25,
+                                                            position: 'absolute',
+                                                        }}
+                                                        source={ require('../assets/icons/user.png') }
+                                                    />
+                                                )}
+                                                overlayContainerStyle={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
                                                 }}
-                                                containerStyle={{ backgroundColor: '#c2c2c2' }}
                                             />
+
                                             <ListItem.Content>
                                                 <ListItem.Title>{ user.name }</ListItem.Title>
                                             </ListItem.Content>
@@ -237,14 +298,25 @@ const ServerManage = ({ route, navigation }) => {
                                             key={ index + 1 }
                                         >
                                             <Avatar
+                                                containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
-                                                icon={{
-                                                    name: getDeviceIcon(device.platform),
-                                                    type: 'font-awesome',
-                                                    size: 20,
+                                                ImageComponent={() => (
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={{
+                                                            height: 22.5,
+                                                            width: 22.5,
+                                                            position: 'absolute',
+                                                        }}
+                                                        source={ getDeviceIcon(device.platform) }
+                                                    />
+                                                )}
+                                                overlayContainerStyle={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
                                                 }}
-                                                containerStyle={{ backgroundColor: '#c2c2c2' }}
                                             />
+
                                             <ListItem.Content>
                                                 <ListItem.Title>{ device.name } - { device.platform }</ListItem.Title>
                                                 <ListItem.Subtitle>Client ID : { device.clientIdentifier } </ListItem.Subtitle>
