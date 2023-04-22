@@ -10,6 +10,7 @@ import EditServer from "./screens/EditServer";
 import SessionManage from "./screens/SessionManage";
 import SingleAccount from "./screens/SingleAccount";
 import ServerPreferences from "./screens/ServerPreferences";
+import LibraryManage from "./screens/LibraryManage";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,11 @@ const App = () => {
                   name="ServerPreferences"
                   component={ ServerPreferences }
                   options={({ route }) => ({ title: `Server Preferences` })}
+              />
+              <Stack.Screen
+                  name="LibraryManage"
+                  component={ LibraryManage }
+                  options={({ route }) => ({ title: `Library : ${route.params.title}` })}
               />
           </Stack.Navigator>
       </NavigationContainer>

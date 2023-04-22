@@ -13,7 +13,7 @@ import { getDeviceIcon, getHistoryUser, historyTitle, sessionTitle } from "../fu
 import style from "../style/ServerManageStyle"
 
 const ServerManage = ({ route, navigation }) => {
-    const server = route.params.server;
+    const { server } = route.params;
 
     // Route params
     const [ plexInfo, setPlexInfo ] = useState(route.params.plexInfo);
@@ -31,6 +31,7 @@ const ServerManage = ({ route, navigation }) => {
     const [ sessionHistoryList, setSessionHistoryList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
     const [ spinner, setSpinner ] = useState(false);
+    const [ librariesList, setLibrariesList ] = useState(false);
 
     const updateData = async () => {
         try {
@@ -141,44 +142,41 @@ const ServerManage = ({ route, navigation }) => {
                 </Card>
 
                 <Card>
-                    <Card.Title>Scan single library & Refresh metadata</Card.Title>
-                    <Card.Divider />
-                    <View>
-                        {libraries.map((lib, index) => {
-                            return (
-                                <View
-                                    key={ index }
-                                    style={ [style.container] }
-                                >
-                                    <Text
-                                        style={ [style.item] }
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Libraries</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ librariesList }
+                            onPress={() => {
+                                setLibrariesList(!librariesList);
+                            }}
+                        >
+                            {libraries.map((library, index) => {
+                                return (
+                                    <ListItem
+                                        key={ index }
+                                        bottomDivider
                                     >
-                                        { lib.title }
-                                    </Text>
-
-                                    <View style={ [style.actionBtn] }>
-                                        <Button
-                                            title="Update"
-                                            color='#e5a00d'
+                                        <ListItem.Content>
+                                            <ListItem.Title>{ library.title }</ListItem.Title>
+                                        </ListItem.Content>
+                                        <ListItem.Chevron
                                             onPress={() => {
-                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?X-Plex-Token=${server.token}`);
+                                                navigation.navigate('LibraryManage', {
+                                                    title: library.title,
+                                                    library: library,
+                                                    server: server
+                                                })
                                             }}
                                         />
-                                    </View>
-
-                                    <View style={ [style.actionBtn] }>
-                                        <Button
-                                            title="Metadata"
-                                            color='#e5a00d'
-                                            onPress={() => {
-                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${lib.key}/refresh?force=1&X-Plex-Token=${server.token}`);
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-                            );
-                        })}
-                    </View>
+                                    </ListItem>
+                                );
+                            })}
+                        </ListItem.Accordion>
+                    </>
                 </Card>
 
                 <Card>
