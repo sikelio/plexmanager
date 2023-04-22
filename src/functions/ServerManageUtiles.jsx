@@ -19,35 +19,41 @@ export const getDeviceIcon = (device) => {
 
     switch (device) {
         case 'Firefox':
-            icon = 'firefox';
+            icon = require('../assets/icons/firefox.png');
             break;
         case 'windows':
         case 'Windows':
-            icon = 'windows';
+            icon = require('../assets/icons/windows.png');
             break;
         case 'Microsoft Edge':
-            icon = 'edge';
+            icon = require('../assets/icons/edge.png');
             break;
         case 'Linux':
-            icon = 'linux';
+            icon = require('../assets/icons/linux.png');
             break;
         case 'iOS':
-            icon = 'apple';
+            icon = require('../assets/icons/apple.png');
             break;
         case 'Chrome':
-            icon = 'chrome';
+            icon = require('../assets/icons/chrome.png');
             break;
         case 'Android':
-            icon = 'android';
+            icon = require('../assets/icons/android.png');
             break;
         case 'Safari':
-            icon = 'safari';
+            icon = require('../assets/icons/safari.png');
             break;
         case 'Opera':
-            icon = 'opera';
+            icon = require('../assets/icons/opera.png');
+            break;
+        case 'Chromecast':
+            icon = require('../assets/icons/chromecast.png')
+            break;
+        case 'Xbox':
+            icon = require('../assets/icons/xbox.png')
             break;
         default:
-            icon = 'question';
+            icon = require('../assets/icons/unknown.png');
             break;
     }
 

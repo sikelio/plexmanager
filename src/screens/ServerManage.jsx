@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 // Components
-import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
+import { Button, ScrollView, View, Text, RefreshControl, Image } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
 // Functions
@@ -180,14 +180,26 @@ const ServerManage = ({ route, navigation }) => {
                                             bottomDivider
                                         >
                                             <Avatar
+                                                containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
-                                                icon={{
-                                                    name: 'person',
-                                                    type: 'material',
-                                                    size: 26,
+                                                ImageComponent={() => (
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={{
+                                                            height: 26,
+                                                            width: 26,
+                                                            borderRadius: 25,
+                                                            position: 'absolute',
+                                                        }}
+                                                        source={ require('../assets/icons/user.png') }
+                                                    />
+                                                )}
+                                                overlayContainerStyle={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
                                                 }}
-                                                containerStyle={{ backgroundColor: '#c2c2c2' }}
                                             />
+
                                             <ListItem.Content>
                                                 <ListItem.Title>{ user.name }</ListItem.Title>
                                             </ListItem.Content>
@@ -237,14 +249,25 @@ const ServerManage = ({ route, navigation }) => {
                                             key={ index + 1 }
                                         >
                                             <Avatar
+                                                containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
-                                                icon={{
-                                                    name: getDeviceIcon(device.platform),
-                                                    type: 'font-awesome',
-                                                    size: 20,
+                                                ImageComponent={() => (
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={{
+                                                            height: 22.5,
+                                                            width: 22.5,
+                                                            position: 'absolute',
+                                                        }}
+                                                        source={ getDeviceIcon(device.platform) }
+                                                    />
+                                                )}
+                                                overlayContainerStyle={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
                                                 }}
-                                                containerStyle={{ backgroundColor: '#c2c2c2' }}
                                             />
+
                                             <ListItem.Content>
                                                 <ListItem.Title>{ device.name } - { device.platform }</ListItem.Title>
                                                 <ListItem.Subtitle>Client ID : { device.clientIdentifier } </ListItem.Subtitle>
