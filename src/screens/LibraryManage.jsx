@@ -1,13 +1,17 @@
+// Dependencies
+import React, { useState } from "react";
 // Components
-import { ScrollView, Text, View } from "react-native";
-import { Card, Button } from "@rneui/themed";
+import { Image, ScrollView, Text, View } from "react-native";
+import { Card, Button, ListItem, Avatar } from "@rneui/themed";
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 // Styles
 import style from "../style/LibraryManageStyle"
 
 const LibraryManage = ({ route, navigation }) => {
-    const { library, server } = route.params;
+    const { medias, library, server } = route.params;
+
+    const [ mediaList, setMediaList ] = useState(false);
 
     return (
         <ScrollView>
@@ -41,6 +45,53 @@ const LibraryManage = ({ route, navigation }) => {
                         }}
                     />
                 </View>
+            </Card>
+
+            <Card>
+                <ListItem.Accordion
+                    content={
+                        <ListItem.Content>
+                            <ListItem.Title style={ [style.accordionTitle] }>Medias</ListItem.Title>
+                        </ListItem.Content>
+                    }
+                    isExpanded={ mediaList }
+                    onPress={() => {
+                        setMediaList(!mediaList);
+                    }}
+                >
+                    {medias.map((media, index) => {
+                        return (
+                            <ListItem
+                                key={ index }
+                                bottomDivider
+                            >
+                                <Avatar
+                                    ImageComponent={() => (
+                                        <Image
+                                            resizeMode="contain"
+                                            style={{
+                                                height: 32,
+                                                width: 32,
+                                                position: 'absolute',
+                                            }}
+                                            source={{
+                                                uri: `${server.protocol}://${server.ip}:${server.port}${media.thumb}?X-Plex-Token=${server.token}`
+                                            }}
+                                        />
+                                    )}
+                                    overlayContainerStyle={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                />
+
+                                <ListItem.Content>
+                                    <ListItem.Title>{ media.title }</ListItem.Title>
+                                </ListItem.Content>
+                            </ListItem>
+                        );
+                    })}
+                </ListItem.Accordion>
             </Card>
         </ScrollView>
     );

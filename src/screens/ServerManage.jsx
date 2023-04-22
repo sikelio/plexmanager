@@ -184,12 +184,21 @@ const ServerManage = ({ route, navigation }) => {
                                             <ListItem.Title>{ library.title }</ListItem.Title>
                                         </ListItem.Content>
                                         <ListItem.Chevron
-                                            onPress={() => {
-                                                navigation.navigate('LibraryManage', {
-                                                    title: library.title,
-                                                    library: library,
-                                                    server: server
-                                                })
+                                            onPress={async () => {
+                                                try {
+                                                    setSpinner(true);
+
+                                                    let items = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`);
+
+                                                    navigation.navigate('LibraryManage', {
+                                                        title: library.title,
+                                                        library: library,
+                                                        server: server,
+                                                        medias: items.data.MediaContainer.Metadata
+                                                    });
+
+                                                    setSpinner(false);
+                                                } catch (e) {}
                                             }}
                                         />
                                     </ListItem>

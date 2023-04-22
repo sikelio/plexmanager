@@ -64,15 +64,15 @@ Coming soon...
     - [X] Scan a Single Library
     - [X] Refresh Metadata for a Library
 - Media
-    - [ ] Get All Movies
+    - [X] Get All Movies
     - [ ] Get Newest Movies
     - [ ] Update Movie Details
-    - [ ] Get All TV Shows
+    - [X] Get All TV Shows
     - [ ] Get All TV Show Seasons
     - [ ] Get All TV Show Episodes
-    - [ ] Get All Music Artists
-    - [ ] Get All Photos
-    - [ ] Get All Videos
+    - [X] Get All Music Artists
+    - [X] Get All Photos
+    - [X] Get All Videos
     - [ ] Update Media Play Progress
 - Playlists
     - [ ] View Playlists for a User
