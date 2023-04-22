@@ -67,3 +67,35 @@ export const getHistoryUser = (session, users) => {
 
     return sessionUser[0].name;
 }
+
+export const getPreferenceLabel = (preference) => {
+    if (!preference.label) {
+        return preference.id;
+    }
+
+    return preference.label;
+}
+
+export const getPreferenceGroupName = (preference) => {
+    if (!preference.group) {
+        return 'none';
+    }
+
+    return preference.group;
+}
+
+export const getPreferenceValue = (preference) => {
+    if (!preference.value) {
+        return 'none';
+    }
+
+    return preference.value.toString();
+}
+
+export const getPreferenceSummary = (preference) => {
+    if (!preference.summary) {
+        return 'none';
+    }
+
+    return preference.summary;
+}

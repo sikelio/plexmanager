@@ -47,11 +47,11 @@ Coming soon...
 - Server
     - [ ] Server Capabilities
     - [X] Server Identity
-    - [ ] Server Preferences
+    - [X] Server Preferences
     - [X] Get Accounts
     - [X] Get a Single Account
     - [X] Get Devices
-    - [ ] Get a Single Device
+    - [ ] ~~Get a Single Device~~ (No additional infos)
     - [X] Get All Activities
     - [ ] Stop an Activity
 - Session

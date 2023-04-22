@@ -90,7 +90,7 @@ const ServerManage = ({ route, navigation }) => {
                 <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
             }>
                 <Card>
-                    <Card.Title>Server identity</Card.Title>
+                    <Card.Title>Identity</Card.Title>
                     <Card.Divider />
                     <View style={ [style.container] }>
                         <Text style={ [style.serverIdLabel] }>PMS Version</Text>
@@ -101,6 +101,28 @@ const ServerManage = ({ route, navigation }) => {
 
                         <Text style={ [style.serverIdLabel] }>Plex Pass</Text>
                         <Text style={ [style.serverIdValue] }>: { identity.myPlexSubscription.toString() }</Text>
+                    </View>
+
+                    <View>
+                        <Button
+                            title='Preferences'
+                            color='#e5a00d'
+                            onPress={async () => {
+                                try {
+                                    setSpinner(true);
+
+                                    let preferences = await axios.get(`${server.protocol}://${server.ip}:${server.port}/:/prefs?X-Plex-Token=${server.token}`);
+
+                                    navigation.navigate('ServerPreferences', {
+                                        preferences: preferences.data.MediaContainer.Setting
+                                    });
+
+                                    setSpinner(false);
+                                } catch (e) {
+                                    console.error(e)
+                                }
+                            }}
+                        />
                     </View>
                 </Card>
 
