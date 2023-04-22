@@ -24,9 +24,9 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Smartphone (please complete the following information):**
- - Device: [e.g. Pixel 6]
- - OS: [e.g. Android 13]
- - SDK; [e.g. 33.0]
+- Device: [e.g. Pixel 6]
+- OS: [e.g. Android 13]
+- SDK; [e.g. 33.0]
 
 **Additional context**
 Add any other context about the problem here.
