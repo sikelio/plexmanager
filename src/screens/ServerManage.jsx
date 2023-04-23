@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 // Components
-import { Button, ScrollView, View, Text, RefreshControl, Image } from "react-native";
+import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
+import FastImage from "react-native-fast-image";
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
@@ -159,19 +160,35 @@ const ServerManage = ({ route, navigation }) => {
                                     <ListItem
                                         key={ index }
                                         bottomDivider
+                                        onPress={async () => {
+                                            try {
+                                                setSpinner(true);
+
+                                                let items = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`);
+
+                                                navigation.navigate('LibraryManage', {
+                                                    title: library.title,
+                                                    library: library,
+                                                    server: server,
+                                                    medias: items.data.MediaContainer.Metadata
+                                                });
+
+                                                setSpinner(false);
+                                            } catch (e) {}
+                                        }}
                                     >
                                         <Avatar
                                             containerStyle={{ backgroundColor: '#E3E3E3' }}
                                             rounded
                                             ImageComponent={() => (
-                                                <Image
-                                                    resizeMode="contain"
+                                                <FastImage
                                                     style={{
-                                                        height: 22.5,
                                                         width: 22.5,
+                                                        height: 22.5,
                                                         position: 'absolute',
                                                     }}
                                                     source={ getLibraryIcon(library.type) }
+                                                    resizeMode={ FastImage.resizeMode.contain }
                                                 />
                                             )}
                                             overlayContainerStyle={{
@@ -183,24 +200,7 @@ const ServerManage = ({ route, navigation }) => {
                                         <ListItem.Content>
                                             <ListItem.Title>{ library.title }</ListItem.Title>
                                         </ListItem.Content>
-                                        <ListItem.Chevron
-                                            onPress={async () => {
-                                                try {
-                                                    setSpinner(true);
-
-                                                    let items = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`);
-
-                                                    navigation.navigate('LibraryManage', {
-                                                        title: library.title,
-                                                        library: library,
-                                                        server: server,
-                                                        medias: items.data.MediaContainer.Metadata
-                                                    });
-
-                                                    setSpinner(false);
-                                                } catch (e) {}
-                                            }}
-                                        />
+                                        <ListItem.Chevron />
                                     </ListItem>
                                 );
                             })}
@@ -227,20 +227,36 @@ const ServerManage = ({ route, navigation }) => {
                                         <ListItem
                                             key={ index }
                                             bottomDivider
+                                            onPress={async () => {
+                                                try {
+                                                    setSpinner(true);
+                                                    const userDetails = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/${user.id}?X-Plex-Token=${server.token}`);
+
+                                                    navigation.navigate('SingleAccount', {
+                                                        title: user.name,
+                                                        user: user,
+                                                        userDetails: userDetails.data.MediaContainer.Account[0]
+                                                    });
+
+                                                    setSpinner(false);
+                                                } catch (e) {
+                                                    console.error(e)
+                                                }
+                                            }}
                                         >
                                             <Avatar
                                                 containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
                                                 ImageComponent={() => (
-                                                    <Image
-                                                        resizeMode="contain"
+                                                    <FastImage
                                                         style={{
-                                                            height: 26,
-                                                            width: 26,
+                                                            width: 22.5,
+                                                            height: 22.5,
                                                             borderRadius: 25,
                                                             position: 'absolute',
                                                         }}
                                                         source={ require('../assets/icons/user.png') }
+                                                        resizeMode={ FastImage.resizeMode.contain }
                                                     />
                                                 )}
                                                 overlayContainerStyle={{
@@ -252,24 +268,7 @@ const ServerManage = ({ route, navigation }) => {
                                             <ListItem.Content>
                                                 <ListItem.Title>{ user.name }</ListItem.Title>
                                             </ListItem.Content>
-                                            <ListItem.Chevron
-                                                onPress={async () => {
-                                                    try {
-                                                        setSpinner(true);
-                                                        const userDetails = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/${user.id}?X-Plex-Token=${server.token}`);
-
-                                                        navigation.navigate('SingleAccount', {
-                                                            title: user.name,
-                                                            user: user,
-                                                            userDetails: userDetails.data.MediaContainer.Account[0]
-                                                        });
-
-                                                        setSpinner(false);
-                                                    } catch (e) {
-                                                        console.error(e)
-                                                    }
-                                                }}
-                                            />
+                                            <ListItem.Chevron />
                                         </ListItem>
                                     );
                                 }
@@ -301,14 +300,15 @@ const ServerManage = ({ route, navigation }) => {
                                                 containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
                                                 ImageComponent={() => (
-                                                    <Image
-                                                        resizeMode="contain"
+                                                    <FastImage
                                                         style={{
-                                                            height: 22.5,
                                                             width: 22.5,
+                                                            height: 22.5,
+                                                            borderRadius: 25,
                                                             position: 'absolute',
                                                         }}
                                                         source={ getDeviceIcon(device.platform) }
+                                                        resizeMode={ FastImage.resizeMode.contain }
                                                     />
                                                 )}
                                                 overlayContainerStyle={{
