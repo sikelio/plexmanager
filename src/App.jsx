@@ -11,6 +11,7 @@ import SessionManage from "./screens/SessionManage";
 import SingleAccount from "./screens/SingleAccount";
 import ServerPreferences from "./screens/ServerPreferences";
 import LibraryManage from "./screens/LibraryManage";
+import SingleMedia from "./screens/SingleMedia";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,11 @@ const App = () => {
                   name="LibraryManage"
                   component={ LibraryManage }
                   options={({ route }) => ({ title: `Library : ${route.params.title}` })}
+              />
+              <Stack.Screen
+                  name="SingleMedia"
+                  component={ SingleMedia }
+                  options={({ route }) => ({ title: route.params.title })}
               />
           </Stack.Navigator>
       </NavigationContainer>

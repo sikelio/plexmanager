@@ -88,6 +88,16 @@ const LibraryManage = ({ route, navigation }) => {
                                 <ListItem.Content>
                                     <ListItem.Title>{ media.title }</ListItem.Title>
                                 </ListItem.Content>
+                                <ListItem.Chevron
+                                    onPress={() => {
+                                        navigation.navigate('SingleMedia', {
+                                            title: `${media.title} - ${index}`,
+                                            library: library,
+                                            media: media,
+                                            server: server
+                                        });
+                                    }}
+                                />
                             </ListItem>
                         );
                     })}
