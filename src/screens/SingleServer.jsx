@@ -33,6 +33,7 @@ const SingleServer = ({ route, navigation }) => {
     const [ refreshing, setRefreshing ] = useState(false);
     const [ spinner, setSpinner ] = useState(false);
     const [ librariesList, setLibrariesList ] = useState(false);
+    const [ identityList, setIdentityList ] = useState(false);
 
     const updateData = async () => {
         try {
@@ -92,54 +93,89 @@ const SingleServer = ({ route, navigation }) => {
                 <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
             }>
                 <Card>
-                    <Card.Title>Identity</Card.Title>
-                    <Card.Divider />
-                    <View style={ [style.container] }>
-                        <Text style={ [style.serverIdLabel] }>PMS Version</Text>
-                        <Text style={ [style.serverIdValue] }>: { checkPlexVersion(identity.version, plexInfo.version) }</Text>
-
-                        <Text style={ [style.serverIdLabel] }>Machine ID</Text>
-                        <Text style={ [style.serverIdValue] }>: { identity.machineIdentifier }</Text>
-
-                        <Text style={ [style.serverIdLabel] }>Plex Pass</Text>
-                        <Text style={ [style.serverIdValue] }>: { identity.myPlexSubscription.toString() }</Text>
-                    </View>
-
-                    <View>
-                        <Button
-                            title='Preferences'
-                            color='#e5a00d'
-                            onPress={async () => {
-                                try {
-                                    setSpinner(true);
-
-                                    let preferences = await axios.get(`${server.protocol}://${server.ip}:${server.port}/:/prefs?X-Plex-Token=${server.token}`);
-
-                                    navigation.navigate('ServerPreferences', {
-                                        preferences: preferences.data.MediaContainer.Setting
-                                    });
-
-                                    setSpinner(false);
-                                } catch (e) {
-                                    console.error(e)
-                                }
-                            }}
-                        />
-                    </View>
-                </Card>
-
-                <Card>
-                    <Card.Title>Scan all libraries</Card.Title>
-                    <Card.Divider />
-                    <View>
-                        <Button
-                            title='Update all'
-                            color='#e5a00d'
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Identity</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ identityList }
                             onPress={() => {
-                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
+                                setIdentityList(!identityList)
                             }}
-                        />
-                    </View>
+                        >
+                            <ListItem
+                                bottomDivider
+                            >
+                                <ListItem.Content>
+                                    <Text
+                                        style={ [style.serverIdValue] }
+                                    >
+                                        <Text
+                                            style={ [style.serverIdLabel] }
+                                        >
+                                            PMS Version :
+                                        </Text>
+                                        <Text> { checkPlexVersion(identity.version, plexInfo.version) }</Text>
+                                    </Text>
+                                </ListItem.Content>
+                            </ListItem>
+
+                            <ListItem>
+                                <Text
+                                    style={ [style.serverIdValue] }
+                                >
+                                    <Text
+                                        style={ [style.serverIdLabel] }
+                                    >
+                                        Machine ID :
+                                    </Text>
+                                    <Text> { identity.machineIdentifier }</Text>
+                                </Text>
+                            </ListItem>
+
+                            <ListItem>
+                                <Text
+                                    style={ [style.serverIdValue] }
+                                >
+                                    <Text
+                                        style={ [style.serverIdLabel] }
+                                    >
+                                        Plex Pass :
+                                    </Text>
+                                    <Text> { identity.myPlexSubscription.toString() }</Text>
+
+                                </Text>
+                            </ListItem>
+
+                            <ListItem>
+                                <ListItem.Content>
+                                    <View style={{ width: '100%' }}>
+                                        <Button
+                                            title='Preferences'
+                                            color='#e5a00d'
+                                            onPress={async () => {
+                                                try {
+                                                    setSpinner(true);
+
+                                                    let preferences = await axios.get(`${server.protocol}://${server.ip}:${server.port}/:/prefs?X-Plex-Token=${server.token}`);
+
+                                                    navigation.navigate('ServerPreferences', {
+                                                        preferences: preferences.data.MediaContainer.Setting
+                                                    });
+
+                                                    setSpinner(false);
+                                                } catch (e) {
+                                                    console.error(e)
+                                                }
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+                        </ListItem.Accordion>
+                    </>
                 </Card>
 
                 <Card>
@@ -155,6 +191,22 @@ const SingleServer = ({ route, navigation }) => {
                                 setLibrariesList(!librariesList);
                             }}
                         >
+                            <ListItem
+                                bottomDivider
+                            >
+                                <ListItem.Content>
+                                    <View style={ [style.updateAllView] }>
+                                        <Button
+                                            title='Update all'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+
                             {libraries.map((library, index) => {
                                 return (
                                     <ListItem
