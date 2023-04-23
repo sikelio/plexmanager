@@ -8,7 +8,7 @@ import { saveDarkmode, getDarkmodeSwitch } from "../functions/Darkmode";
 // Styles
 import style from '../style/SettingStyle';
 
-const Setting = () => {
+const Settings = () => {
     const [ darkmode, setDarkmode ] = useState(false);
 
     useEffect(() => {
@@ -40,4 +40,4 @@ const Setting = () => {
     );
 }
 
-export default Setting;
+export default Settings;

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * Store a server in array
- * @param data Server data
+ * @param data Servers data
  */
 const storeServer = async (data) => {
     try {
@@ -25,7 +25,7 @@ const storeServer = async (data) => {
 /**
  * Edit stored server
  * @param data Edited server data
- * @param index Server index
+ * @param index Servers index
  */
 const editServer = async (data, index) => {
     const serverStorage = await AsyncStorage.getItem('servers');

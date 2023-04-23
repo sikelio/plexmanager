@@ -9,7 +9,7 @@ import { sendRequest } from "../functions/ServerRequest";
 // Styles
 import style from "../style/LibraryManageStyle"
 
-const LibraryManage = ({ route, navigation }) => {
+const SingleLibrary = ({ route, navigation }) => {
     const { medias, library, server } = route.params;
 
     const [ mediaList, setMediaList ] = useState(false);
@@ -109,4 +109,4 @@ const LibraryManage = ({ route, navigation }) => {
     );
 }
 
-export default LibraryManage
+export default SingleLibrary

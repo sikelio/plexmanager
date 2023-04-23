@@ -13,7 +13,7 @@ import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTit
 // Styles
 import style from "../style/ServerManageStyle"
 
-const ServerManage = ({ route, navigation }) => {
+const SingleServer = ({ route, navigation }) => {
     const { server } = route.params;
 
     // Route params
@@ -166,7 +166,7 @@ const ServerManage = ({ route, navigation }) => {
 
                                                 let items = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`);
 
-                                                navigation.navigate('LibraryManage', {
+                                                navigation.navigate('SingleLibrary', {
                                                     title: library.title,
                                                     library: library,
                                                     server: server,
@@ -356,7 +356,7 @@ const ServerManage = ({ route, navigation }) => {
                                             key={ index + 1 }
                                             bottomDivider
                                             onPress={() => {
-                                                navigation.navigate('SessionManage', {
+                                                navigation.navigate('SingleSession', {
                                                     title: session.Session.id,
                                                     server: server,
                                                     session: session
@@ -417,4 +417,4 @@ const ServerManage = ({ route, navigation }) => {
     );
 }
 
-export default ServerManage;
+export default SingleServer;

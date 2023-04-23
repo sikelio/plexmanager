@@ -3,7 +3,7 @@ import { Button } from "@rneui/themed";
 import style from "../style/SessionManageStyle";
 import { sendRequest } from "../functions/ServerRequest";
 
-const SessionManage = ({ route, navigation }) => {
+const SingleSession = ({ route, navigation }) => {
     const { server, session } = route.params;
     const reason = "RTFM";
 
@@ -15,4 +15,4 @@ const SessionManage = ({ route, navigation }) => {
     );
 }
 
-export default SessionManage;
+export default SingleSession;
