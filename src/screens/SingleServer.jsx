@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 // Components
-import { Button, ScrollView, View, Text, RefreshControl, Image } from "react-native";
+import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
+import FastImage from "react-native-fast-image";
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
@@ -12,7 +13,7 @@ import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTit
 // Styles
 import style from "../style/ServerManageStyle"
 
-const ServerManage = ({ route, navigation }) => {
+const SingleServer = ({ route, navigation }) => {
     const { server } = route.params;
 
     // Route params
@@ -32,6 +33,7 @@ const ServerManage = ({ route, navigation }) => {
     const [ refreshing, setRefreshing ] = useState(false);
     const [ spinner, setSpinner ] = useState(false);
     const [ librariesList, setLibrariesList ] = useState(false);
+    const [ identityList, setIdentityList ] = useState(false);
 
     const updateData = async () => {
         try {
@@ -91,54 +93,89 @@ const ServerManage = ({ route, navigation }) => {
                 <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
             }>
                 <Card>
-                    <Card.Title>Identity</Card.Title>
-                    <Card.Divider />
-                    <View style={ [style.container] }>
-                        <Text style={ [style.serverIdLabel] }>PMS Version</Text>
-                        <Text style={ [style.serverIdValue] }>: { checkPlexVersion(identity.version, plexInfo.version) }</Text>
-
-                        <Text style={ [style.serverIdLabel] }>Machine ID</Text>
-                        <Text style={ [style.serverIdValue] }>: { identity.machineIdentifier }</Text>
-
-                        <Text style={ [style.serverIdLabel] }>Plex Pass</Text>
-                        <Text style={ [style.serverIdValue] }>: { identity.myPlexSubscription.toString() }</Text>
-                    </View>
-
-                    <View>
-                        <Button
-                            title='Preferences'
-                            color='#e5a00d'
-                            onPress={async () => {
-                                try {
-                                    setSpinner(true);
-
-                                    let preferences = await axios.get(`${server.protocol}://${server.ip}:${server.port}/:/prefs?X-Plex-Token=${server.token}`);
-
-                                    navigation.navigate('ServerPreferences', {
-                                        preferences: preferences.data.MediaContainer.Setting
-                                    });
-
-                                    setSpinner(false);
-                                } catch (e) {
-                                    console.error(e)
-                                }
-                            }}
-                        />
-                    </View>
-                </Card>
-
-                <Card>
-                    <Card.Title>Scan all libraries</Card.Title>
-                    <Card.Divider />
-                    <View>
-                        <Button
-                            title='Update all'
-                            color='#e5a00d'
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Identity</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ identityList }
                             onPress={() => {
-                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
+                                setIdentityList(!identityList)
                             }}
-                        />
-                    </View>
+                        >
+                            <ListItem
+                                bottomDivider
+                            >
+                                <ListItem.Content>
+                                    <Text
+                                        style={ [style.serverIdValue] }
+                                    >
+                                        <Text
+                                            style={ [style.serverIdLabel] }
+                                        >
+                                            PMS Version :
+                                        </Text>
+                                        <Text> { checkPlexVersion(identity.version, plexInfo.version) }</Text>
+                                    </Text>
+                                </ListItem.Content>
+                            </ListItem>
+
+                            <ListItem>
+                                <Text
+                                    style={ [style.serverIdValue] }
+                                >
+                                    <Text
+                                        style={ [style.serverIdLabel] }
+                                    >
+                                        Machine ID :
+                                    </Text>
+                                    <Text> { identity.machineIdentifier }</Text>
+                                </Text>
+                            </ListItem>
+
+                            <ListItem>
+                                <Text
+                                    style={ [style.serverIdValue] }
+                                >
+                                    <Text
+                                        style={ [style.serverIdLabel] }
+                                    >
+                                        Plex Pass :
+                                    </Text>
+                                    <Text> { identity.myPlexSubscription.toString() }</Text>
+
+                                </Text>
+                            </ListItem>
+
+                            <ListItem>
+                                <ListItem.Content>
+                                    <View style={{ width: '100%' }}>
+                                        <Button
+                                            title='Preferences'
+                                            color='#e5a00d'
+                                            onPress={async () => {
+                                                try {
+                                                    setSpinner(true);
+
+                                                    let preferences = await axios.get(`${server.protocol}://${server.ip}:${server.port}/:/prefs?X-Plex-Token=${server.token}`);
+
+                                                    navigation.navigate('ServerPreferences', {
+                                                        preferences: preferences.data.MediaContainer.Setting
+                                                    });
+
+                                                    setSpinner(false);
+                                                } catch (e) {
+                                                    console.error(e)
+                                                }
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+                        </ListItem.Accordion>
+                    </>
                 </Card>
 
                 <Card>
@@ -154,24 +191,56 @@ const ServerManage = ({ route, navigation }) => {
                                 setLibrariesList(!librariesList);
                             }}
                         >
+                            <ListItem
+                                bottomDivider
+                            >
+                                <ListItem.Content>
+                                    <View style={ [style.updateAllView] }>
+                                        <Button
+                                            title='Update all'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/all/refresh?X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+
                             {libraries.map((library, index) => {
                                 return (
                                     <ListItem
                                         key={ index }
                                         bottomDivider
+                                        onPress={async () => {
+                                            try {
+                                                setSpinner(true);
+
+                                                let items = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`);
+
+                                                navigation.navigate('SingleLibrary', {
+                                                    title: library.title,
+                                                    library: library,
+                                                    server: server,
+                                                    medias: items.data.MediaContainer.Metadata
+                                                });
+
+                                                setSpinner(false);
+                                            } catch (e) {}
+                                        }}
                                     >
                                         <Avatar
                                             containerStyle={{ backgroundColor: '#E3E3E3' }}
                                             rounded
                                             ImageComponent={() => (
-                                                <Image
-                                                    resizeMode="contain"
+                                                <FastImage
                                                     style={{
-                                                        height: 22.5,
                                                         width: 22.5,
+                                                        height: 22.5,
                                                         position: 'absolute',
                                                     }}
                                                     source={ getLibraryIcon(library.type) }
+                                                    resizeMode={ FastImage.resizeMode.contain }
                                                 />
                                             )}
                                             overlayContainerStyle={{
@@ -183,24 +252,7 @@ const ServerManage = ({ route, navigation }) => {
                                         <ListItem.Content>
                                             <ListItem.Title>{ library.title }</ListItem.Title>
                                         </ListItem.Content>
-                                        <ListItem.Chevron
-                                            onPress={async () => {
-                                                try {
-                                                    setSpinner(true);
-
-                                                    let items = await axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`);
-
-                                                    navigation.navigate('LibraryManage', {
-                                                        title: library.title,
-                                                        library: library,
-                                                        server: server,
-                                                        medias: items.data.MediaContainer.Metadata
-                                                    });
-
-                                                    setSpinner(false);
-                                                } catch (e) {}
-                                            }}
-                                        />
+                                        <ListItem.Chevron />
                                     </ListItem>
                                 );
                             })}
@@ -227,20 +279,36 @@ const ServerManage = ({ route, navigation }) => {
                                         <ListItem
                                             key={ index }
                                             bottomDivider
+                                            onPress={async () => {
+                                                try {
+                                                    setSpinner(true);
+                                                    const userDetails = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/${user.id}?X-Plex-Token=${server.token}`);
+
+                                                    navigation.navigate('SingleAccount', {
+                                                        title: user.name,
+                                                        user: user,
+                                                        userDetails: userDetails.data.MediaContainer.Account[0]
+                                                    });
+
+                                                    setSpinner(false);
+                                                } catch (e) {
+                                                    console.error(e)
+                                                }
+                                            }}
                                         >
                                             <Avatar
                                                 containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
                                                 ImageComponent={() => (
-                                                    <Image
-                                                        resizeMode="contain"
+                                                    <FastImage
                                                         style={{
-                                                            height: 26,
-                                                            width: 26,
+                                                            width: 22.5,
+                                                            height: 22.5,
                                                             borderRadius: 25,
                                                             position: 'absolute',
                                                         }}
                                                         source={ require('../assets/icons/user.png') }
+                                                        resizeMode={ FastImage.resizeMode.contain }
                                                     />
                                                 )}
                                                 overlayContainerStyle={{
@@ -252,24 +320,7 @@ const ServerManage = ({ route, navigation }) => {
                                             <ListItem.Content>
                                                 <ListItem.Title>{ user.name }</ListItem.Title>
                                             </ListItem.Content>
-                                            <ListItem.Chevron
-                                                onPress={async () => {
-                                                    try {
-                                                        setSpinner(true);
-                                                        const userDetails = await axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/${user.id}?X-Plex-Token=${server.token}`);
-
-                                                        navigation.navigate('SingleAccount', {
-                                                            title: user.name,
-                                                            user: user,
-                                                            userDetails: userDetails.data.MediaContainer.Account[0]
-                                                        });
-
-                                                        setSpinner(false);
-                                                    } catch (e) {
-                                                        console.error(e)
-                                                    }
-                                                }}
-                                            />
+                                            <ListItem.Chevron />
                                         </ListItem>
                                     );
                                 }
@@ -301,14 +352,15 @@ const ServerManage = ({ route, navigation }) => {
                                                 containerStyle={{ backgroundColor: '#E3E3E3' }}
                                                 rounded
                                                 ImageComponent={() => (
-                                                    <Image
-                                                        resizeMode="contain"
+                                                    <FastImage
                                                         style={{
-                                                            height: 22.5,
                                                             width: 22.5,
+                                                            height: 22.5,
+                                                            borderRadius: 25,
                                                             position: 'absolute',
                                                         }}
                                                         source={ getDeviceIcon(device.platform) }
+                                                        resizeMode={ FastImage.resizeMode.contain }
                                                     />
                                                 )}
                                                 overlayContainerStyle={{
@@ -356,7 +408,7 @@ const ServerManage = ({ route, navigation }) => {
                                             key={ index + 1 }
                                             bottomDivider
                                             onPress={() => {
-                                                navigation.navigate('SessionManage', {
+                                                navigation.navigate('SingleSession', {
                                                     title: session.Session.id,
                                                     server: server,
                                                     session: session
@@ -417,4 +469,4 @@ const ServerManage = ({ route, navigation }) => {
     );
 }
 
-export default ServerManage;
+export default SingleServer;

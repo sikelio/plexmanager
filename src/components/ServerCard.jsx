@@ -68,7 +68,7 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                                     axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions/history/all?X-Plex-Token=${server.token}`)
                                 ]);
 
-                                navigation.navigate('ServerManage', {
+                                navigation.navigate('SingleServer', {
                                     title: server.name,
                                     plexInfo: plexInfoApi.data[server.serverType][identity.data.MediaContainer.platform],
                                     server: server,

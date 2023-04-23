@@ -1,14 +1,15 @@
 // Dependencies
 import React, { useState } from "react";
 // Components
-import { Image, ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Card, Button, ListItem, Avatar } from "@rneui/themed";
+import FastImage from "react-native-fast-image";
 // Functions
 import { sendRequest } from "../functions/ServerRequest";
 // Styles
 import style from "../style/LibraryManageStyle"
 
-const LibraryManage = ({ route, navigation }) => {
+const SingleLibrary = ({ route, navigation }) => {
     const { medias, library, server } = route.params;
 
     const [ mediaList, setMediaList ] = useState(false);
@@ -64,19 +65,28 @@ const LibraryManage = ({ route, navigation }) => {
                             <ListItem
                                 key={ index }
                                 bottomDivider
+                                onPress={() => {
+                                    navigation.navigate('SingleMedia', {
+                                        title: media.title,
+                                        library: library,
+                                        media: media,
+                                        server: server
+                                    });
+                                }}
                             >
                                 <Avatar
                                     ImageComponent={() => (
-                                        <Image
-                                            resizeMode="contain"
+                                        <FastImage
                                             style={{
-                                                height: 32,
                                                 width: 32,
-                                                position: 'absolute',
+                                                height: 32,
+                                                position: 'absolute'
                                             }}
                                             source={{
-                                                uri: `${server.protocol}://${server.ip}:${server.port}${media.thumb}?X-Plex-Token=${server.token}`
+                                                uri: `${server.protocol}://${server.ip}:${server.port}${media.thumb}?X-Plex-Token=${server.token}`,
+                                                priority: FastImage.priority.normal,
                                             }}
+                                            resizeMode={ FastImage.resizeMode.contain }
                                         />
                                     )}
                                     overlayContainerStyle={{
@@ -87,7 +97,9 @@ const LibraryManage = ({ route, navigation }) => {
 
                                 <ListItem.Content>
                                     <ListItem.Title>{ media.title }</ListItem.Title>
+                                    <ListItem.Subtitle>{ media.studio }</ListItem.Subtitle>
                                 </ListItem.Content>
+                                <ListItem.Chevron />
                             </ListItem>
                         );
                     })}
@@ -97,4 +109,4 @@ const LibraryManage = ({ route, navigation }) => {
     );
 }
 
-export default LibraryManage
+export default SingleLibrary

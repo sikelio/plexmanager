@@ -1,5 +1,5 @@
 // Dependencies
-import React, {useState, useCallback, Component} from 'react';
+import React, { useState, useCallback } from 'react';
 // Components
 import { ScrollView, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -7,12 +7,10 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import ServerList from '../components/ServerList';
 // Functions
 import { getServer } from '../functions/ServerStorage';
-import { getDarkmode } from "../functions/Darkmode";
 // Styles
 import style from '../style/ServerStyle';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Server = ( { navigation } ) => {
+const Servers = ({ navigation } ) => {
     const [ serverList, setServerList ] = useState([]);
     const [ spinner, setSpinner ] = useState(false);
 
@@ -61,4 +59,4 @@ const Server = ( { navigation } ) => {
     );
 }
 
-export default Server;
+export default Servers;

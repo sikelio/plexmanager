@@ -5,12 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from './components/Tabs';
 // Screens
-import ServerManage from "./screens/ServerManage";
+import SingleServer from "./screens/SingleServer";
 import EditServer from "./screens/EditServer";
-import SessionManage from "./screens/SessionManage";
+import SingleSession from "./screens/SingleSession";
 import SingleAccount from "./screens/SingleAccount";
 import ServerPreferences from "./screens/ServerPreferences";
-import LibraryManage from "./screens/LibraryManage";
+import SingleLibrary from "./screens/SingleLibrary";
+import SingleMedia from "./screens/SingleMedia";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,8 +25,8 @@ const App = () => {
                   options={{ headerShown: false }}
               />
               <Stack.Screen
-                  name="ServerManage"
-                  component={ ServerManage }
+                  name="SingleServer"
+                  component={ SingleServer }
                   options={({ route }) => ({ title: route.params.title })}
               />
               <Stack.Screen
@@ -34,8 +35,8 @@ const App = () => {
                   options={({ route }) => ({ title: `Edit ${route.params.title}` })}
               />
               <Stack.Screen
-                  name="SessionManage"
-                  component={ SessionManage }
+                  name="SingleSession"
+                  component={ SingleSession }
                   options={({ route }) => ({ title: `Manage session - ${route.params.title}` })}
               />
               <Stack.Screen
@@ -49,9 +50,14 @@ const App = () => {
                   options={({ route }) => ({ title: `Server Preferences` })}
               />
               <Stack.Screen
-                  name="LibraryManage"
-                  component={ LibraryManage }
+                  name="SingleLibrary"
+                  component={ SingleLibrary }
                   options={({ route }) => ({ title: `Library : ${route.params.title}` })}
+              />
+              <Stack.Screen
+                  name="SingleMedia"
+                  component={ SingleMedia }
+                  options={({ route }) => ({ title: route.params.title })}
               />
           </Stack.Navigator>
       </NavigationContainer>

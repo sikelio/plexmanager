@@ -7,20 +7,10 @@ const style = StyleSheet.create({
     manageContainer: {
         flex: 1
     },
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        marginVertical: 2.5
-    },
     serverIdLabel: {
-        width: '30%',
-        color: '#000000'
+        fontWeight: 'bold'
     },
     serverIdValue: {
-        width: '70%',
         color: '#000000'
     },
     item: {
@@ -33,6 +23,9 @@ const style = StyleSheet.create({
     accordionTitle: {
         fontWeight: 'bold',
         fontSize: 14
+    },
+    updateAllView: {
+        width: '100%'
     }
 });
 

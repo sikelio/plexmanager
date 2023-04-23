@@ -5,7 +5,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Icon from 'react-native-vector-icons/FontAwesome5';
 // Screens
 import NewServer from '../screens/NewServer';
-import Server from "../screens/Server";
+import Servers from "../screens/Servers";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -14,7 +14,7 @@ const Tabs = () => {
         <Tab.Navigator>
             <Tab.Screen
                 name="Servers"
-                component={ Server }
+                component={ Servers }
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name={ 'server' } color={ color } size={ 16 } />
@@ -22,7 +22,7 @@ const Tabs = () => {
                 }}
             />
             <Tab.Screen
-                name="New Server"
+                name="NewServer"
                 component={ NewServer }
                 options={{
                     tabBarIcon: ({ focused, color }) => (
