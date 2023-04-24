@@ -8,6 +8,8 @@ import {
     getPreferenceSummary,
     getPreferenceValue
 } from "../functions/ServerManageUtiles";
+// Styles
+import style from "../style/ServerPreferencesStyle";
 
 const ServerPreferences = ({ route, navigation }) => {
     const { preferences } = route.params;
@@ -20,11 +22,31 @@ const ServerPreferences = ({ route, navigation }) => {
                         <Card.Title>{ getPreferenceLabel(preference) }</Card.Title>
                         <Card.Divider />
                         <View>
-                            <Text>Summary : { getPreferenceSummary(preference) }</Text>
-                            <Text>Group : { getPreferenceGroupName(preference) }</Text>
-                            <Text>Value : { getPreferenceValue(preference) }</Text>
-                            <Text>Advanced : { preference.advanced.toString() }</Text>
-                            <Text>Hidden : { preference.hidden.toString() }</Text>
+                            <Text
+                                style={ [style.cardBodyText] }
+                            >
+                                Summary : { getPreferenceSummary(preference) }
+                            </Text>
+                            <Text
+                                style={ [style.cardBodyText] }
+                            >
+                                Group : { getPreferenceGroupName(preference) }
+                            </Text>
+                            <Text
+                                style={ [style.cardBodyText] }
+                            >
+                                Value : { getPreferenceValue(preference) }
+                            </Text>
+                            <Text
+                                style={ [style.cardBodyText] }
+                            >
+                                Advanced : { preference.advanced.toString() }
+                            </Text>
+                            <Text
+                                style={ [style.cardBodyText] }
+                            >
+                                Hidden : { preference.hidden.toString() }
+                            </Text>
                         </View>
                     </Card>
                 );
