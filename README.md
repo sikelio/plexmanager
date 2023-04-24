@@ -80,7 +80,7 @@ Coming soon...
     - [ ] View Items in a Playlist
 - Maintenance
     - [ ] Empty trash
-    - [ ] Clean Bundles
+    - [X] Clean Bundles
     - [ ] Optimize Database
 - Scheduled Tasks
     - [ ] Get All Scheduled Tasks

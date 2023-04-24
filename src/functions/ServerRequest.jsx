@@ -4,7 +4,7 @@ import axios from "axios";
 // Components
 import { Alert } from "react-native";
 
-const sendRequest = (url) => {
+export const sendRequest = (url) => {
     axios.get(url).then((data) => {
         Alert.alert('Success', 'Request sent');
     }).catch((err) => {
@@ -12,4 +12,10 @@ const sendRequest = (url) => {
     });
 }
 
-export { sendRequest }
+export const sendPutRequest = (url) => {
+    axios.put(url).then((data) => {
+        Alert.alert('Success', 'Request sent');
+    }).catch((err) => {
+        Alert.alert('Error', 'Something went wrong');
+    });
+}
