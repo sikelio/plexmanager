@@ -79,9 +79,9 @@ Coming soon...
     - [ ] View a Single Playlist
     - [ ] View Items in a Playlist
 - Maintenance
-    - [ ] Empty trash
-    - [ ] Clean Bundles
-    - [ ] Optimize Database
+    - [X] Empty trash
+    - [X] Clean Bundles
+    - [X] Optimize Database
 - Scheduled Tasks
     - [ ] Get All Scheduled Tasks
     - [ ] Run Backup Database Task

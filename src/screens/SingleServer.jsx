@@ -7,7 +7,7 @@ import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
 import FastImage from "react-native-fast-image";
 // Functions
-import { sendRequest } from "../functions/ServerRequest";
+import { sendPutRequest, sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
 import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTitle } from "../functions/ServerManageUtiles";
 // Styles
@@ -34,6 +34,7 @@ const SingleServer = ({ route, navigation }) => {
     const [ spinner, setSpinner ] = useState(false);
     const [ librariesList, setLibrariesList ] = useState(false);
     const [ identityList, setIdentityList ] = useState(false);
+    const [ maintenanceList, setMaintenanceList ] = useState(false);
 
     const updateData = async () => {
         try {
@@ -461,6 +462,50 @@ const SingleServer = ({ route, navigation }) => {
                                     </ListItem>
                                 );
                             })}
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Maintenance</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ maintenanceList }
+                            onPress={() => {
+                                setMaintenanceList(!maintenanceList);
+                            }}
+                        >
+                            <ListItem>
+                                <ListItem.Content>
+                                    <View style={{ width: '100%' }}>
+                                        <Button
+                                            title='Clean bundle'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendPutRequest(`${server.protocol}://${server.ip}:${server.port}/library/clean/bundles?async=1&X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+
+                            <ListItem>
+                                <ListItem.Content>
+                                    <View style={{ width: '100%' }}>
+                                        <Button
+                                            title='Optimize database'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendPutRequest(`${server.protocol}://${server.ip}:${server.port}/library/optimize?async=1&X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
                         </ListItem.Accordion>
                     </>
                 </Card>
