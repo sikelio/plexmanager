@@ -81,7 +81,7 @@ Coming soon...
 - Maintenance
     - [ ] Empty trash
     - [X] Clean Bundles
-    - [ ] Optimize Database
+    - [X] Optimize Database
 - Scheduled Tasks
     - [ ] Get All Scheduled Tasks
     - [ ] Run Backup Database Task

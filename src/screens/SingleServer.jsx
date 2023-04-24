@@ -492,6 +492,20 @@ const SingleServer = ({ route, navigation }) => {
                                     </View>
                                 </ListItem.Content>
                             </ListItem>
+
+                            <ListItem>
+                                <ListItem.Content>
+                                    <View style={{ width: '100%' }}>
+                                        <Button
+                                            title='Optimize database'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendPutRequest(`${server.protocol}://${server.ip}:${server.port}/library/optimize?async=1&X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
                         </ListItem.Accordion>
                     </>
                 </Card>
