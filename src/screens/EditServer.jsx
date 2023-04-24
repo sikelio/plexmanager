@@ -20,22 +20,28 @@ import { editServer } from '../functions/ServerStorage';
 // Styles
 import style from '../style/NewServerStyle';
 
-const options = [
+const protocolOptions = [
     { label: 'HTTP', value: 'http' },
-    { label: 'HTTPS', value: 'https' },
+    { label: 'HTTPS', value: 'https' }
 ];
 
+const serverTypeOptions = [
+    { label: 'Computer', value: 'computer' },
+    { label: 'NAS', value: 'nas' }
+]
+
 const EditServer = ({ route, navigation }) => {
-    const server = route.params.server;
+    const { server } = route.params;
 
     const [ modalEdit, setModalEditVisible ] = useState(false);
 
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
+            protocol: server.protocol,
+            serverType: server.serverType,
             name: server.name,
             ip: server.ip,
             port: server.port,
-            protocol: server.protocol,
             token: server.token
         }
     });
@@ -85,7 +91,25 @@ const EditServer = ({ route, navigation }) => {
                         onValueChange={ onChange }
                         style={ [style.picker] }
                     >
-                        {options.map((option) => (
+                        {protocolOptions.map((option) => (
+                            <Picker.Item key={ option.value } label={ option.label } value={ option.value } />
+                        ))}
+                    </Picker>
+                )}
+            />
+
+            { errors.serverType && <Text style={ style.required }>Server type is required.</Text> }
+            <Controller
+                control={ control }
+                name="serverType"
+                defaultValue={ server.serverType }
+                render={({ field: { onChange, value } }) => (
+                    <Picker
+                        selectedValue={ value }
+                        onValueChange={ onChange }
+                        style={ [style.picker] }
+                    >
+                        {serverTypeOptions.map((option) => (
                             <Picker.Item key={ option.value } label={ option.label } value={ option.value } />
                         ))}
                     </Picker>
