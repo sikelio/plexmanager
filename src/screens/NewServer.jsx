@@ -98,7 +98,7 @@ const NewServer = () => {
             { errors.serverType && <Text style={ style.required }>Server type is required.</Text> }
             <Controller
                 control={ control }
-                name="protocol"
+                name="serverType"
                 defaultValue="computer"
                 render={({ field: { onChange, value } }) => (
                     <Picker
