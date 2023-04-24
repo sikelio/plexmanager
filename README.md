@@ -79,7 +79,7 @@ Coming soon...
     - [ ] View a Single Playlist
     - [ ] View Items in a Playlist
 - Maintenance
-    - [ ] Empty trash
+    - [X] Empty trash
     - [X] Clean Bundles
     - [X] Optimize Database
 - Scheduled Tasks

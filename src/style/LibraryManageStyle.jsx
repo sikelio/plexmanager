@@ -6,6 +6,9 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%'
+    },
+    upperContainer: {
+        marginBottom: 10
     }
 });
 

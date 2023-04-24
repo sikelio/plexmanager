@@ -5,7 +5,7 @@ import { ScrollView, View } from "react-native";
 import { Card, Button, ListItem, Avatar } from "@rneui/themed";
 import FastImage from "react-native-fast-image";
 // Functions
-import { sendRequest } from "../functions/ServerRequest";
+import { sendPutRequest, sendRequest } from "../functions/ServerRequest";
 // Styles
 import style from "../style/LibraryManageStyle"
 
@@ -19,7 +19,7 @@ const SingleLibrary = ({ route, navigation }) => {
             <Card>
                 <Card.Title>Actions</Card.Title>
                 <Card.Divider />
-                <View style={ [style.container] }>
+                <View style={ [style.container, style.upperContainer] }>
                     <Button
                         title='Scan'
                         containerStyle={{
@@ -43,6 +43,21 @@ const SingleLibrary = ({ route, navigation }) => {
                         }}
                         onPress={() => {
                             sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/refresh?force=1&X-Plex-Token=${server.token}`);
+                        }}
+                    />
+                </View>
+
+                <View style={ [style.container] }>
+                    <Button
+                        title='Empty Trash'
+                        containerStyle={{
+                            width: '100%'
+                        }}
+                        buttonStyle={{
+                            backgroundColor: '#e5a00d'
+                        }}
+                        onPress={() => {
+                            sendPutRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/emptyTrash?X-Plex-Token=${server.token}`);
                         }}
                     />
                 </View>
