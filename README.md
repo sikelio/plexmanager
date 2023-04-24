@@ -45,49 +45,49 @@ Coming soon...
 ## Features
 
 - Server
-    - [ ] Server Capabilities
-    - [X] Server Identity
-    - [X] Server Preferences
-    - [X] Get Accounts
-    - [X] Get a Single Account
-    - [X] Get Devices
-    - [ ] ~~Get a Single Device~~ (No additional infos)
-    - [X] Get All Activities
-    - [ ] Stop an Activity
+    - [ ] [Server Capabilities](https://github.com/sikelio/plexmanager/issues/1)
+    - [X] [Server Identity](https://github.com/sikelio/plexmanager/issues/2)
+    - [X] [Server Preferences](https://github.com/sikelio/plexmanager/issues/3)
+    - [X] [Get Accounts](https://github.com/sikelio/plexmanager/issues/4)
+    - [X] [Get a Single Account](https://github.com/sikelio/plexmanager/issues/4)
+    - [X] [Get Devices](https://github.com/sikelio/plexmanager/issues/5)
+    - [ ] [~~Get a Single Device~~ (No additional infos)](https://github.com/sikelio/plexmanager/issues/6)
+    - [ ] [Get All Activities](https://github.com/sikelio/plexmanager/issues/7)
+    - [ ] [Stop an Activity](https://github.com/sikelio/plexmanager/issues/8)
 - Session
-    - [ ] Get Active Sessions
-    - [ ] Get All Transcode Sessions
-    - [ ] Terminate a Session
+    - [X] [Get Active Sessions](https://github.com/sikelio/plexmanager/issues/9)
+    - [ ] [Get All Transcode Sessions](https://github.com/sikelio/plexmanager/issues/10)
+    - [ ] [Terminate a Session](https://github.com/sikelio/plexmanager/issues/11)
 - Library
-    - [X] Get Libraries
-    - [X] Scan All Libraries
-    - [X] Scan a Single Library
-    - [X] Refresh Metadata for a Library
+    - [X] [Get Libraries](https://github.com/sikelio/plexmanager/issues/12)
+    - [X] [Scan All Libraries](https://github.com/sikelio/plexmanager/issues/45)
+    - [X] [Scan a Single Library](https://github.com/sikelio/plexmanager/issues/46)
+    - [X] [Refresh Metadata for a Library](https://github.com/sikelio/plexmanager/issues/12)
 - Media
-    - [X] Get All Movies
-    - [ ] Get Newest Movies
-    - [ ] Update Movie Details
-    - [X] Get All TV Shows
-    - [ ] Get All TV Show Seasons
-    - [ ] Get All TV Show Episodes
-    - [X] Get All Music Artists
-    - [X] Get All Photos
-    - [X] Get All Videos
-    - [ ] Update Media Play Progress
+    - [X] [Get All Movies](https://github.com/sikelio/plexmanager/issues/13)
+    - [ ] [Get Newest Movies](https://github.com/sikelio/plexmanager/issues/14)
+    - [ ] [Update Movie Details](https://github.com/sikelio/plexmanager/issues/15)
+    - [X] [Get All TV Shows](https://github.com/sikelio/plexmanager/issues/16)
+    - [ ] [Get All TV Show Seasons](https://github.com/sikelio/plexmanager/issues/17)
+    - [ ] [Get All TV Show Episodes](https://github.com/sikelio/plexmanager/issues/18)
+    - [X] [Get All Music Artists](https://github.com/sikelio/plexmanager/issues/19)
+    - [X] [Get All Photos](https://github.com/sikelio/plexmanager/issues/20)
+    - [X] [Get All Videos](https://github.com/sikelio/plexmanager/issues/21)
+    - [ ] [Update Media Play Progress](https://github.com/sikelio/plexmanager/issues/22)
 - Playlists
-    - [ ] View Playlists for a User
-    - [ ] View a Single Playlist
-    - [ ] View Items in a Playlist
+    - [ ] [View Playlists for a User](https://github.com/sikelio/plexmanager/issues/23)
+    - [ ] [View a Single Playlist](https://github.com/sikelio/plexmanager/issues/24)
+    - [ ] [View Items in a Playlist](https://github.com/sikelio/plexmanager/issues/25)
 - Maintenance
-    - [X] Empty trash
-    - [X] Clean Bundles
-    - [X] Optimize Database
+    - [X] [Empty trash](https://github.com/sikelio/plexmanager/issues/26)
+    - [X] [Clean Bundles](https://github.com/sikelio/plexmanager/issues/27)
+    - [X] [Optimize Database](https://github.com/sikelio/plexmanager/issues/28)
 - Scheduled Tasks
-    - [ ] Get All Scheduled Tasks
-    - [ ] Run Backup Database Task
+    - [ ] [Get All Scheduled Tasks](https://github.com/sikelio/plexmanager/issues/29)
+    - [ ] [Run Backup Database Task](https://github.com/sikelio/plexmanager/issues/30)
 - Troubleshooting
-    - [ ] Download the Databases
-    - [ ] Download the Logs
+    - [ ] [Download the Databases](https://github.com/sikelio/plexmanager/issues/31)
+    - [ ] [Download the Logs](https://github.com/sikelio/plexmanager/issues/32)
 
 ## Authors
 
