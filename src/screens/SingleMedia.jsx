@@ -29,7 +29,7 @@ const SingleMedia = ({ route }) => {
                         resizeMode={ FastImage.resizeMode.contain }
                     />
 
-                    <Text style={ [style.textColor, style.textLabel] }>{ media.title } - { media.studio }</Text>
+                    <Text style={ [style.textColor, style.textLabel] }>{ media.title } { media.studio ? `- ${media.studio}` : '' }</Text>
                     <Card.Divider />
 
                     <Text style={ [style.textColor] }>
@@ -39,12 +39,12 @@ const SingleMedia = ({ route }) => {
 
                     <Text style={ [style.textColor] }>
                         <Text style={ [style.textLabel] }>Duration : </Text>
-                        { new Date(media.duration).toISOString().slice(11, 19) }
+                        { media.duration ? new Date(media.duration).toISOString().slice(11, 19) : 'unknown'  }
                     </Text>
 
                     <Text style={ [style.textColor] }>
                         <Text style={ [style.textLabel] }>Rating : </Text>
-                        { media.rating }
+                        { media.rating ? media.rating : 'unknown' }
                     </Text>
 
                     <Text style={ [style.textColor] }>
