@@ -1,6 +1,8 @@
+// Dependencies
+import React, { useState } from "react";
 // Components
 import { Dimensions, ScrollView, Text, View } from "react-native";
-import { Card } from "@rneui/themed";
+import { Avatar, Card, ListItem } from "@rneui/themed";
 import FastImage from "react-native-fast-image";
 // Functions
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
@@ -8,7 +10,9 @@ import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalU
 import style from "../style/SingleMediaStyle";
 
 const SingleMedia = ({ route }) => {
-    const { media, server } = route.params;
+    const { media, library, server, seasons } = route.params;
+
+    const [ seasonsList, setSeasonsList ] = useState(false);
 
     const mainImgWidth = Dimensions.get('window').width;
     const mainImgHeight = (Dimensions.get('window').width * 9 / 16);
@@ -53,6 +57,60 @@ const SingleMedia = ({ route }) => {
                     </Text>
                 </View>
             </Card>
+
+            {library.type === 'show' ? (
+                <Card>
+                    <ListItem.Accordion
+                        content={
+                            <ListItem.Content>
+                                <ListItem.Title style={ [style.accordionTitle] }>Seasons</ListItem.Title>
+                            </ListItem.Content>
+                        }
+                        isExpanded={ seasonsList }
+                        onPress={() => {
+                            setSeasonsList(!seasonsList);
+                        }}
+                    >
+                        {seasons.map((season, index) => {
+                            return (
+                                <ListItem
+                                    key={ index }
+                                    bottomDivider
+                                >
+                                    <Avatar
+                                        ImageComponent={() => (
+                                            <FastImage
+                                                style={{
+                                                    width: 32,
+                                                    height: 32,
+                                                    position: 'absolute'
+                                                }}
+                                                source={{
+                                                    uri: `${server.protocol}://${server.ip}:${server.port}${season.thumb}?X-Plex-Token=${server.token}`,
+                                                    priority: FastImage.priority.normal,
+                                                }}
+                                                resizeMode={ FastImage.resizeMode.contain }
+                                            />
+                                        )}
+                                        overlayContainerStyle={{
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    />
+
+                                    <ListItem.Content>
+                                        <ListItem.Title>{ season.title }</ListItem.Title>
+                                        <ListItem.Subtitle>{ season.year ? season.year : season.parentYear }</ListItem.Subtitle>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron></ListItem.Chevron>
+                                </ListItem>
+                            )
+                        })}
+                    </ListItem.Accordion>
+                </Card>
+            ) : (
+                <Text></Text>
+            )}
         </ScrollView>
     );
 }
