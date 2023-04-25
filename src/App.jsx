@@ -12,6 +12,7 @@ import SingleAccount from "./screens/SingleAccount";
 import ServerPreferences from "./screens/ServerPreferences";
 import SingleLibrary from "./screens/SingleLibrary";
 import SingleMedia from "./screens/SingleMedia";
+import ScheduledTasks from "./screens/ScheduledTasks";
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,11 @@ const App = () => {
                   name="SingleMedia"
                   component={ SingleMedia }
                   options={({ route }) => ({ title: route.params.title })}
+              />
+              <Stack.Screen
+                name="ScheduledTasks"
+                component={ ScheduledTasks }
+                options={({ route }) => ({ title: 'Scheduled tasks' })}
               />
           </Stack.Navigator>
       </NavigationContainer>

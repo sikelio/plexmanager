@@ -19,3 +19,11 @@ export const sendPutRequest = (url) => {
         Alert.alert('Error', 'Something went wrong');
     });
 }
+
+export const sendPostRequest = (url) => {
+    axios.post(url).then((data) => {
+        Alert.alert('Success', 'Request sent');
+    }).catch((err) => {
+        Alert.alert('Error', 'Something went wrong');
+    });
+}
