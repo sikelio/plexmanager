@@ -7,7 +7,7 @@ import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
 import FastImage from "react-native-fast-image";
 // Functions
-import { sendPutRequest, sendRequest } from "../functions/ServerRequest";
+import { sendPostRequest, sendPutRequest, sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
 import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTitle } from "../functions/ServerManageUtiles";
 // Styles
@@ -544,6 +544,20 @@ const SingleServer = ({ route, navigation }) => {
                                     <ListItem.Title>All scheduled tasks</ListItem.Title>
                                 </ListItem.Content>
                                 <ListItem.Chevron />
+                            </ListItem>
+
+                            <ListItem>
+                                <ListItem.Content>
+                                    <View style={{ width: '100%' }}>
+                                        <Button
+                                          title='Backup database'
+                                          color='#e5a00d'
+                                          onPress={() => {
+                                              sendPostRequest(`${server.protocol}://${server.ip}:${server.port}/butler/BackupDatabase?X-Plex-Token=${server.token}`);
+                                          }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
                             </ListItem>
                         </ListItem.Accordion>
                     </>

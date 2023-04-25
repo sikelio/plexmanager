@@ -84,7 +84,7 @@ Coming soon...
     - [X] [Optimize Database](https://github.com/sikelio/plexmanager/issues/28)
 - Scheduled Tasks
     - [X] [Get All Scheduled Tasks](https://github.com/sikelio/plexmanager/issues/29)
-    - [ ] [Run Backup Database Task](https://github.com/sikelio/plexmanager/issues/30)
+    - [X] [Run Backup Database Task](https://github.com/sikelio/plexmanager/issues/30)
 - Troubleshooting
     - [ ] [Download the Databases](https://github.com/sikelio/plexmanager/issues/31)
     - [ ] [Download the Logs](https://github.com/sikelio/plexmanager/issues/32)
