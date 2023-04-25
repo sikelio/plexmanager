@@ -11,7 +11,7 @@ const style = StyleSheet.create({
     accordionTitle: {
         fontWeight: 'bold',
         fontSize: 14
-    },
+    }
 });
 
 export default style;

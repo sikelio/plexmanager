@@ -2,6 +2,9 @@
 import { StyleSheet } from "react-native";
 
 const style = StyleSheet.create({
+    libraryContainer: {
+        flex: 1
+    },
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',

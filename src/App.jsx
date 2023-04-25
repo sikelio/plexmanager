@@ -13,6 +13,8 @@ import ServerPreferences from "./screens/ServerPreferences";
 import SingleLibrary from "./screens/SingleLibrary";
 import SingleMedia from "./screens/SingleMedia";
 import ScheduledTasks from "./screens/ScheduledTasks";
+import SingleSeason from "./screens/SingleSeason";
+import SingleEpisode from "./screens/SingleEpisode";
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +66,16 @@ const App = () => {
                 name="ScheduledTasks"
                 component={ ScheduledTasks }
                 options={({ route }) => ({ title: 'Scheduled tasks' })}
+              />
+              <Stack.Screen
+                  name="SingleSeason"
+                  component={ SingleSeason }
+                  options={({ route }) => ({ title: route.params.title })}
+              />
+              <Stack.Screen
+                  name="SingleEpisode"
+                  component={ SingleEpisode }
+                  options={({ route }) => ({ title: route.params.title })}
               />
           </Stack.Navigator>
       </NavigationContainer>
