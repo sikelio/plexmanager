@@ -35,6 +35,7 @@ const SingleServer = ({ route, navigation }) => {
     const [ librariesList, setLibrariesList ] = useState(false);
     const [ identityList, setIdentityList ] = useState(false);
     const [ maintenanceList, setMaintenanceList ] = useState(false);
+    const [ scheduledTaskList, setScheduledTaskList ] = useState(false);
 
     const updateData = async () => {
         try {
@@ -505,6 +506,44 @@ const SingleServer = ({ route, navigation }) => {
                                         />
                                     </View>
                                 </ListItem.Content>
+                            </ListItem>
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                          content={
+                              <ListItem.Content>
+                                  <ListItem.Title style={ [style.accordionTitle] }>Tasks</ListItem.Title>
+                              </ListItem.Content>
+                          }
+                          isExpanded={ scheduledTaskList }
+                          onPress={() => {
+                              setScheduledTaskList(!scheduledTaskList);
+                          }}
+                        >
+                            <ListItem
+                                bottomDivider
+                                onPress={async () => {
+                                    try {
+                                        setSpinner(true);
+
+                                        let scheduledTasks = await axios.get(`${server.protocol}://${server.ip}:${server.port}/butler?X-Plex-Token=${server.token}`);
+
+                                        navigation.navigate('ScheduledTasks', {
+                                            scheduledTasks: scheduledTasks.data.ButlerTasks.ButlerTask
+                                        });
+
+                                        setSpinner(false);
+                                    } catch (e) {}
+                                }}
+                            >
+                                <ListItem.Content>
+                                    <ListItem.Title>All scheduled tasks</ListItem.Title>
+                                </ListItem.Content>
+                                <ListItem.Chevron />
                             </ListItem>
                         </ListItem.Accordion>
                     </>
