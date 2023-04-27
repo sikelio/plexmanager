@@ -65,8 +65,6 @@ const SingleSeason = ({ route, navigation }) => {
                                     key={ index }
                                     bottomDivider
                                     onPress={() => {
-                                        console.log()
-
                                         navigation.navigate('SingleEpisode', {
                                             title: `${media.title} - ${season.title} - ${episode.title}`,
                                             server: server,

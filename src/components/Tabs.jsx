@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 // Screens
 import NewServer from '../screens/NewServer';
 import Servers from "../screens/Servers";
+import About from "../screens/About";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -27,6 +28,15 @@ const Tabs = () => {
                 options={{
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name={ 'plus' } color={ color } size={ 16 } />
+                    )
+                }}
+            />
+            <Tab.Screen
+                name="About"
+                component={ About }
+                options={{
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name={ 'info' } color={ color } size={ 16 } />
                     )
                 }}
             />
