@@ -1,9 +1,10 @@
 // Dependencies
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useFocusEffect } from '@react-navigation/native';
+import axios from "axios";
 import info from "../../package.json";
 // Components
-import { ScrollView, Linking } from "react-native";
+import { ScrollView, Linking, RefreshControl } from "react-native";
 import { Card, ListItem, Avatar } from "@rneui/themed";
 import FastImage from "react-native-fast-image";
 // Functions
@@ -12,9 +13,30 @@ import { fetchAuthors } from "../functions/AboutUtiles";
 import style from "../style/AboutStyle";
 
 
+
 const About = () => {
     const [ aboutList, setAboutList ] = useState(true);
+    const [ refreshing, setRefreshing ] = useState(false);
     const [ authors, setAuthors ] = useState([]);
+
+    const updateData = async () => {
+        try {
+            const [
+                updatedAuthors
+            ] = await Promise.all([
+                axios.get('https://api.github.com/repos/sikelio/plexmanager/contributors')
+            ]);
+
+            setAuthors(updatedAuthors.data);
+        } catch (e) {}
+    }
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        updateData().finally(() => {
+            setRefreshing(false);
+        });
+    }, []);
 
     useFocusEffect(
         useCallback(() => {
@@ -23,7 +45,11 @@ const About = () => {
     );
 
     return (
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+                <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
+            }
+        >
             <Card>
                 <ListItem.Accordion
                     content={

@@ -26,10 +26,19 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
             <Card.Title>{ server.name }</Card.Title>
             <Card.Divider />
             <View key={ index }>
-                <Text>PROTOCOL : { server.protocol.toUpperCase() }</Text>
-                <Text>IP : { server.ip }</Text>
-                <Text>PORT : { server.port }</Text>
-                <Card.Divider />
+                <Text style={ [style.textColor] }>
+                    <Text style={ [style.textLabel] }>PROTOCOL : </Text>
+                    { server.protocol.toUpperCase() }
+                </Text>
+                <Text style={ [style.textColor] }>
+                    <Text style={ [style.textLabel] }>IP :</Text>
+                    { server.ip }
+                </Text>
+                <Text style={ [style.textColor] }>
+                    <Text style={ [style.textLabel] }>PORT : </Text>
+                    { server.port }
+                </Text>
+
                 <View style={ [style.srvButtonContainer] }>
                     <ServerButton
                         iconName={ 'wrench' }
@@ -123,9 +132,20 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                         backgroundColor={ '#ff0000' }
                         btnTitle={ 'Delete' }
                         onPress={() => {
-                            deleteServer(index).then(() => {
-                                refreshServerList();
-                            })
+                            Alert.alert('Confirmation', 'Are you sure you want to delete this server ?', [
+                                {
+                                    text: 'Delete',
+                                    style: 'destructive',
+                                    onPress: () => {
+                                        deleteServer(index).then(() => {
+                                            refreshServerList();
+                                        })
+                                    }
+                                }, {
+                                    text: 'Cancel',
+                                    style: 'cancel'
+                                }
+                            ]);
                         }}
                     />
                 </View>

@@ -33,8 +33,6 @@ const serverTypeOptions = [
 const EditServer = ({ route, navigation }) => {
     const { server } = route.params;
 
-    const [ modalEdit, setModalEditVisible ] = useState(false);
-
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             protocol: server.protocol,
@@ -48,10 +46,15 @@ const EditServer = ({ route, navigation }) => {
 
     const onSubmit = (data) => {
         editServer(data, route.params.index).then(() => {
-            navigation.navigate('Server');
-        }).catch((e) => {
-            console.error(e);
-        })
+            Alert.alert('Success', 'Server edited', [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        navigation.navigate('Server');
+                    }
+                }
+            ]);
+        });
     }
 
     return (
@@ -59,27 +62,6 @@ const EditServer = ({ route, navigation }) => {
             behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
             style={ [style.container] }
         >
-            <Modal
-                animationType="slide"
-                transparent={ true }
-                visible={ modalEdit }
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalEditVisible(!modalEdit);
-                }}>
-                <View style={ style.centeredView }>
-                    <View style={ style.modalView }>
-                        <Text style={ style.modalText }>Server saved</Text>
-                        <Pressable
-                            style={ [style.button, style.buttonClose] }
-                            onPress={ () => setModalEditVisible(!modalEdit) }
-                        >
-                            <Text style={ style.textStyle }>Close</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
-
             { errors.protocol && <Text style={ style.required }>Protocol is required.</Text> }
             <Controller
                 control={ control }
