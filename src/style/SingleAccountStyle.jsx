@@ -4,13 +4,6 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        marginVertical: 2.5
-    },
     userPreferencesLabel: {
         width: '50%',
         color: '#000000'
@@ -18,6 +11,13 @@ const style = StyleSheet.create({
     userPreferencesValue: {
         width: '50%',
         color: '#000000'
+    },
+    textColor: {
+        color: '#000',
+        marginBottom: 10
+    },
+    textLabel: {
+        fontWeight: 'bold'
     }
 });
 

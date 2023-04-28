@@ -111,43 +111,24 @@ const SingleServer = ({ route, navigation }) => {
                                 bottomDivider
                             >
                                 <ListItem.Content>
-                                    <Text
-                                        style={ [style.serverIdValue] }
-                                    >
-                                        <Text
-                                            style={ [style.serverIdLabel] }
-                                        >
-                                            PMS Version :
-                                        </Text>
-                                        <Text> { checkPlexVersion(identity.version, plexInfo.version) }</Text>
+                                    <Text style={ [style.serverIdValue] }>
+                                        <Text style={ [style.serverIdLabel] }>PMS Version : </Text>
+                                        { checkPlexVersion(identity.version, plexInfo.version) }
                                     </Text>
                                 </ListItem.Content>
                             </ListItem>
 
                             <ListItem>
-                                <Text
-                                    style={ [style.serverIdValue] }
-                                >
-                                    <Text
-                                        style={ [style.serverIdLabel] }
-                                    >
-                                        Machine ID :
-                                    </Text>
-                                    <Text> { identity.machineIdentifier }</Text>
+                                <Text style={ [style.serverIdValue] }>
+                                    <Text style={ [style.serverIdLabel] }>Machine ID : </Text>
+                                    { identity.machineIdentifier }
                                 </Text>
                             </ListItem>
 
                             <ListItem>
-                                <Text
-                                    style={ [style.serverIdValue] }
-                                >
-                                    <Text
-                                        style={ [style.serverIdLabel] }
-                                    >
-                                        Plex Pass :
-                                    </Text>
-                                    <Text> { identity.myPlexSubscription.toString() }</Text>
-
+                                <Text style={ [style.serverIdValue] }>
+                                    <Text style={ [style.serverIdLabel] }>Plex Pass : </Text>
+                                    { identity.myPlexSubscription.toString() }
                                 </Text>
                             </ListItem>
 

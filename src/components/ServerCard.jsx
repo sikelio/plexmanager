@@ -26,10 +26,19 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
             <Card.Title>{ server.name }</Card.Title>
             <Card.Divider />
             <View key={ index }>
-                <Text>PROTOCOL : { server.protocol.toUpperCase() }</Text>
-                <Text>IP : { server.ip }</Text>
-                <Text>PORT : { server.port }</Text>
-                <Card.Divider />
+                <Text style={ [style.textColor] }>
+                    <Text style={ [style.textLabel] }>PROTOCOL : </Text>
+                    { server.protocol.toUpperCase() }
+                </Text>
+                <Text style={ [style.textColor] }>
+                    <Text style={ [style.textLabel] }>IP :</Text>
+                    { server.ip }
+                </Text>
+                <Text style={ [style.textColor] }>
+                    <Text style={ [style.textLabel] }>PORT : </Text>
+                    { server.port }
+                </Text>
+
                 <View style={ [style.srvButtonContainer] }>
                     <ServerButton
                         iconName={ 'wrench' }

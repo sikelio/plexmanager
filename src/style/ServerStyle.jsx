@@ -14,6 +14,13 @@ const style = StyleSheet.create({
     },
     cardBtn: {
         marginRight: 10
+    },
+    textColor: {
+        color: '#000',
+        marginBottom: 10
+    },
+    textLabel: {
+        fontWeight: 'bold'
     }
 });
 

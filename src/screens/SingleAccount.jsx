@@ -17,36 +17,41 @@ const SingleAccount = ({ route, navigation }) => {
             <Card>
                 <Card.Title>{ userDetails.name }</Card.Title>
                 <Card.Divider />
-                <View style={ [style.container] }>
-                    <Text style={ [style.userPreferencesLabel] }>Auto select audio</Text>
-                    <Text style={ [style.userPreferencesValue] }>{ userDetails.autoSelectAudio.toString() }</Text>
-
-                    <Text style={ [style.userPreferencesLabel] }>Default audio language</Text>
-                    <FastImage
-                        style={{
-                            width: 16,
-                            height: 12,
-                            alignSelf: 'center'
-                        }}
-                        source={{
-                            uri: getCountryFlag(userDetails.defaultAudioLanguage)
-                        }}
-                    />
-
-                    <Text style={ [style.userPreferencesLabel] }>Default subtitle language</Text>
-                    <FastImage
-                        style={{
-                            width: 16,
-                            height: 12,
-                            alignSelf: 'center'
-                        }}
-                        source={{
-                            uri: getCountryFlag(userDetails.defaultSubtitleLanguage)
-                        }}
-                    />
-
-                    <Text style={ [style.userPreferencesLabel] }>Subtitle mode</Text>
-                    <Text style={ [style.userPreferencesValue] }>{ userDetails.subtitleMode }</Text>
+                <View>
+                    <Text style={ [style.textColor] }>
+                        <Text style={ [style.textLabel] }>Auto select audio : </Text>
+                        { userDetails.autoSelectAudio.toString() }
+                    </Text>
+                    <Text style={ [style.textColor] }>
+                        <Text style={ [style.textLabel] }>Default audio language : </Text>
+                        <FastImage
+                            style={{
+                                width: 16,
+                                height: 12,
+                                alignSelf: 'center'
+                            }}
+                            source={{
+                                uri: getCountryFlag(userDetails.defaultAudioLanguage)
+                            }}
+                        />
+                    </Text>
+                    <Text style={ [style.textColor] }>
+                        <Text style={ [style.textLabel] }>Default subtitle language : </Text>
+                        <FastImage
+                            style={{
+                                width: 16,
+                                height: 12,
+                                alignSelf: 'center'
+                            }}
+                            source={{
+                                uri: getCountryFlag(userDetails.defaultSubtitleLanguage)
+                            }}
+                        />
+                    </Text>
+                    <Text style={ [style.textColor] }>
+                        <Text style={ [style.textLabel] }>Subtitle mode : </Text>
+                        <Text>{ userDetails.subtitleMode }</Text>
+                    </Text>
                 </View>
             </Card>
         </ScrollView>
