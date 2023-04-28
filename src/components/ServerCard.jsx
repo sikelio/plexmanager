@@ -123,9 +123,20 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                         backgroundColor={ '#ff0000' }
                         btnTitle={ 'Delete' }
                         onPress={() => {
-                            deleteServer(index).then(() => {
-                                refreshServerList();
-                            })
+                            Alert.alert('Confirmation', 'Are you sure you want to delete this server ?', [
+                                {
+                                    text: 'Delete',
+                                    style: 'destructive',
+                                    onPress: () => {
+                                        deleteServer(index).then(() => {
+                                            refreshServerList();
+                                        })
+                                    }
+                                }, {
+                                    text: 'Cancel',
+                                    style: 'cancel'
+                                }
+                            ]);
                         }}
                     />
                 </View>
