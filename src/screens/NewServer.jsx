@@ -1,15 +1,10 @@
-// Dependencies
-import React, { useState } from 'react';
 // Components
 import {
     Text,
     TextInput,
     KeyboardAvoidingView,
     Platform,
-    Modal,
     Alert,
-    View,
-    Pressable
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@rneui/themed';
@@ -28,11 +23,9 @@ const protocolOptions = [
 const serverTypeOptions = [
     { label: 'Computer', value: 'computer' },
     { label: 'NAS', value: 'nas' }
-]
+];
 
 const NewServer = () => {
-    const [ modalVisible, setModalVisible ] = useState(false);
-
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             protocol: 'http',
@@ -46,7 +39,7 @@ const NewServer = () => {
 
     const onSubmit = (data) => {
         storeServer(data).then(() => {
-            setModalVisible(true);
+            Alert.alert('Success', 'Server saved');
             reset();
         });
     }
@@ -56,27 +49,6 @@ const NewServer = () => {
             behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
             style={ [style.container] }
         >
-            <Modal
-                animationType="slide"
-                transparent={ true }
-                visible={ modalVisible }
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
-                }}>
-                <View style={ style.centeredView }>
-                    <View style={ style.modalView }>
-                        <Text style={ style.modalText }>Server saved</Text>
-                        <Pressable
-                            style={ [style.button, style.buttonClose] }
-                            onPress={ () => setModalVisible(!modalVisible) }
-                        >
-                            <Text style={ style.textStyle }>Close</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
-
             { errors.protocol && <Text style={ style.required }>Protocol is required.</Text> }
             <Controller
                 control={ control }

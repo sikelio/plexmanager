@@ -23,7 +23,7 @@ const Tabs = () => {
                 }}
             />
             <Tab.Screen
-                name="NewServer"
+                name="New Server"
                 component={ NewServer }
                 options={{
                     tabBarIcon: ({ focused, color }) => (
