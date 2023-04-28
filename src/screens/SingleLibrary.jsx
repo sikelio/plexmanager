@@ -1,8 +1,8 @@
 // Dependencies
-import React, { useState } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 // Components
-import { ScrollView, View } from "react-native";
+import {RefreshControl, ScrollView, View} from "react-native";
 import { Card, Button, ListItem, Avatar } from "@rneui/themed";
 import FastImage from "react-native-fast-image";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -12,10 +12,31 @@ import { sendPutRequest, sendRequest } from "../functions/ServerRequest";
 import style from "../style/LibraryManageStyle"
 
 const SingleLibrary = ({ route, navigation }) => {
-    const { medias, library, server } = route.params;
+    const { library, server } = route.params;
 
     const [ mediaList, setMediaList ] = useState(false);
     const [ spinner, setSpinner ] = useState(false);
+    const [ refreshing, setRefreshing ] = useState(false);
+    const [ medias, setMedias ] = useState(route.params.medias);
+
+    const updateLibrary = async () => {
+        try {
+            const [
+                updatedMedias
+            ] = await Promise.all([
+                axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`)
+            ]);
+
+            setMedias(updatedMedias.data.MediaContainer.Metadata);
+        } catch (e) {}
+    }
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        updateLibrary().finally(() => {
+            setRefreshing(false);
+        });
+    }, []);
 
     return (
         <View style={ [style.libraryContainer] }>
@@ -24,7 +45,11 @@ const SingleLibrary = ({ route, navigation }) => {
                 textContent={'Loading...'}
             />
 
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
+                }
+            >
                 <Card>
                     <Card.Title>Actions</Card.Title>
                     <Card.Divider />
