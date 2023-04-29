@@ -1,4 +1,4 @@
-package com.plexmanager;
+package wtf.plexmanager;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
