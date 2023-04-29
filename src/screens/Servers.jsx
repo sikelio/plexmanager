@@ -1,7 +1,7 @@
 // Dependencies
 import React, { useState, useCallback } from 'react';
 // Components
-import { ScrollView, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ServerList from '../components/ServerList';
@@ -13,6 +13,7 @@ import style from '../style/ServerStyle';
 const Servers = ({ navigation } ) => {
     const [ serverList, setServerList ] = useState([]);
     const [ spinner, setSpinner ] = useState(false);
+    const [ refreshing, setRefreshing ] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -35,16 +36,27 @@ const Servers = ({ navigation } ) => {
         }, [])
     );
 
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        fetchData().finally(() => {
+            setRefreshing(false);
+        });
+    }, []);
+
     let isServerListEmpty = serverList.length === 0;
 
     return (
         <View style={ [style.mainContainer] }>
             <Spinner
                 visible={ spinner }
-                textContent={'Loading...'}
+                textContent={ 'Loading...' }
             />
 
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
+                }
+            >
                 <View>
                     <ServerList
                         data={ serverList }

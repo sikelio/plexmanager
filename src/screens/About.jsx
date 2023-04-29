@@ -67,6 +67,25 @@ const About = () => {
                             Linking.openURL('https://github.com/sikelio/plexmanager')
                         }}
                     >
+                        <Avatar
+                            ImageComponent={() => (
+                                <FastImage
+                                    style={{
+                                        width: 32,
+                                        height: 32,
+                                        borderRadius: 25,
+                                        position: 'absolute'
+                                    }}
+                                    source={ require('../assets/img/logo.png') }
+                                    resizeMode={ FastImage.resizeMode.contain }
+                                />
+                            )}
+                            overlayContainerStyle={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        />
+
                         <ListItem.Content>
                             <ListItem.Title>Version</ListItem.Title>
                             <ListItem.Subtitle>{ info.version }</ListItem.Subtitle>
@@ -79,6 +98,27 @@ const About = () => {
                             Linking.openURL('https://github.com/sikelio/plexmanager')
                         }}
                     >
+                        <Avatar
+                            containerStyle={{ backgroundColor: '#E3E3E3' }}
+                            rounded
+                            ImageComponent={() => (
+                                <FastImage
+                                    style={{
+                                        width: 22.5,
+                                        height: 22.5,
+                                        borderRadius: 25,
+                                        position: 'absolute',
+                                    }}
+                                    source={ require('../assets/icons/github.png') }
+                                    resizeMode={ FastImage.resizeMode.contain }
+                                />
+                            )}
+                            overlayContainerStyle={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        />
+
                         <ListItem.Content>
                             <ListItem.Title>Source code</ListItem.Title>
                         </ListItem.Content>
@@ -90,6 +130,27 @@ const About = () => {
                             Linking.openURL('https://choosealicense.com/licenses/gpl-3.0/')
                         }}
                     >
+                        <Avatar
+                            containerStyle={{ backgroundColor: '#E3E3E3' }}
+                            rounded
+                            ImageComponent={() => (
+                                <FastImage
+                                    style={{
+                                        width: 22.5,
+                                        height: 22.5,
+                                        borderRadius: 25,
+                                        position: 'absolute',
+                                    }}
+                                    source={ require('../assets/icons/license.png') }
+                                    resizeMode={ FastImage.resizeMode.contain }
+                                />
+                            )}
+                            overlayContainerStyle={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        />
+
                         <ListItem.Content>
                             <ListItem.Title>GNU General Public License v3.0</ListItem.Title>
                         </ListItem.Content>
@@ -111,6 +172,7 @@ const About = () => {
                                             style={{
                                                 width: 32,
                                                 height: 32,
+                                                borderRadius: 25,
                                                 position: 'absolute'
                                             }}
                                             source={{

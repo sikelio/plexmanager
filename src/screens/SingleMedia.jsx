@@ -1,7 +1,8 @@
 // Dependencies
-import React, { useState } from "react";
+import {useCallback, useState} from "react";
+import axios from "axios";
 // Components
-import { Dimensions, ScrollView, Text, View } from "react-native";
+import { Dimensions, RefreshControl, ScrollView, Text, View } from "react-native";
 import { Avatar, Card, ListItem } from "@rneui/themed";
 import FastImage from "react-native-fast-image";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -9,16 +10,39 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
 // Styles
 import style from "../style/SingleMediaStyle";
-import axios from "axios";
 
 const SingleMedia = ({ route, navigation }) => {
-    const { media, library, server, seasons } = route.params;
+    const { library, server } = route.params;
 
     const [ seasonsList, setSeasonsList ] = useState(false);
     const [ spinner, setSpinner ] = useState(false);
+    const [ refreshing, setRefreshing ] = useState(false);
+
+    const [ media, setMedia ] = useState(route.params.media);
+    const [ seasons, setSeasons ] = useState(route.params.seasons);
+
 
     const mainImgWidth = Dimensions.get('window').width;
     const mainImgHeight = (Dimensions.get('window').width * 9 / 16);
+
+    const updateMedia = async () => {
+        try {
+            const [
+                updatedSeasons
+            ] = await Promise.all([
+                axios.get(`${server.protocol}://${server.ip}:${server.port}${media.key}?X-Plex-Token=${server.token}`)
+            ]);
+
+            setSeasons(updatedSeasons.data.MediaContainer.Metadata);
+        } catch (e) {}
+    };
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        updateMedia().finally(() => {
+            setRefreshing(false);
+        });
+    }, []);
 
     return (
         <View>
@@ -27,7 +51,11 @@ const SingleMedia = ({ route, navigation }) => {
                 textContent={'Loading...'}
             />
 
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
+                }
+            >
                 <Card>
                     <View>
                         <FastImage

@@ -1,7 +1,8 @@
 // Dependencies
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
+import axios from "axios";
 // Components
-import {Dimensions, ScrollView, Text, View} from "react-native";
+import { Dimensions, RefreshControl, ScrollView, Text, View } from "react-native";
 import { Avatar, Card, ListItem } from "@rneui/themed";
 import FastImage from "react-native-fast-image";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -9,13 +10,35 @@ import Spinner from "react-native-loading-spinner-overlay";
 import style from "../style/SingleSeasonStyle"
 
 const SingleSeason = ({ route, navigation }) => {
-    const { season, episodes, server, media } = route.params;
+    const { season, server, media } = route.params;
 
     const mainImgWidth = Dimensions.get('window').width;
     const mainImgHeight = (Dimensions.get('window').width * 9 / 16);
 
     const [ episodesList, setEpisodesList ] = useState(false);
     const [ spinner, setSpinner ] = useState(false);
+    const [ refreshing, setRefreshing ] = useState(false);
+
+    const [ episodes, setEpisodes ] = useState(route.params.episodes);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        updateEpisodes().finally(() => {
+            setRefreshing(false);
+        });
+    }, []);
+
+    const updateEpisodes = async () => {
+        try {
+            const [
+                updatedEpisodes
+            ] = await Promise.all([
+                axios.get(`${server.protocol}://${server.ip}:${server.port}${season.key}?X-Plex-Token=${server.token}`)
+            ]);
+
+            setEpisodes(updatedEpisodes.data.MediaContainer.Metadata);
+        } catch (e) {}
+    };
 
     return (
         <View>
@@ -24,7 +47,11 @@ const SingleSeason = ({ route, navigation }) => {
                 textContent={'Loading...'}
             />
 
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
+                }
+            >
                 <Card>
                     <FastImage
                         style={{

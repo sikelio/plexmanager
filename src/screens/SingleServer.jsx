@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 // Components
 import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
@@ -69,7 +69,7 @@ const SingleServer = ({ route, navigation }) => {
         }
     };
 
-    const onRefresh = React.useCallback(() => {
+    const onRefresh = useCallback(() => {
         setRefreshing(true);
         updateData().finally(() => {
             setRefreshing(false);
