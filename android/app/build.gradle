@@ -94,9 +94,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.plexmanager"
+    namespace "wtf.plexmanager"
     defaultConfig {
-        applicationId "com.plexmanager"
+        applicationId "wtf.plexmanager"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

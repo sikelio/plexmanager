@@ -1,4 +1,4 @@
-package com.plexmanager;
+package wtf.plexmanager;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
