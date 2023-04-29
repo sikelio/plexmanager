@@ -2,7 +2,7 @@
 import { useCallback, useState } from "react";
 import axios from "axios";
 // Components
-import {RefreshControl, ScrollView, View} from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
 import { Card, Button, ListItem, Avatar } from "@rneui/themed";
 import FastImage from "react-native-fast-image";
 import Spinner from "react-native-loading-spinner-overlay";
