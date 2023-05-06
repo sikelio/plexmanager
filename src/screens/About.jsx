@@ -90,7 +90,7 @@ const About = () => {
                             <ListItem.Title>Version</ListItem.Title>
                             <ListItem.Subtitle>{ info.version }</ListItem.Subtitle>
                         </ListItem.Content>
-                        <ListItem.Chevron />
+                        <ListItem.Chevron color='black' />
                     </ListItem>
 
                     <ListItem
@@ -122,7 +122,7 @@ const About = () => {
                         <ListItem.Content>
                             <ListItem.Title>Source code</ListItem.Title>
                         </ListItem.Content>
-                        <ListItem.Chevron />
+                        <ListItem.Chevron color='black' />
                     </ListItem>
 
                     <ListItem
@@ -154,7 +154,7 @@ const About = () => {
                         <ListItem.Content>
                             <ListItem.Title>GNU General Public License v3.0</ListItem.Title>
                         </ListItem.Content>
-                        <ListItem.Chevron />
+                        <ListItem.Chevron color='black' />
                     </ListItem>
 
                     {authors.map((author, index) => {
@@ -192,7 +192,7 @@ const About = () => {
                                     <ListItem.Title>{ author.login }</ListItem.Title>
                                     <ListItem.Subtitle>{ author.type }</ListItem.Subtitle>
                                 </ListItem.Content>
-                                <ListItem.Chevron />
+                                <ListItem.Chevron color='black' />
                             </ListItem>
                         );
                     })}
