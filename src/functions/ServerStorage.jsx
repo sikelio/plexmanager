@@ -2,10 +2,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
+ * Check if input is of type IP or domain name
+ * @param string IP or Domain name
+ * @returns {boolean}
+ */
+export const ipDomainRegex = (string) => {
+    const regex = new RegExp(/^((\d{1,3}\.){3}\d{1,3})|(([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+\.[a-zA-Z]{2,63})(\/\S*)?$/i);
+
+    return regex.test(string);
+}
+
+/**
  * Store a server in array
  * @param data Servers data
  */
-const storeServer = async (data) => {
+export const storeServer = async (data) => {
     try {
         const serverStorage = await AsyncStorage.getItem('servers');
 
@@ -27,7 +38,7 @@ const storeServer = async (data) => {
  * @param data Edited server data
  * @param index Servers index
  */
-const editServer = async (data, index) => {
+export const editServer = async (data, index) => {
     const serverStorage = await AsyncStorage.getItem('servers');
 
     if (serverStorage == null) {
@@ -43,7 +54,7 @@ const editServer = async (data, index) => {
 /**
  * Get server list
  */
-const getServer = async () => {
+export const getServer = async () => {
     try {
         return await AsyncStorage.getItem('servers');
     } catch (e) {
@@ -51,7 +62,7 @@ const getServer = async () => {
     }
 }
 
-const deleteServer = async (index) => {
+export const deleteServer = async (index) => {
     try {
         let servers = await AsyncStorage.getItem('servers');
         if (servers != null) {
@@ -68,12 +79,10 @@ const deleteServer = async (index) => {
 /**
  * Delete all server from list
  */
-const resetServer = async () => {
+export const resetServer = async () => {
     try {
         return await AsyncStorage.setItem('servers', JSON.stringify([]));
     } catch (e) {
         console.error(e)
     }
 }
-
-export { storeServer, getServer, deleteServer, editServer };

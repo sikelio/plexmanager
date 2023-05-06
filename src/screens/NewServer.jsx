@@ -11,7 +11,7 @@ import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Picker } from '@react-native-picker/picker';
 // Functions
-import { storeServer } from '../functions/ServerStorage';
+import { ipDomainRegex, storeServer } from '../functions/ServerStorage';
 // Styles
 import style from '../style/NewServerStyle';
 
@@ -38,6 +38,13 @@ const NewServer = () => {
     });
 
     const onSubmit = (data) => {
+        if (!ipDomainRegex(data.ip)) {
+            return Alert.alert(
+                'Invalid IP or Domain',
+                'You have enter an invalid IP or Domain'
+            );
+        }
+
         storeServer(data).then(() => {
             Alert.alert('Success', 'Server saved');
             reset();
@@ -112,7 +119,6 @@ const NewServer = () => {
                         onBlur={ onBlur }
                         onChangeText={ onChange }
                         value={ value }
-                        keyboardType="numeric"
                         placeholder="IP"
                         placeholderTextColor="#6B6B6B"
                     />
@@ -130,7 +136,7 @@ const NewServer = () => {
                         onBlur={ onBlur }
                         onChangeText={ onChange }
                         value={ value }
-                        keyboardType="numeric"
+                        keyboardType='numeric'
                         placeholder="PORT"
                         placeholderTextColor="#6B6B6B"
                     />
