@@ -16,6 +16,7 @@ import style from "../style/AboutStyle";
 
 const About = () => {
     const [ aboutList, setAboutList ] = useState(true);
+    const [ authorsList, setAuthorsList ] = useState(false);
     const [ refreshing, setRefreshing ] = useState(false);
     const [ authors, setAuthors ] = useState([]);
 
@@ -156,7 +157,21 @@ const About = () => {
                         </ListItem.Content>
                         <ListItem.Chevron color='black' />
                     </ListItem>
+                </ListItem.Accordion>
+            </Card>
 
+            <Card>
+                <ListItem.Accordion
+                    content={
+                        <ListItem.Content>
+                            <ListItem.Title style={ [style.accordionTitle] }>Authors</ListItem.Title>
+                        </ListItem.Content>
+                    }
+                    isExpanded={ authorsList }
+                    onPress={() => {
+                        setAuthorsList(!authorsList)
+                    }}
+                >
                     {authors.map((author, index) => {
                         return (
                             <ListItem
