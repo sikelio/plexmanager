@@ -1,5 +1,5 @@
 // Dependencies
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import axios from "axios";
 // Components
 import { RefreshControl, ScrollView, View } from "react-native";
@@ -168,7 +168,7 @@ const SingleLibrary = ({ route, navigation }) => {
                                         <ListItem.Title>{ media.title }</ListItem.Title>
                                         <ListItem.Subtitle>{ media.studio }</ListItem.Subtitle>
                                     </ListItem.Content>
-                                    <ListItem.Chevron />
+                                    <ListItem.Chevron color='black' />
                                 </ListItem>
                             );
                         })}

@@ -86,7 +86,7 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                                     identity: identity.data.MediaContainer,
                                     devices: devices.data.MediaContainer.Device,
                                     activeSessions: activeSessions.data.MediaContainer.Metadata,
-                                    sessionHistory: sessionHistory.data.MediaContainer.Metadata
+                                    sessionHistory: sessionHistory.data.MediaContainer
                                 });
                             } catch (e) {
                                 if (e.message === 'Network Error') {

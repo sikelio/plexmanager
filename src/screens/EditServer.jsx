@@ -1,5 +1,3 @@
-// Dependencies
-import React, { useState } from 'react';
 // Components
 import {
     Text,
@@ -16,7 +14,7 @@ import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Picker } from '@react-native-picker/picker';
 // Functions
-import { editServer } from '../functions/ServerStorage';
+import { editServer, ipDomainRegex } from '../functions/ServerStorage';
 // Styles
 import style from '../style/NewServerStyle';
 
@@ -45,6 +43,13 @@ const EditServer = ({ route, navigation }) => {
     });
 
     const onSubmit = (data) => {
+        if (!ipDomainRegex(data.ip)) {
+            return Alert.alert(
+                'Invalid IP or Domain',
+                'You have enter an invalid IP or Domain'
+            );
+        }
+
         editServer(data, route.params.index).then(() => {
             Alert.alert('Success', 'Server edited', [
                 {
@@ -125,7 +130,6 @@ const EditServer = ({ route, navigation }) => {
                         onBlur={ onBlur }
                         onChangeText={ onChange }
                         value={ value }
-                        keyboardType="numeric"
                         placeholder="IP"
                         placeholderTextColor="#6B6B6B"
                     />

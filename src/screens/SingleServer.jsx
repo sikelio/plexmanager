@@ -1,5 +1,5 @@
 // Dependencies
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import axios from "axios";
 // Components
 import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
@@ -63,7 +63,7 @@ const SingleServer = ({ route, navigation }) => {
             setIdentity(updatedIdentity.data.MediaContainer);
             setDevices(updatedDevices.data.MediaContainer.Device);
             setActiveSessions(updatedActiveSessions.data.MediaContainer.Metadata);
-            setSessionHistory(updatedSessionHistory.data.MediaContainer.Metadata)
+            setSessionHistory(updatedSessionHistory.data.MediaContainer)
         } catch (error) {
             console.log(error);
         }
@@ -235,7 +235,7 @@ const SingleServer = ({ route, navigation }) => {
                                         <ListItem.Content>
                                             <ListItem.Title>{ library.title }</ListItem.Title>
                                         </ListItem.Content>
-                                        <ListItem.Chevron />
+                                        <ListItem.Chevron color='black' />
                                     </ListItem>
                                 );
                             })}
@@ -303,7 +303,7 @@ const SingleServer = ({ route, navigation }) => {
                                             <ListItem.Content>
                                                 <ListItem.Title>{ user.name }</ListItem.Title>
                                             </ListItem.Content>
-                                            <ListItem.Chevron />
+                                            <ListItem.Chevron color='black' />
                                         </ListItem>
                                     );
                                 }
@@ -409,7 +409,7 @@ const SingleServer = ({ route, navigation }) => {
                                                 <ListItem.Subtitle>{ session.Player.product }</ListItem.Subtitle>
                                                 <ListItem.Subtitle>{ session.Player.version }</ListItem.Subtitle>
                                             </ListItem.Content>
-                                            <ListItem.Chevron />
+                                            <ListItem.Chevron color='black' />
                                         </ListItem>
                                     );
                                 })
@@ -431,19 +431,29 @@ const SingleServer = ({ route, navigation }) => {
                                 setSessionHistoryList(!sessionHistoryList);
                             }}
                         >
-                            {sessionHistory.map((session, index) => {
-                                return (
-                                    <ListItem
-                                        key={ index }
-                                    >
-                                        <ListItem.Content>
-                                            <ListItem.Title>{ historyTitle(session) }</ListItem.Title>
-                                            <ListItem.Subtitle>Viewed at : { getTimeFromTimestamp(session.viewedAt) } - { getDateFromTimestamp(session.viewedAt) }</ListItem.Subtitle>
-                                            <ListItem.Subtitle>By : { getHistoryUser(session, users) }</ListItem.Subtitle>
-                                        </ListItem.Content>
-                                    </ListItem>
-                                );
-                            })}
+                            {!sessionHistory.size > 0 ? (
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <ListItem.Title>No session history</ListItem.Title>
+                                    </ListItem.Content>
+                                </ListItem>
+                            ) : (
+                                sessionHistory.Metadata.map((session, index) => {
+                                    console.log(index)
+
+                                    return (
+                                        <ListItem
+                                            key={ index }
+                                        >
+                                            <ListItem.Content>
+                                                <ListItem.Title>{ historyTitle(session) }</ListItem.Title>
+                                                <ListItem.Subtitle>Viewed at : { getTimeFromTimestamp(session.viewedAt) } - { getDateFromTimestamp(session.viewedAt) }</ListItem.Subtitle>
+                                                <ListItem.Subtitle>By : { getHistoryUser(session, users) }</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                        </ListItem>
+                                    );
+                                })
+                            )}
                         </ListItem.Accordion>
                     </>
                 </Card>
@@ -524,7 +534,7 @@ const SingleServer = ({ route, navigation }) => {
                                 <ListItem.Content>
                                     <ListItem.Title>All scheduled tasks</ListItem.Title>
                                 </ListItem.Content>
-                                <ListItem.Chevron />
+                                <ListItem.Chevron color='black' />
                             </ListItem>
 
                             <ListItem>

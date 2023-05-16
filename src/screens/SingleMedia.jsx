@@ -1,5 +1,5 @@
 // Dependencies
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
 import axios from "axios";
 // Components
 import { Dimensions, RefreshControl, ScrollView, Text, View } from "react-native";
@@ -158,7 +158,7 @@ const SingleMedia = ({ route, navigation }) => {
                                             <ListItem.Title>{ season.title }</ListItem.Title>
                                             <ListItem.Subtitle>{ season.year ? season.year : season.parentYear }</ListItem.Subtitle>
                                         </ListItem.Content>
-                                        <ListItem.Chevron></ListItem.Chevron>
+                                        <ListItem.Chevron color='black' />
                                     </ListItem>
                                 )
                             })}

@@ -1,5 +1,5 @@
 // Dependencies
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import axios from "axios";
 // Components
 import { Dimensions, RefreshControl, ScrollView, Text, View } from "react-native";
@@ -124,7 +124,7 @@ const SingleSeason = ({ route, navigation }) => {
                                         <ListItem.Title>{ episode.title }</ListItem.Title>
                                         <ListItem.Subtitle>Duration : { episode.duration ? new Date(episode.duration).toISOString().slice(11, 19) : 'unknown' }</ListItem.Subtitle>
                                     </ListItem.Content>
-                                    <ListItem.Chevron />
+                                    <ListItem.Chevron color='black' />
                                 </ListItem>
                             );
                         })}
