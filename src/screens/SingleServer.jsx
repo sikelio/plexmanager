@@ -63,7 +63,7 @@ const SingleServer = ({ route, navigation }) => {
             setIdentity(updatedIdentity.data.MediaContainer);
             setDevices(updatedDevices.data.MediaContainer.Device);
             setActiveSessions(updatedActiveSessions.data.MediaContainer.Metadata);
-            setSessionHistory(updatedSessionHistory.data.MediaContainer.Metadata)
+            setSessionHistory(updatedSessionHistory.data.MediaContainer)
         } catch (error) {
             console.log(error);
         }
@@ -431,19 +431,29 @@ const SingleServer = ({ route, navigation }) => {
                                 setSessionHistoryList(!sessionHistoryList);
                             }}
                         >
-                            {sessionHistory.map((session, index) => {
-                                return (
-                                    <ListItem
-                                        key={ index }
-                                    >
-                                        <ListItem.Content>
-                                            <ListItem.Title>{ historyTitle(session) }</ListItem.Title>
-                                            <ListItem.Subtitle>Viewed at : { getTimeFromTimestamp(session.viewedAt) } - { getDateFromTimestamp(session.viewedAt) }</ListItem.Subtitle>
-                                            <ListItem.Subtitle>By : { getHistoryUser(session, users) }</ListItem.Subtitle>
-                                        </ListItem.Content>
-                                    </ListItem>
-                                );
-                            })}
+                            {!sessionHistory.size > 0 ? (
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <ListItem.Title>No session history</ListItem.Title>
+                                    </ListItem.Content>
+                                </ListItem>
+                            ) : (
+                                sessionHistory.Metadata.map((session, index) => {
+                                    console.log(index)
+
+                                    return (
+                                        <ListItem
+                                            key={ index }
+                                        >
+                                            <ListItem.Content>
+                                                <ListItem.Title>{ historyTitle(session) }</ListItem.Title>
+                                                <ListItem.Subtitle>Viewed at : { getTimeFromTimestamp(session.viewedAt) } - { getDateFromTimestamp(session.viewedAt) }</ListItem.Subtitle>
+                                                <ListItem.Subtitle>By : { getHistoryUser(session, users) }</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                        </ListItem>
+                                    );
+                                })
+                            )}
                         </ListItem.Accordion>
                     </>
                 </Card>
