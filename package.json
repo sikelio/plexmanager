@@ -1,6 +1,6 @@
 {
   "name": "plexmanager",
-  "version": "0.0.1",
+  "version": "0.0.2-beta",
   "private": false,
   "scripts": {
     "android": "react-native run-android",

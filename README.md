@@ -60,10 +60,13 @@ Coming soon...
     - [ ] [~~Get a Single Device~~ (No additional infos)](https://github.com/sikelio/plexmanager/issues/6)
     - [ ] [Get All Activities](https://github.com/sikelio/plexmanager/issues/7)
     - [ ] [Stop an Activity](https://github.com/sikelio/plexmanager/issues/8)
+    - [ ] [Get Transient Token](https://github.com/sikelio/plexmanager/issues/60)
+    - [ ] [Perform Search](https://github.com/sikelio/plexmanager/issues/61)
 - Session
     - [X] [Get Active Sessions](https://github.com/sikelio/plexmanager/issues/9)
     - [ ] [Get All Transcode Sessions](https://github.com/sikelio/plexmanager/issues/10)
     - [ ] [Terminate a Session](https://github.com/sikelio/plexmanager/issues/11)
+    - [X] [Get Session History](https://github.com/sikelio/plexmanager/issues/62)
 - Library
     - [X] [Get Libraries](https://github.com/sikelio/plexmanager/issues/12)
     - [X] [Scan All Libraries](https://github.com/sikelio/plexmanager/issues/45)
@@ -81,6 +84,7 @@ Coming soon...
     - [X] [Get All Videos](https://github.com/sikelio/plexmanager/issues/21)
     - [ ] [Update Media Play Progress](https://github.com/sikelio/plexmanager/issues/22)
 - Playlists
+    - [ ] [Create a Playlist for a User](https://github.com/sikelio/plexmanager/issues/63)
     - [ ] [View Playlists for a User](https://github.com/sikelio/plexmanager/issues/23)
     - [ ] [View a Single Playlist](https://github.com/sikelio/plexmanager/issues/24)
     - [ ] [View Items in a Playlist](https://github.com/sikelio/plexmanager/issues/25)
@@ -91,6 +95,17 @@ Coming soon...
 - Scheduled Tasks
     - [X] [Get All Scheduled Tasks](https://github.com/sikelio/plexmanager/issues/29)
     - [X] [Run Backup Database Task](https://github.com/sikelio/plexmanager/issues/30)
+    - [ ] [Stop All Scheduled Tasks](https://github.com/sikelio/plexmanager/issues/64)
+    - [ ] [Run Backup Database Task](https://github.com/sikelio/plexmanager/issues/65)
+    - [ ] [Stop Backup Database Task](https://github.com/sikelio/plexmanager/issues/66)
+    - [ ] [Run Optimize Database Task](https://github.com/sikelio/plexmanager/issues/67)
+    - [ ] [Stop Optimize Database Task](https://github.com/sikelio/plexmanager/issues/68)
+    - [ ] [Run Clean Old Bundles Task](https://github.com/sikelio/plexmanager/issues/69)
+    - [ ] [Stop Clean Old Bundles Task](https://github.com/sikelio/plexmanager/issues/70)
+    - [ ] [Run Clean Old Cache Files Task](https://github.com/sikelio/plexmanager/issues/71)
+    - [ ] [Stop Clean Old Cache Files Task](https://github.com/sikelio/plexmanager/issues/72)
+    - [ ] [Run Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/73)
+    - [ ] [Stop Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/74)
 - Troubleshooting
     - [ ] [Download the Databases](https://github.com/sikelio/plexmanager/issues/31)
     - [ ] [Download the Logs](https://github.com/sikelio/plexmanager/issues/32)
