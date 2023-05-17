@@ -2,6 +2,12 @@
 # Plex Manager
 
 A cross-platform app build in [React Native](https://reactnative.dev/), based on the [Plex API](https://www.plexopedia.com/plex-media-server/api/) for managing Plex Media Servers from a phone.
+
+| Labels      | Version    | Branch                                                                |
+|-------------|------------|-----------------------------------------------------------------------|
+| Current     | 0.0.1-beta | [v0.0.1-beta](https://github.com/sikelio/plexmanager/tree/0.0.1-beta) |
+| Development | 0.0.2-beta | [dev](https://github.com/sikelio/plexmanager/tree/dev)                |
+
 ## Install
 
 - Play Store : [Open Beta](https://play.google.com/store/apps/details?id=wtf.plexmanager)
