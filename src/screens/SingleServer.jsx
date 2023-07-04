@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from "react";
 import axios from "axios";
 // Components
-import { Button, ScrollView, View, Text, RefreshControl } from "react-native";
+import { Button, ScrollView, View, Text, RefreshControl, Alert } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
 import FastImage from "react-native-fast-image";
@@ -35,6 +35,7 @@ const SingleServer = ({ route, navigation }) => {
     const [ librariesList, setLibrariesList ] = useState(false);
     const [ identityList, setIdentityList ] = useState(false);
     const [ maintenanceList, setMaintenanceList ] = useState(false);
+    const [ securityList, setSecurityList ] = useState(false);
     const [ scheduledTaskList, setScheduledTaskList ] = useState(false);
 
     const updateData = async () => {
@@ -505,15 +506,15 @@ const SingleServer = ({ route, navigation }) => {
                 <Card>
                     <>
                         <ListItem.Accordion
-                          content={
-                              <ListItem.Content>
-                                  <ListItem.Title style={ [style.accordionTitle] }>Tasks</ListItem.Title>
-                              </ListItem.Content>
-                          }
-                          isExpanded={ scheduledTaskList }
-                          onPress={() => {
-                              setScheduledTaskList(!scheduledTaskList);
-                          }}
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Tasks</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ scheduledTaskList }
+                            onPress={() => {
+                                setScheduledTaskList(!scheduledTaskList);
+                            }}
                         >
                             <ListItem
                                 bottomDivider
@@ -545,6 +546,39 @@ const SingleServer = ({ route, navigation }) => {
                                           color='#e5a00d'
                                           onPress={() => {
                                               sendPostRequest(`${server.protocol}://${server.ip}:${server.port}/butler/BackupDatabase?X-Plex-Token=${server.token}`);
+                                          }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Security</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ securityList }
+                            onPress={() => {
+                                setSecurityList(!securityList);
+                            }}
+                        >
+                            <ListItem
+                                bottomDivider
+                            >
+                                <ListItem.Content>
+                                    <View style={ [style.updateAllView] }>
+                                        <Button
+                                          title='Get Transient Token'
+                                          color='#e5a00d'
+                                          onPress={() => {
+                                              Alert.alert('WIP', 'This functionality is being delayed because of Bad Request by following the documentation.');
+                                              // sendRequest(`${server.protocol}://${server.ip}:${server.port}/security/token?X-Plex-Token=${server.token}`);
                                           }}
                                         />
                                     </View>

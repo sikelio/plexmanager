@@ -31,7 +31,7 @@ const ServerCard = ({ server, index, navigation, refreshServerList, setSpinner }
                     { server.protocol.toUpperCase() }
                 </Text>
                 <Text style={ [style.textColor] }>
-                    <Text style={ [style.textLabel] }>IP :</Text>
+                    <Text style={ [style.textLabel] }>IP : </Text>
                     { server.ip }
                 </Text>
                 <Text style={ [style.textColor] }>

@@ -76,6 +76,10 @@ const style = StyleSheet.create({
     },
     sendBtn: {
         marginRight: 10
+    },
+    helpLink: {
+        textDecorationLine: 'underline',
+        marginBottom: 10
     }
 });
 
