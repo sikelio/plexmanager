@@ -4,10 +4,8 @@ import {
     TextInput,
     KeyboardAvoidingView,
     Platform,
-    Modal,
     Alert,
-    View,
-    Pressable
+    Linking
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@rneui/themed';
@@ -172,6 +170,13 @@ const EditServer = ({ route, navigation }) => {
                 )}
                 name="token"
             />
+
+            <Text
+                onPress={() => Linking.openURL('https://github.com/sikelio/plexmanager/wiki/Getting-Plex-Media-Server-Access-Token')}
+                style={ [style.helpLink] }
+            >
+                How to I get my Plex Token ?
+            </Text>
 
             <Button
                 title="Save"
