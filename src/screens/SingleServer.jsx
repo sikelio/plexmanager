@@ -65,8 +65,8 @@ const SingleServer = ({ route, navigation }) => {
             setDevices(updatedDevices.data.MediaContainer.Device);
             setActiveSessions(updatedActiveSessions.data.MediaContainer.Metadata);
             setSessionHistory(updatedSessionHistory.data.MediaContainer)
-        } catch (error) {
-            console.log(error);
+        } catch (e) {
+            console.error(e);
         }
     };
 
@@ -440,8 +440,6 @@ const SingleServer = ({ route, navigation }) => {
                                 </ListItem>
                             ) : (
                                 sessionHistory.Metadata.map((session, index) => {
-                                    console.log(index)
-
                                     return (
                                         <ListItem
                                             key={ index }
