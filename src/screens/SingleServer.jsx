@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from "react";
 import axios from "axios";
 // Components
-import { Button, ScrollView, View, Text, RefreshControl, Alert } from "react-native";
+import { Button, ScrollView, View, Text, RefreshControl, Alert, Linking } from "react-native";
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from "react-native-loading-spinner-overlay";
 import FastImage from "react-native-fast-image";
@@ -36,6 +36,7 @@ const SingleServer = ({ route, navigation }) => {
     const [ identityList, setIdentityList ] = useState(false);
     const [ maintenanceList, setMaintenanceList ] = useState(false);
     const [ securityList, setSecurityList ] = useState(false);
+    const [ troubleshootingList, setTroubleshootingList ] = useState(false);
     const [ scheduledTaskList, setScheduledTaskList ] = useState(false);
 
     const updateData = async () => {
@@ -578,6 +579,38 @@ const SingleServer = ({ route, navigation }) => {
                                               Alert.alert('WIP', 'This functionality is being delayed because of Bad Request by following the documentation.');
                                               // sendRequest(`${server.protocol}://${server.ip}:${server.port}/security/token?X-Plex-Token=${server.token}`);
                                           }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+                        </ListItem.Accordion>
+                    </>
+                </Card>
+
+                <Card>
+                    <>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={ [style.accordionTitle] }>Troubleshooting</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={ troubleshootingList }
+                            onPress={() => {
+                                setTroubleshootingList(!troubleshootingList);
+                            }}
+                        >
+                            <ListItem
+                                bottomDivider
+                            >
+                                <ListItem.Content>
+                                    <View style={ [style.updateAllView] }>
+                                        <Button
+                                            title='Download the databases'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                Linking.openURL(`${server.protocol}://${server.ip}:${server.port}/diagnostics/databases/?X-Plex-Token=${server.token}`);
+                                            }}
                                         />
                                     </View>
                                 </ListItem.Content>
