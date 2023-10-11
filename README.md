@@ -107,8 +107,8 @@ Coming soon...
     - [ ] [Run Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/73)
     - [ ] [Stop Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/74)
 - Troubleshooting
-    - [ ] [Download the Databases](https://github.com/sikelio/plexmanager/issues/31)
-    - [ ] [Download the Logs](https://github.com/sikelio/plexmanager/issues/32)
+    - [X] [Download the Databases](https://github.com/sikelio/plexmanager/issues/31)
+    - [X] [Download the Logs](https://github.com/sikelio/plexmanager/issues/32)
 
 ## Authors
 

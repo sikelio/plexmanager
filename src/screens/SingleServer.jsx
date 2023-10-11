@@ -541,11 +541,11 @@ const SingleServer = ({ route, navigation }) => {
                                 <ListItem.Content>
                                     <View style={{ width: '100%' }}>
                                         <Button
-                                          title='Backup database'
-                                          color='#e5a00d'
-                                          onPress={() => {
-                                              sendPostRequest(`${server.protocol}://${server.ip}:${server.port}/butler/BackupDatabase?X-Plex-Token=${server.token}`);
-                                          }}
+                                            title='Backup database'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                sendPostRequest(`${server.protocol}://${server.ip}:${server.port}/butler/BackupDatabase?X-Plex-Token=${server.token}`);
+                                            }}
                                         />
                                     </View>
                                 </ListItem.Content>
@@ -573,12 +573,12 @@ const SingleServer = ({ route, navigation }) => {
                                 <ListItem.Content>
                                     <View style={ [style.updateAllView] }>
                                         <Button
-                                          title='Get Transient Token'
-                                          color='#e5a00d'
-                                          onPress={() => {
-                                              Alert.alert('WIP', 'This functionality is being delayed because of Bad Request by following the documentation.');
-                                              // sendRequest(`${server.protocol}://${server.ip}:${server.port}/security/token?X-Plex-Token=${server.token}`);
-                                          }}
+                                            title='Get Transient Token'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                Alert.alert('WIP', 'This functionality is being delayed because of Bad Request by following the documentation.');
+                                                // sendRequest(`${server.protocol}://${server.ip}:${server.port}/security/token?X-Plex-Token=${server.token}`);
+                                            }}
                                         />
                                     </View>
                                 </ListItem.Content>
