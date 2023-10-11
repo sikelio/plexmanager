@@ -614,6 +614,18 @@ const SingleServer = ({ route, navigation }) => {
                                         />
                                     </View>
                                 </ListItem.Content>
+
+                                <ListItem.Content>
+                                    <View style={ [style.updateAllView] }>
+                                        <Button
+                                            title='Download the logs'
+                                            color='#e5a00d'
+                                            onPress={() => {
+                                                Linking.openURL(`${server.protocol}://${server.ip}:${server.port}/diagnostics/logs/?X-Plex-Token=${server.token}`);
+                                            }}
+                                        />
+                                    </View>
+                                </ListItem.Content>
                             </ListItem>
                         </ListItem.Accordion>
                     </>
