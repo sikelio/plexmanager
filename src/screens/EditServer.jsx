@@ -12,16 +12,6 @@ import { editServer } from '../functions/ServerStorage';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 
-const protocolOptions = [
-    { label: 'HTTP', value: 'http' },
-    { label: 'HTTPS', value: 'https' }
-];
-
-const serverTypeOptions = [
-    { label: 'Computer', value: 'computer' },
-    { label: 'NAS', value: 'nas' }
-]
-
 class EditServer extends React.Component {
     protocolOptions = [
         { label: 'HTTP', value: 'http' },
