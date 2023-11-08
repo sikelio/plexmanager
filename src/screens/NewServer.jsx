@@ -66,9 +66,11 @@ export default class NewServer extends React.Component {
         }
     }
 
-    async saveServer(values) {
+    async saveServer(values, formikBag) {
         try {
             await storeServer(values);
+
+            formikBag.resetForm();
 
             Alert.alert('Success', 'Server was correctly added!');
         } catch (e) {
@@ -129,7 +131,7 @@ export default class NewServer extends React.Component {
                             style={this.localStyle.picker}
                         >
                             <Picker
-                                selectedValue={values.serverProtocol}
+                                selectedValue={values.protocol}
                                 onValueChange={handleChange('protocol')}
                             >
                                 {this.protocolOptions.map(option => (
@@ -213,10 +215,7 @@ export default class NewServer extends React.Component {
                         <Button
                             title={'Submit'}
                             color='#e5a00d'
-                            onPress={() => {
-                                handleSubmit();
-                                resetForm();
-                            }}
+                            onPress={handleSubmit}
                             icon={
                                 <Icon
                                     name={'paper-plane'}
