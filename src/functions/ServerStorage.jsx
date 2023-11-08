@@ -2,17 +2,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- * Check if input is of type IP or domain name
- * @param string IP or Domain name
- * @returns {boolean}
- */
-export const ipDomainRegex = (string) => {
-    const regex = new RegExp(/^((\d{1,3}\.){3}\d{1,3})|(([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+\.[a-zA-Z]{2,63})(\/\S*)?$/i);
-
-    return regex.test(string);
-}
-
-/**
  * Store a server in array
  * @param data Servers data
  */

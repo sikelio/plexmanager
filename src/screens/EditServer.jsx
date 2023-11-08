@@ -1,20 +1,16 @@
-// Components
+import React from 'react';
 import {
     Text,
     TextInput,
-    KeyboardAvoidingView,
-    Platform,
     Alert,
-    Linking
+    Linking, StyleSheet, View,
 } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Picker } from '@react-native-picker/picker';
-// Functions
-import { editServer, ipDomainRegex } from '../functions/ServerStorage';
-// Styles
-import style from '../style/NewServerStyle';
+import { editServer } from '../functions/ServerStorage';
+import { useNavigation } from '@react-navigation/native';
+import { Formik } from 'formik';
 
 const protocolOptions = [
     { label: 'HTTP', value: 'http' },
@@ -26,174 +22,245 @@ const serverTypeOptions = [
     { label: 'NAS', value: 'nas' }
 ]
 
-const EditServer = ({ route, navigation }) => {
-    const { server } = route.params;
+class EditServer extends React.Component {
+    protocolOptions = [
+        { label: 'HTTP', value: 'http' },
+        { label: 'HTTPS', value: 'https' }
+    ];
 
-    const { control, handleSubmit, formState: { errors }, reset } = useForm({
-        defaultValues: {
-            protocol: server.protocol,
-            serverType: server.serverType,
-            name: server.name,
-            ip: server.ip,
-            port: server.port,
-            token: server.token
+    serverTypeOptions = [
+        { label: 'Computer', value: 'computer' },
+        { label: 'NAS', value: 'nas' }
+    ];
+
+    localStyle = StyleSheet.create({
+        input: {
+            height: 55,
+            borderColor: 'gray',
+            borderWidth: 1,
+            marginBottom: 10,
+            paddingLeft: 17.5,
+            paddingRight: 17.5,
+            fontSize: 15
+        },
+        picker: {
+            borderColor: 'gray',
+            borderWidth: 1,
+            marginBottom: 10,
+            paddingLeft: 10
+        },
+        required: {
+            color: '#e5a00d',
+            fontWeight: 'bold',
+            fontSize: 15
+        },
+        sendBtn: {
+            marginRight: 10
+        },
+        helpLink: {
+            textDecorationLine: 'underline',
+            marginBottom: 10,
+            color: 'black'
         }
     });
 
-    const onSubmit = (data) => {
-        if (!ipDomainRegex(data.ip)) {
-            return Alert.alert(
-                'Invalid IP or Domain',
-                'You have enter an invalid IP or Domain'
-            );
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            protocol: this.props.route.params.server.protocol,
+            serverType: this.props.route.params.server.serverType,
+            name: this.props.route.params.server.name,
+            ip: this.props.route.params.server.ip,
+            port: this.props.route.params.server.port,
+            token: this.props.route.params.server.token,
+            index: undefined
         }
 
-        editServer(data, route.params.index).then(() => {
-            Alert.alert('Success', 'Server edited', [
+        this.editServer = this.editServer.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({ index: this.props.route.params.index });
+    }
+
+    async editServer(values, formikBag) {
+        try {
+            await editServer(values, this.state.index);
+
+            formikBag.resetForm();
+
+            Alert.alert('Success', 'Server was correctly edited!', [
                 {
                     text: 'OK',
                     onPress: () => {
-                        navigation.navigate('Server');
+                        this.props.navigation.navigate('Server');
                     }
                 }
             ]);
-        });
+        } catch (e) {
+            console.error(e);
+
+            Alert.alert(
+                'Error',
+                `Something went wrong!\nIf the error persist leave a issue on my repo.\n\nhttps://github.com/sikelio/plexmanager/issues`
+            );
+        }
     }
 
-    return (
-        <KeyboardAvoidingView
-            behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
-            style={ [style.container] }
-        >
-            { errors.protocol && <Text style={ style.required }>Protocol is required.</Text> }
-            <Controller
-                control={ control }
-                name="protocol"
-                defaultValue={ server.protocol }
-                render={({ field: { onChange, value } }) => (
-                    <Picker
-                        selectedValue={ value }
-                        onValueChange={ onChange }
-                        style={ [style.picker] }
-                    >
-                        {protocolOptions.map((option) => (
-                            <Picker.Item key={ option.value } label={ option.label } value={ option.value } />
-                        ))}
-                    </Picker>
-                )}
-            />
+    validate(values) {
+        const ipDomainRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$/;
+        const errors = {};
 
-            { errors.serverType && <Text style={ style.required }>Server type is required.</Text> }
-            <Controller
-                control={ control }
-                name="serverType"
-                defaultValue={ server.serverType }
-                render={({ field: { onChange, value } }) => (
-                    <Picker
-                        selectedValue={ value }
-                        onValueChange={ onChange }
-                        style={ [style.picker] }
-                    >
-                        {serverTypeOptions.map((option) => (
-                            <Picker.Item key={ option.value } label={ option.label } value={ option.value } />
-                        ))}
-                    </Picker>
-                )}
-            />
+        if (!values.name) {
+            errors.name = 'Server name is required!'
+        }
 
-            { errors.name && <Text style={ style.required }>Name is required.</Text> }
-            <Controller
-                control={ control }
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={ [style.input] }
-                        onBlur={ onBlur }
-                        onChangeText={ onChange }
-                        value={ value }
-                        placeholder="NAME"
-                        placeholderTextColor="#6B6B6B"
-                    />
-                )}
-                name="name"
-            />
+        if (!values.ip) {
+            errors.ip = 'Server IP or Hostname is required!'
+        }
 
-            { errors.ip && <Text style={ style.required }>IP is required.</Text> }
-            <Controller
-                control={ control }
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={ [style.input] }
-                        onBlur={ onBlur }
-                        onChangeText={ onChange }
-                        value={ value }
-                        placeholder="IP"
-                        placeholderTextColor="#6B6B6B"
-                    />
-                )}
-                name="ip"
-            />
+        if (!values.port) {
+            errors.port = 'Server port is required';
+        }
 
-            { errors.port && <Text style={ style.required }>Port is required.</Text> }
-            <Controller
-                control={ control }
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={ [style.input] }
-                        onBlur={ onBlur }
-                        onChangeText={ onChange }
-                        value={ value }
-                        keyboardType="numeric"
-                        placeholder="PORT"
-                        placeholderTextColor="#6B6B6B"
-                    />
-                )}
-                name="port"
-            />
+        if (!values.token) {
+            errors.token = 'Server token is required!'
+        }
 
-            { errors.token && <Text style={ style.required }>Token is required.</Text> }
-            <Controller
-                control={ control }
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        style={ [style.input] }
-                        onBlur={ onBlur }
-                        onChangeText={ onChange }
-                        value={ value }
-                        placeholder="TOKEN"
-                        placeholderTextColor="#6B6B6B"
-                        secureTextEntry={ true }
-                    />
-                )}
-                name="token"
-            />
+        if (!ipDomainRegex.test(values.ip)) {
+            errors.ip = 'Entered IP or Hostname is invalid!\nValid format: xxx.xxx.xxx.xxx or domain.extension';
+        }
 
-            <Text
-                onPress={() => Linking.openURL('https://github.com/sikelio/plexmanager/wiki/Getting-Plex-Media-Server-Access-Token')}
-                style={ [style.helpLink] }
+        if (isNaN(values.port)) {
+            errors.port = 'Port must be a number!';
+        }
+
+        if (values.port < 0 || values.port > 65535) {
+            errors.port = 'Entered port is invalid!\nThe port range is between 0 and 65535.';
+        }
+
+        return errors;
+    }
+
+    render() {
+        return (
+            <Formik
+                initialValues={this.state}
+                onSubmit={this.editServer}
+                validate={this.validate}
             >
-                How to I get my Plex Token ?
-            </Text>
+                {({ handleChange, handleBlur, handleSubmit, values, errors, resetForm }) => (
+                    <View
+                        style={{padding: 20}}
+                    >
+                        <View
+                            style={this.localStyle.picker}
+                        >
+                            <Picker
+                                selectedValue={values.protocol}
+                                onValueChange={handleChange('protocol')}
+                            >
+                                {this.protocolOptions.map(option => (
+                                    <Picker.Item key={option.value} label={option.label} value={option.value} />
+                                ))}
+                            </Picker>
+                        </View>
 
-            <Button
-                title="Save"
-                color="#e5a00d"
-                onPress={ handleSubmit(onSubmit) }
-                icon={
-                    <Icon
-                        name={ 'save' }
-                        color={ '#ffffff' }
-                        size={ 16 }
-                        style={ [style.sendBtn] }
-                        solid
-                    />
-                }
-            />
-        </KeyboardAvoidingView>
-    );
+                        <View
+                            style={this.localStyle.picker}
+                        >
+                            <Picker
+                                selectedValue={values.serverType}
+                                onValueChange={handleChange('serverType')}
+                            >
+                                {this.serverTypeOptions.map(option => (
+                                    <Picker.Item key={option.value} label={option.label} value={option.value} />
+                                ))}
+                            </Picker>
+                        </View>
+
+                        <View>
+                            {errors.name && <Text style={this.localStyle.required}>{errors.name}</Text>}
+                            <TextInput
+                                onChangeText={handleChange('name')}
+                                onBlur={handleBlur('name')}
+                                value={values.name}
+                                placeholder={'Server Name'}
+                                style={this.localStyle.input}
+                            />
+                        </View>
+
+                        <View>
+                            {errors.ip && <Text style={this.localStyle.required}>{errors.ip}</Text>}
+                            <TextInput
+                                onChangeText={handleChange('ip')}
+                                onBlur={handleBlur('ip')}
+                                value={values.ip}
+                                placeholder={'IP / Hostname'}
+                                style={this.localStyle.input}
+                            />
+                        </View>
+
+                        <View>
+                            {errors.port && <Text style={this.localStyle.required}>{errors.port}</Text>}
+                            <TextInput
+                                onChangeText={handleChange('port')}
+                                onBlur={handleBlur('port')}
+                                value={values.port}
+                                placeholder={'Port'}
+                                style={this.localStyle.input}
+                                keyboardType='numeric'
+                            />
+                        </View>
+
+                        <View>
+                            {errors.token && <Text style={this.localStyle.required}>{errors.token}</Text>}
+                            <TextInput
+                                onChangeText={handleChange('token')}
+                                onBlur={handleBlur('token')}
+                                value={values.token}
+                                placeholder={'Token'}
+                                style={this.localStyle.input}
+                                secureTextEntry={true}
+                            />
+
+                            <View
+                                style={{
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <Text
+                                    onPress={() => Linking.openURL('https://github.com/sikelio/plexmanager/wiki/Getting-Plex-Media-Server-Access-Token')}
+                                    style={this.localStyle.helpLink}
+                                >
+                                    How to I get my Plex Token ?
+                                </Text>
+                            </View>
+                        </View>
+
+                        <Button
+                            title={'Edit'}
+                            color='#e5a00d'
+                            onPress={handleSubmit}
+                            icon={
+                                <Icon
+                                    name={'paper-plane'}
+                                    color={'#ffffff'}
+                                    size={16}
+                                    style={this.localStyle.sendBtn}
+                                    solid
+                                />
+                            }
+                        />
+                    </View>
+                )}
+            </Formik>
+        );
+    }
 }
 
-export default EditServer;
+export default (props) => {
+    const navigation = useNavigation();
+    return <EditServer {...props} navigation={navigation} />;
+};
