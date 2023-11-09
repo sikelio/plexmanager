@@ -53,12 +53,13 @@ class SingleSeason extends React.Component {
         }
     };
 
-    async refresh() {
-        try {
-            await this.updateEpisodes();
-        } catch (e) {
-            Alert.alert('Error', 'Something went wrong during episodes fetch!');
-        }
+    refresh() {
+        this.setState({ refreshing: true });
+
+        this.updateEpisodes()
+            .finally(() => {
+                this.setState({ refreshing: false });
+            });
     }
 
     render() {

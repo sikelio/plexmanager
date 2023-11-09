@@ -51,12 +51,13 @@ class SingleLibrary extends React.Component {
         }
     }
 
-    async refresh() {
-        try {
-            await this.updateLibrary();
-        } catch (e) {
-            Alert.alert('Error', 'Something went wrong during the library fetch!');
-        }
+    refresh() {
+        this.setState({ refreshing: true });
+
+        this.updateLibrary()
+            .finally(() => {
+                this.setState({ refreshing: false });
+            });
     }
 
     render() {

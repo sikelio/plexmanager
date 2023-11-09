@@ -22,16 +22,16 @@ export default class About extends React.Component {
 
     async fetchAuthors() {
         try {
-            return await axios.get('https://api.github.com/repos/sikelio/plexmanager/contributors');
+            let authors = await axios.get('https://api.github.com/repos/sikelio/plexmanager/contributors');
+
+            this.setState({ authors: authors.data });
         } catch (e) {
             Alert.alert('Something went wrong during fetching the authors');
         }
     }
 
     async componentDidMount() {
-        let authors = await this.fetchAuthors();
-
-        this.setState({ authors: authors.data });
+        await this.fetchAuthors();
     }
 
     refresh() {

@@ -54,12 +54,13 @@ class SingleMedia extends React.Component {
         }
     };
 
-    async refresh() {
-        try {
-            await this.updateMedia();
-        } catch (e) {
-            Alert.alert('Error', 'Something went wrong during the media fetch!');
-        }
+    refresh() {
+        this.setState({ refreshing: true });
+
+        this.updateMedia()
+            .finally(() => {
+                this.setState({ refreshing: false });
+            });
     }
 
     render() {
