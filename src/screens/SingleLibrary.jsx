@@ -1,182 +1,210 @@
-// Dependencies
-import React, { useCallback, useState } from "react";
-import axios from "axios";
-// Components
-import { RefreshControl, ScrollView, View } from "react-native";
-import { Card, Button, ListItem, Avatar } from "@rneui/themed";
-import FastImage from "react-native-fast-image";
-import Spinner from "react-native-loading-spinner-overlay";
-// Functions
-import { sendPutRequest, sendRequest } from "../functions/ServerRequest";
-// Styles
-import style from "../style/LibraryManageStyle"
+import React from 'react';
+import axios from 'axios';
+import { Alert, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { Card, Button, ListItem, Avatar } from '@rneui/themed';
+import FastImage from 'react-native-fast-image';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { sendPutRequest, sendRequest } from '../functions/ServerRequest';
+import { useNavigation } from '@react-navigation/native';
 
-const SingleLibrary = ({ route, navigation }) => {
-    const { library, server } = route.params;
+class SingleLibrary extends React.Component {
+    localStyle = StyleSheet.create({
+        libraryContainer: {
+            flex: 1
+        },
+        container: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%'
+        },
+        upperContainer: {
+            marginBottom: 10
+        }
+    });
 
-    const [ mediaList, setMediaList ] = useState(false);
-    const [ spinner, setSpinner ] = useState(false);
-    const [ refreshing, setRefreshing ] = useState(false);
-    const [ medias, setMedias ] = useState(route.params.medias);
+    constructor(props) {
+        super(props);
 
-    const updateLibrary = async () => {
+        this.state = {
+            library: this.props.route.params.library,
+            server: this.props.route.params.server,
+            mediaList: false,
+            spinner: false,
+            refreshing: false,
+            medias: this.props.route.params.medias
+        };
+
+        this.refresh = this.refresh.bind(this);
+    }
+
+    async updateLibrary() {
         try {
             const [
                 updatedMedias
             ] = await Promise.all([
-                axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/all?X-Plex-Token=${server.token}`)
+                axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/library/sections/${this.state.library.key}/all?X-Plex-Token=${this.state.server.token}`)
             ]);
 
-            setMedias(updatedMedias.data.MediaContainer.Metadata);
-        } catch (e) {}
+            this.setState({ medias: updatedMedias.data.MediaContainer.Metadata });
+        } catch (e) {
+            Alert.alert('Error', 'Something went wrong during the library fetch!');
+        }
     }
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        updateLibrary().finally(() => {
-            setRefreshing(false);
-        });
-    }, []);
+    refresh() {
+        this.setState({ refreshing: true });
 
-    return (
-        <View style={ [style.libraryContainer] }>
-            <Spinner
-                visible={ spinner }
-                textContent={'Loading...'}
-            />
+        this.updateLibrary()
+            .finally(() => {
+                this.setState({ refreshing: false });
+            });
+    }
 
-            <ScrollView
-                refreshControl={
-                    <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
-                }
-            >
-                <Card>
-                    <Card.Title>Actions</Card.Title>
-                    <Card.Divider />
-                    <View style={ [style.container, style.upperContainer] }>
-                        <Button
-                            title='Scan'
-                            containerStyle={{
-                                width: '48%'
-                            }}
-                            buttonStyle={{
-                                backgroundColor: '#e5a00d'
-                            }}
+    render() {
+        return (
+            <View style={this.localStyle.libraryContainer}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                />
+
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
+                    }
+                >
+                    <Card>
+                        <Card.Title>Actions</Card.Title>
+                        <Card.Divider />
+                        <View style={[this.localStyle.container, this.localStyle.upperContainer]}>
+                            <Button
+                                title='Scan'
+                                containerStyle={{
+                                    width: '48%'
+                                }}
+                                buttonStyle={{
+                                    backgroundColor: '#e5a00d'
+                                }}
+                                onPress={() => {
+                                    sendRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/library/sections/${this.state.library.key}/refresh?X-Plex-Token=${this.state.server.token}`);
+                                }}
+                            />
+
+                            <Button
+                                title='Metadata'
+                                containerStyle={{
+                                    width: '48%'
+                                }}
+                                buttonStyle={{
+                                    backgroundColor: '#e5a00d'
+                                }}
+                                onPress={() => {
+                                    sendRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/library/sections/${this.state.library.key}/refresh?force=1&X-Plex-Token=${this.state.server.token}`);
+                                }}
+                            />
+                        </View>
+
+                        <View style={this.localStyle.container}>
+                            <Button
+                                title='Empty Trash'
+                                containerStyle={{
+                                    width: '100%'
+                                }}
+                                buttonStyle={{
+                                    backgroundColor: '#e5a00d'
+                                }}
+                                onPress={() => {
+                                    sendPutRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/library/sections/${this.state.library.key}/emptyTrash?X-Plex-Token=${this.state.server.token}`);
+                                }}
+                            />
+                        </View>
+                    </Card>
+
+                    <Card>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={this.localStyle.accordionTitle}>Medias</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={this.state.mediaList}
                             onPress={() => {
-                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/refresh?X-Plex-Token=${server.token}`);
+                                this.setState({ mediaList: !this.state.mediaList });
                             }}
-                        />
+                        >
+                            {this.state.medias.map((media, index) => {
+                                return (
+                                    <ListItem
+                                        key={index}
+                                        bottomDivider
+                                        onPress={async () => {
+                                            this.setState({ spinner: true });
 
-                        <Button
-                            title='Metadata'
-                            containerStyle={{
-                                width: '48%'
-                            }}
-                            buttonStyle={{
-                                backgroundColor: '#e5a00d'
-                            }}
-                            onPress={() => {
-                                sendRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/refresh?force=1&X-Plex-Token=${server.token}`);
-                            }}
-                        />
-                    </View>
+                                            if (this.state.library.type !== 'show') {
 
-                    <View style={ [style.container] }>
-                        <Button
-                            title='Empty Trash'
-                            containerStyle={{
-                                width: '100%'
-                            }}
-                            buttonStyle={{
-                                backgroundColor: '#e5a00d'
-                            }}
-                            onPress={() => {
-                                sendPutRequest(`${server.protocol}://${server.ip}:${server.port}/library/sections/${library.key}/emptyTrash?X-Plex-Token=${server.token}`);
-                            }}
-                        />
-                    </View>
-                </Card>
+                                                return this.props.navigation.navigate('SingleMedia', {
+                                                    title: media.title,
+                                                    library: this.state.library,
+                                                    media: media,
+                                                    server: this.state.server
+                                                });
+                                            }
 
-                <Card>
-                    <ListItem.Accordion
-                        content={
-                            <ListItem.Content>
-                                <ListItem.Title style={ [style.accordionTitle] }>Medias</ListItem.Title>
-                            </ListItem.Content>
-                        }
-                        isExpanded={ mediaList }
-                        onPress={() => {
-                            setMediaList(!mediaList);
-                        }}
-                    >
-                        {medias.map((media, index) => {
-                            return (
-                                <ListItem
-                                    key={ index }
-                                    bottomDivider
-                                    onPress={async () => {
-                                        setSpinner(true);
+                                            try {
+                                                let seasons = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}${media.key}?X-Plex-Token=${this.state.server.token}`);
 
-                                        if (library.type !== 'show') {
-                                            return navigation.navigate('SingleMedia', {
-                                                title: media.title,
-                                                library: library,
-                                                media: media,
-                                                server: server
-                                            });
-                                        }
+                                                this.props.navigation.navigate('SingleMedia', {
+                                                    title: media.title,
+                                                    library: this.state.library,
+                                                    media: media,
+                                                    server: this.state.server,
+                                                    seasons: seasons.data.MediaContainer.Metadata
+                                                });
 
-                                        try {
-                                            let seasons = await axios.get(`${server.protocol}://${server.ip}:${server.port}${media.key}?X-Plex-Token=${server.token}`);
-
-                                            navigation.navigate('SingleMedia', {
-                                                title: media.title,
-                                                library: library,
-                                                media: media,
-                                                server: server,
-                                                seasons: seasons.data.MediaContainer.Metadata
-                                            });
-
-                                            setSpinner(false);
-                                        } catch (e) {
-                                            console.error(e)
-                                        }
-                                    }}
-                                >
-                                    <Avatar
-                                        ImageComponent={() => (
-                                            <FastImage
-                                                style={{
-                                                    width: 32,
-                                                    height: 32,
-                                                    position: 'absolute'
-                                                }}
-                                                source={{
-                                                    uri: `${server.protocol}://${server.ip}:${server.port}${media.thumb}?X-Plex-Token=${server.token}`,
-                                                    priority: FastImage.priority.normal,
-                                                }}
-                                                resizeMode={ FastImage.resizeMode.contain }
-                                            />
-                                        )}
-                                        overlayContainerStyle={{
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
+                                                this.setState({ spinner: false });
+                                            } catch (e) {
+                                                Alert.alert('Error', 'Something went wrong while fetching the TV show seasons!');
+                                            }
                                         }}
-                                    />
+                                    >
+                                        <Avatar
+                                            ImageComponent={() => (
+                                                <FastImage
+                                                    style={{
+                                                        width: 32,
+                                                        height: 32,
+                                                        position: 'absolute'
+                                                    }}
+                                                    source={{
+                                                        uri: `${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}${media.thumb}?X-Plex-Token=${this.state.server.token}`,
+                                                        priority: FastImage.priority.normal,
+                                                    }}
+                                                    resizeMode={FastImage.resizeMode.contain}
+                                                />
+                                            )}
+                                            overlayContainerStyle={{
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                        />
 
-                                    <ListItem.Content>
-                                        <ListItem.Title>{ media.title }</ListItem.Title>
-                                        <ListItem.Subtitle>{ media.studio }</ListItem.Subtitle>
-                                    </ListItem.Content>
-                                    <ListItem.Chevron color='black' />
-                                </ListItem>
-                            );
-                        })}
-                    </ListItem.Accordion>
-                </Card>
-            </ScrollView>
-        </View>
-    );
+                                        <ListItem.Content>
+                                            <ListItem.Title>{media.title}</ListItem.Title>
+                                            <ListItem.Subtitle>{media.studio}</ListItem.Subtitle>
+                                        </ListItem.Content>
+                                        <ListItem.Chevron color='black' />
+                                    </ListItem>
+                                );
+                            })}
+                        </ListItem.Accordion>
+                    </Card>
+                </ScrollView>
+            </View>
+        );
+    }
 }
 
-export default SingleLibrary
+export default (props) => {
+    const navigation = useNavigation();
+    return <SingleLibrary {...props} navigation={navigation} />;
+};
