@@ -1,18 +1,36 @@
-import { View } from "react-native";
-import { Button } from "@rneui/themed";
-import style from "../style/SessionManageStyle";
-import { sendRequest } from "../functions/ServerRequest";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const SingleSession = ({ route, navigation }) => {
-    const { server, session } = route.params;
-    const reason = "RTFM";
+class SingleSession extends React.Component {
+    reason = 'RTFM';
 
-    return (
-        <View
-            style={ [style.mainContainer] }
-        >
-        </View>
-    );
+    localStyle = StyleSheet.create({
+        mainContainer: {
+            flex: 1
+        }
+    })
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            server: this.props.route.params.server,
+            session: this.props.route.params.session
+        };
+    }
+
+    render() {
+        return (
+            <View
+                style={this.localStyle.mainContainer}
+            >
+            </View>
+        );
+    }
 }
 
-export default SingleSession;
+export default (props) => {
+    const navigation = useNavigation();
+    return <SingleSession {...props} navigation={navigation} />;
+};
