@@ -1,175 +1,198 @@
-// Dependencies
-import React, {useCallback, useState} from "react";
-import axios from "axios";
-// Components
-import { Dimensions, RefreshControl, ScrollView, Text, View } from "react-native";
-import { Avatar, Card, ListItem } from "@rneui/themed";
-import FastImage from "react-native-fast-image";
-import Spinner from "react-native-loading-spinner-overlay";
-// Functions
-import { getDateFromTimestamp, getTimeFromTimestamp } from "../functions/GlobalUtiles";
-// Styles
-import style from "../style/SingleMediaStyle";
+import React from 'react';
+import axios from 'axios';
+import { Alert, Dimensions, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Avatar, Card, ListItem } from '@rneui/themed';
+import FastImage from 'react-native-fast-image';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { getDateFromTimestamp, getTimeFromTimestamp } from '../functions/GlobalUtiles';
+import { useNavigation } from '@react-navigation/native';
 
-const SingleMedia = ({ route, navigation }) => {
-    const { library, server } = route.params;
+class SingleMedia extends React.Component {
+    mainImgWidth = Dimensions.get('window').width;
+    mainImgHeight = (Dimensions.get('window').width * 9 / 16);
 
-    const [ seasonsList, setSeasonsList ] = useState(false);
-    const [ spinner, setSpinner ] = useState(false);
-    const [ refreshing, setRefreshing ] = useState(false);
+    localStyle = StyleSheet.create({
+        textColor: {
+            color: '#000'
+        },
+        textLabel: {
+            fontWeight: 'bold'
+        },
+        accordionTitle: {
+            fontWeight: 'bold',
+            fontSize: 14
+        }
+    });
 
-    const [ media, setMedia ] = useState(route.params.media);
-    const [ seasons, setSeasons ] = useState(route.params.seasons);
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            library: this.props.route.params.library,
+            server: this.props.route.params.server,
+            seasonsList: false,
+            spinner: false,
+            refreshing: false,
+            media: this.props.route.params.media,
+            seasons: this.props.route.params.seasons
+        };
 
-    const mainImgWidth = Dimensions.get('window').width;
-    const mainImgHeight = (Dimensions.get('window').width * 9 / 16);
+        this.refresh = this.refresh.bind(this);
+    }
 
-    const updateMedia = async () => {
+    async updateMedia () {
         try {
             const [
                 updatedSeasons
             ] = await Promise.all([
-                axios.get(`${server.protocol}://${server.ip}:${server.port}${media.key}?X-Plex-Token=${server.token}`)
+                axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}${this.state.media.key}?X-Plex-Token=${this.state.server.token}`)
             ]);
 
-            setSeasons(updatedSeasons.data.MediaContainer.Metadata);
-        } catch (e) {}
+            this.setState({ seasons: updatedSeasons.data.MediaContainer.Metadata });
+        } catch (e) {
+            Alert.alert('Error', 'Something went wrong during the seasons fetch!');
+        }
     };
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        updateMedia().finally(() => {
-            setRefreshing(false);
-        });
-    }, []);
+    async refresh() {
+        try {
+            await this.updateMedia();
+        } catch (e) {
+            Alert.alert('Error', 'Something went wrong during the media fetch!');
+        }
+    }
 
-    return (
-        <View>
-            <Spinner
-                visible={ spinner }
-                textContent={'Loading...'}
-            />
+    render() {
+        return (
+            <View>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                />
 
-            <ScrollView
-                refreshControl={
-                    <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
-                }
-            >
-                <Card>
-                    <View>
-                        <FastImage
-                            style={{
-                                width: mainImgWidth * 0.85,
-                                height: mainImgHeight * 0.85
-                            }}
-                            source={{
-                                uri: `${server.protocol}://${server.ip}:${server.port}${media.art}?X-Plex-Token=${server.token}`,
-                                priority: FastImage.priority.normal,
-                            }}
-                            resizeMode={ FastImage.resizeMode.contain }
-                        />
-
-                        <Text style={ [style.textColor, style.textLabel] }>{ media.title } { media.studio ? `- ${media.studio}` : '' }</Text>
-                        <Card.Divider />
-
-                        <Text style={ [style.textColor] }>
-                            <Text style={ [style.textLabel] }>Summary : </Text>
-                            { media.summary }
-                        </Text>
-
-                        <Text style={ [style.textColor] }>
-                            <Text style={ [style.textLabel] }>Duration : </Text>
-                            { media.duration ? new Date(media.duration).toISOString().slice(11, 19) : 'unknown' }
-                        </Text>
-
-                        <Text style={ [style.textColor] }>
-                            <Text style={ [style.textLabel] }>Rating : </Text>
-                            { media.rating ? media.rating : 'unknown' }
-                        </Text>
-
-                        <Text style={ [style.textColor] }>
-                            <Text style={ [style.textLabel] }>Added at : </Text>
-                            { getDateFromTimestamp(media.addedAt) } - { getTimeFromTimestamp(media.addedAt) }
-                        </Text>
-                    </View>
-                </Card>
-
-                {library.type === 'show' ? (
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
+                    }
+                >
                     <Card>
-                        <ListItem.Accordion
-                            content={
-                                <ListItem.Content>
-                                    <ListItem.Title style={ [style.accordionTitle] }>Seasons</ListItem.Title>
-                                </ListItem.Content>
-                            }
-                            isExpanded={ seasonsList }
-                            onPress={() => {
-                                setSeasonsList(!seasonsList);
-                            }}
-                        >
-                            {seasons.map((season, index) => {
-                                return (
-                                    <ListItem
-                                        key={ index }
-                                        bottomDivider
-                                        onPress={async () => {
-                                            try {
-                                                setSpinner(true);
+                        <View>
+                            <FastImage
+                                style={{
+                                    width: this.mainImgWidth * 0.85,
+                                    height: this.mainImgHeight * 0.85
+                                }}
+                                source={{
+                                    uri: `${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}${this.state.media.art}?X-Plex-Token=${this.state.server.token}`,
+                                    priority: FastImage.priority.normal,
+                                }}
+                                resizeMode={FastImage.resizeMode.contain}
+                            />
 
-                                                let episodes = await axios.get(`${server.protocol}://${server.ip}:${server.port}${season.key}?X-Plex-Token=${server.token}`);
+                            <Text style={[this.localStyle.textColor, this.localStyle.textLabel]}>{this.state.media.title} {this.state.media.studio ? `- ${this.state.media.studio}` : ''}</Text>
+                            <Card.Divider />
 
-                                                navigation.navigate('SingleSeason', {
-                                                    title: `${media.title} - ${season.title}`,
-                                                    season: season,
-                                                    episodes: episodes.data.MediaContainer.Metadata,
-                                                    server: server,
-                                                    media: media
-                                                });
+                            <Text style={this.localStyle.textColor}>
+                                <Text style={this.localStyle.textLabel}>Summary: </Text>
+                                {this.state.media.summary}
+                            </Text>
 
-                                                setSpinner(false);
-                                            } catch (e) {
-                                                console.error(e);
-                                            }
-                                        }}
-                                    >
-                                        <Avatar
-                                            ImageComponent={() => (
-                                                <FastImage
-                                                    style={{
-                                                        width: 32,
-                                                        height: 32,
-                                                        position: 'absolute'
-                                                    }}
-                                                    source={{
-                                                        uri: `${server.protocol}://${server.ip}:${server.port}${season.thumb}?X-Plex-Token=${server.token}`,
-                                                        priority: FastImage.priority.normal,
-                                                    }}
-                                                    resizeMode={ FastImage.resizeMode.contain }
-                                                />
-                                            )}
-                                            overlayContainerStyle={{
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                            }}
-                                        />
+                            <Text style={this.localStyle.textColor}>
+                                <Text style={this.localStyle.textLabel}>Duration: </Text>
+                                {this.state.media.duration ? new Date(this.state.media.duration).toISOString().slice(11, 19) : 'unknown'}
+                            </Text>
 
-                                        <ListItem.Content>
-                                            <ListItem.Title>{ season.title }</ListItem.Title>
-                                            <ListItem.Subtitle>{ season.year ? season.year : season.parentYear }</ListItem.Subtitle>
-                                        </ListItem.Content>
-                                        <ListItem.Chevron color='black' />
-                                    </ListItem>
-                                )
-                            })}
-                        </ListItem.Accordion>
+                            <Text style={this.localStyle.textColor}>
+                                <Text style={this.localStyle.textLabel}>Rating: </Text>
+                                {this.state.media.rating ? this.state.media.rating : 'unknown'}
+                            </Text>
+
+                            <Text style={this.localStyle.textColor}>
+                                <Text style={this.localStyle.textLabel}>Added at: </Text>
+                                {getDateFromTimestamp(this.state.media.addedAt)} - {getTimeFromTimestamp(this.state.media.addedAt)}
+                            </Text>
+                        </View>
                     </Card>
-                ) : (
-                    <Text></Text>
-                )}
-            </ScrollView>
-        </View>
-    );
+
+                    {this.state.library.type === 'show' ? (
+                        <Card>
+                            <ListItem.Accordion
+                                content={
+                                    <ListItem.Content>
+                                        <ListItem.Title style={this.localStyle.accordionTitle}>Seasons</ListItem.Title>
+                                    </ListItem.Content>
+                                }
+                                isExpanded={this.state.seasonsList}
+                                onPress={() => {
+                                    this.setState({ seasonsList: !this.state.seasonsList });
+                                }}
+                            >
+                                {this.state.seasons.map((season, index) => {
+                                    return (
+                                        <ListItem
+                                            key={index}
+                                            bottomDivider
+                                            onPress={async () => {
+                                                try {
+                                                    this.setState({ spinner: true });
+
+                                                    let episodes = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}${season.key}?X-Plex-Token=${this.state.server.token}`);
+
+                                                    this.props.navigation.navigate('SingleSeason', {
+                                                        title: `${this.state.media.title} - ${season.title}`,
+                                                        season: season,
+                                                        episodes: episodes.data.MediaContainer.Metadata,
+                                                        server: this.state.server,
+                                                        media: this.state.media
+                                                    });
+
+                                                    this.setState({ spinner: false });
+                                                } catch (e) {
+                                                    Alert.alert('Error', 'Something went wrong during episodes fetch!');
+                                                }
+                                            }}
+                                        >
+                                            <Avatar
+                                                ImageComponent={() => (
+                                                    <FastImage
+                                                        style={{
+                                                            width: 32,
+                                                            height: 32,
+                                                            position: 'absolute'
+                                                        }}
+                                                        source={{
+                                                            uri: `${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}${season.thumb}?X-Plex-Token=${this.state.server.token}`,
+                                                            priority: FastImage.priority.normal,
+                                                        }}
+                                                        resizeMode={FastImage.resizeMode.contain}
+                                                    />
+                                                )}
+                                                overlayContainerStyle={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}
+                                            />
+
+                                            <ListItem.Content>
+                                                <ListItem.Title>{season.title}</ListItem.Title>
+                                                <ListItem.Subtitle>{season.year ? season.year : season.parentYear}</ListItem.Subtitle>
+                                            </ListItem.Content>
+                                            <ListItem.Chevron color='black' />
+                                        </ListItem>
+                                    )
+                                })}
+                            </ListItem.Accordion>
+                        </Card>
+                    ) : (
+                        <Text></Text>
+                    )}
+                </ScrollView>
+            </View>
+        );
+    }
 }
 
-export default SingleMedia;
+export default (props) => {
+    const navigation = useNavigation();
+    return <SingleMedia {...props} navigation={navigation} />;
+};
