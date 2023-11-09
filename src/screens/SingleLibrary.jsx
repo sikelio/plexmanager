@@ -47,7 +47,7 @@ class SingleLibrary extends React.Component {
 
             this.setState({ medias: updatedMedias.data.MediaContainer.Metadata });
         } catch (e) {
-            Alert.alert('Error', 'Something went wrong during the medias fetch!');
+            Alert.alert('Error', 'Something went wrong during the library fetch!');
         }
     }
 
@@ -55,7 +55,7 @@ class SingleLibrary extends React.Component {
         try {
             await this.updateLibrary();
         } catch (e) {
-            Alert.alert('Error', 'Something went wrong during the medias fetch!');
+            Alert.alert('Error', 'Something went wrong during the library fetch!');
         }
     }
 
