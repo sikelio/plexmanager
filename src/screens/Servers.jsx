@@ -1,74 +1,252 @@
-// Dependencies
-import React, { useState, useCallback } from 'react';
-// Components
-import { RefreshControl, ScrollView, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
+import { Alert, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import ServerList from '../components/ServerList';
-// Functions
-import { getServer } from '../functions/ServerStorage';
-// Styles
-import style from '../style/ServerStyle';
+import { deleteServer, getServer } from '../functions/ServerStorage';
+import { Card, Text } from '@rneui/themed';
+import ServerButton from '../components/ServerButton';
+import axios from 'axios';
 
-const Servers = ({ navigation } ) => {
-    const [ serverList, setServerList ] = useState([]);
-    const [ spinner, setSpinner ] = useState(false);
-    const [ refreshing, setRefreshing ] = useState(false);
+class Servers extends React.Component {
+    localStyle = StyleSheet.create({
+        mainContainer: {
+            flex: 1
+        },
+        srvButtonContainer: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%'
+        },
+        cardBtn: {
+            marginRight: 10
+        },
+        textColor: {
+            color: '#000',
+            marginBottom: 10
+        },
+        textLabel: {
+            fontWeight: 'bold'
+        }
+    });
 
-    const fetchData = async () => {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            serverList: [],
+            spinner: false,
+            refreshing: false,
+            isServerListEmpty: true
+        };
+
+        this.refresh = this.refresh.bind(this);
+    }
+
+    async fetchServers() {
         try {
-            const servers = await getServer();
-            if (servers) {
-                setServerList(JSON.parse(servers));
+            const servers = JSON.parse(await getServer());
+
+            if (servers.length > 0) {
+                this.setState({ isServerListEmpty: false });
+                this.setState({ serverList: servers });
+            } else {
+                this.setState({ isServerListEmpty: true });
             }
         } catch (e) {
-            console.error(e);
+            Alert.alert('Error', 'Something went wrong during servers fetch!');
         }
-    };
+    }
 
-    const refreshServerList = () => {
-        fetchData();
-    };
+    async refreshServerList() {
+        await this.fetchServers();
+    }
 
-    useFocusEffect(
-        useCallback(() => {
-            fetchData();
-        }, [])
-    );
+    async componentDidMount() {
+        await this.fetchServers();
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        fetchData().finally(() => {
-            setRefreshing(false);
+        this.props.navigation.addListener('focus', async () => {
+            await this.fetchServers();
         });
-    }, []);
+    }
 
-    let isServerListEmpty = serverList.length === 0;
+    refresh() {
+        this.setState({ refreshing: true });
 
-    return (
-        <View style={ [style.mainContainer] }>
-            <Spinner
-                visible={ spinner }
-                textContent={ 'Loading...' }
-            />
+        this.fetchServers()
+            .finally(() => {
+                this.setState({ refreshing: false });
+            });
+    }
 
-            <ScrollView
-                refreshControl={
-                    <RefreshControl refreshing={ refreshing } onRefresh={ onRefresh } />
-                }
-            >
-                <View>
-                    <ServerList
-                        data={ serverList }
-                        isEmpty={ isServerListEmpty }
-                        navigation={ navigation }
-                        refreshServerList={ refreshServerList }
-                        setSpinner={ setSpinner }
-                    />
-                </View>
-            </ScrollView>
-        </View>
-    );
+    render() {
+        return (
+            <View style={this.localStyle.mainContainer}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                />
+
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
+                    }
+                >
+                    <View>
+                        {this.state.isServerListEmpty === true ? (
+                            <View>
+                                <Card>
+                                    <Card.Title>No server</Card.Title>
+                                    <Card.Divider></Card.Divider>
+                                    <View>
+                                        <Text>Add one in the "New Server" tab</Text>
+                                    </View>
+                                </Card>
+                            </View>
+                        ) : (
+                            this.state.serverList.map((server, index) => (
+                                <Card key={index}>
+                                    <Card.Title>{server.name}</Card.Title>
+                                    <Card.Divider />
+                                    <View key={index}>
+                                        <Text style={this.localStyle.textColor}>
+                                            <Text style={this.localStyle.textLabel}>PROTOCOL: </Text>
+                                            {server.protocol.toUpperCase()}
+                                        </Text>
+
+                                        <Text style={this.localStyle.textColor}>
+                                            <Text style={this.localStyle.textLabel}>IP: </Text>
+                                            {server.ip}
+                                        </Text>
+
+                                        <Text style={this.localStyle.textColor}>
+                                            <Text style={this.localStyle.textLabel}>PORT: </Text>
+                                            {server.port}
+                                        </Text>
+
+                                        <View style={this.localStyle.srvButtonContainer}>
+                                            <ServerButton
+                                                iconName={'wrench'}
+                                                iconColor={'#ffffff'}
+                                                backgroundColor={'#e5a00d'}
+                                                btnTitle={'Manage'}
+                                                onPress={async () => {
+                                                    this.setState({ spinner: true });
+
+                                                    axios.interceptors.response.use(
+                                                        response => response,
+                                                        error => {
+                                                            if (!error.response) {
+                                                                return Promise.reject(new Error('Network Error'));
+                                                            }
+
+                                                            return Promise.reject(error);
+                                                        }
+                                                    );
+
+                                                    try {
+                                                        const [
+                                                            plexInfoApi,
+                                                            libraries,
+                                                            users,
+                                                            identity,
+                                                            devices,
+                                                            activeSessions,
+                                                            sessionHistory
+                                                        ] = await Promise.all([
+                                                            axios.get('https://plex.tv/api/downloads/5.json'),
+                                                            axios.get(`${server.protocol}://${server.ip}:${server.port}/library/sections/?X-Plex-Token=${server.token}`),
+                                                            axios.get(`${server.protocol}://${server.ip}:${server.port}/accounts/?X-Plex-Token=${server.token}`),
+                                                            axios.get(`${server.protocol}://${server.ip}:${server.port}/?X-Plex-Token=${server.token}`),
+                                                            axios.get(`${server.protocol}://${server.ip}:${server.port}/devices/?X-Plex-Token=${server.token}`),
+                                                            axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions?X-Plex-Token=${server.token}`),
+                                                            axios.get(`${server.protocol}://${server.ip}:${server.port}/status/sessions/history/all?X-Plex-Token=${server.token}`)
+                                                        ]);
+
+                                                        this.props.navigation.navigate('SingleServer', {
+                                                            title: server.name,
+                                                            plexInfo: plexInfoApi.data[server.serverType][identity.data.MediaContainer.platform],
+                                                            server: server,
+                                                            libraries: libraries.data.MediaContainer.Directory,
+                                                            users: users.data.MediaContainer.Account,
+                                                            identity: identity.data.MediaContainer,
+                                                            devices: devices.data.MediaContainer.Device,
+                                                            activeSessions: activeSessions.data.MediaContainer.Metadata,
+                                                            sessionHistory: sessionHistory.data.MediaContainer
+                                                        });
+                                                    } catch (e) {
+                                                        if (e.message === 'Network Error') {
+                                                            Alert.alert(
+                                                                'Network Error',
+                                                                'Please check your network connection and try again.',
+                                                                [{ text: 'OK' }]
+                                                            );
+                                                        } else if (e.response && e.response.status === 401) {
+                                                            Alert.alert(
+                                                                'Unauthorized',
+                                                                'It seems you are unauthorized, check if you\'re plex token is valid.',
+                                                                [{ text: 'OK' }]
+                                                            );
+                                                        } else {
+                                                            Alert.alert(
+                                                                'Error',
+                                                                'Something went wrong, check all credentials you have provided.',
+                                                                [{ text: 'OK' }]
+                                                            );
+                                                        }
+                                                    }
+
+                                                    this.setState({ spinner: false });
+                                                }}
+                                            />
+
+                                            <ServerButton
+                                                iconName={'pen'}
+                                                iconColor={'#ffffff'}
+                                                backgroundColor={'#e5a00d'}
+                                                btnTitle={'Edit'}
+                                                onPress={() => {
+                                                    this.props.navigation.navigate('EditServer', {
+                                                        title: server.name,
+                                                        server: server,
+                                                        index: index
+                                                    });
+                                                }}
+                                            />
+
+                                            <ServerButton
+                                                iconName={'trash'}
+                                                iconColor={'#ffffff'}
+                                                backgroundColor={'#ff0000'}
+                                                btnTitle={'Delete'}
+                                                onPress={() => {
+                                                    Alert.alert('Confirmation', 'Are you sure you want to delete this server ?', [
+                                                        {
+                                                            text: 'Delete',
+                                                            style: 'destructive',
+                                                            onPress: async () => {
+                                                                await deleteServer(index);
+                                                                await this.refreshServerList();
+                                                            }
+                                                        }, {
+                                                            text: 'Cancel',
+                                                            style: 'cancel'
+                                                        }
+                                                    ]);
+                                                }}
+                                            />
+                                        </View>
+                                    </View>
+                                </Card>
+                            ))
+                        )}
+                    </View>
+                </ScrollView>
+            </View>
+        );
+    }
 }
 
-export default Servers;
+export default (props) => {
+    const navigation = useNavigation();
+    return <Servers {...props} navigation={navigation} />;
+};
