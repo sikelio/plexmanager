@@ -1,12 +1,18 @@
 import React from 'react';
+import { ScrollView, Linking, RefreshControl, Alert, StyleSheet } from 'react-native';
 import axios from 'axios';
 import info from '../../package.json';
-import { ScrollView, Linking, RefreshControl, Alert } from 'react-native';
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
-import style from '../style/AboutStyle';
 
 export default class About extends React.Component {
+    localStyle = StyleSheet.create({
+        accordionTitle: {
+            fontWeight: 'bold',
+            fontSize: 14
+        }
+    })
+
     constructor() {
         super();
 
@@ -54,7 +60,7 @@ export default class About extends React.Component {
                     <ListItem.Accordion
                         content={
                             <ListItem.Content>
-                                <ListItem.Title style={ [style.accordionTitle] }>About</ListItem.Title>
+                                <ListItem.Title style={this.localStyle.accordionTitle}>About</ListItem.Title>
                             </ListItem.Content>
                         }
                         isExpanded={ this.state.aboutList }
@@ -163,7 +169,7 @@ export default class About extends React.Component {
                     <ListItem.Accordion
                         content={
                             <ListItem.Content>
-                                <ListItem.Title style={ [style.accordionTitle] }>Authors</ListItem.Title>
+                                <ListItem.Title style={this.localStyle.accordionTitle}>Authors</ListItem.Title>
                             </ListItem.Content>
                         }
                         isExpanded={ this.state.authorsList }

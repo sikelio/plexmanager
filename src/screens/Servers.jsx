@@ -17,9 +17,6 @@ class Servers extends React.Component {
             justifyContent: 'space-between',
             width: '100%'
         },
-        cardBtn: {
-            marginRight: 10
-        },
         textColor: {
             color: '#000',
             marginBottom: 10

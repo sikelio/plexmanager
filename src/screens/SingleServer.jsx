@@ -24,9 +24,6 @@ class SingleServer extends React.Component {
             color: '#000',
             width: '33%'
         },
-        actionBtn: {
-            width: '33%'
-        },
         accordionTitle: {
             fontWeight: 'bold',
             fontSize: 14
@@ -629,7 +626,7 @@ class SingleServer extends React.Component {
                                         <ListItem.Title style={this.localStyle.accordionTitle}>Troubleshooting</ListItem.Title>
                                     </ListItem.Content>
                                 }
-                                isExpanded={this.localStyle.troubleshootingList}
+                                isExpanded={this.state.troubleshootingList}
                                 onPress={() => {
                                     this.setState({ troubleshootingList: !this.state.troubleshootingList });
                                 }}
