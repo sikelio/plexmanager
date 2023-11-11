@@ -7,14 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 
 class SingleAccount extends React.Component {
     localStyle = StyleSheet.create({
-        userPreferencesLabel: {
-            width: '50%',
-            color: '#000000'
-        },
-        userPreferencesValue: {
-            width: '50%',
-            color: '#000000'
-        },
         textColor: {
             color: '#000',
             marginBottom: 10

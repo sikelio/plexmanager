@@ -14,10 +14,6 @@ class SingleEpisode extends React.Component {
         },
         textLabel: {
             fontWeight: 'bold'
-        },
-        accordionTitle: {
-            fontWeight: 'bold',
-            fontSize: 14
         }
     });
 

@@ -1,43 +1,56 @@
-// Dependencies
-import React, { useState, useEffect } from 'react';
-// Components
-import {Alert, View} from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from "react-native";
 import { Text, Card, Switch } from '@rneui/themed';
-// Functions
-import { saveDarkmode, getDarkmodeSwitch } from "../functions/Darkmode";
-// Styles
-import style from '../style/SettingStyle';
+import { saveDarkmode } from "../functions/Darkmode";
 
-const Settings = () => {
-    const [ darkmode, setDarkmode ] = useState(false);
-
-    useEffect(() => {
-        getDarkmodeSwitch(setDarkmode);
+class Settings extends React.Component {
+    localStyle = StyleSheet.create({
+        container: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'flex-start',
+            marginVertical: 2.5
+        },
+        item: {
+            width: '85%',
+            fontSize: 18
+        }
     });
 
-    return (
-        <View>
-            <Card>
-                <View
-                    style={ [style.container] }
-                >
-                    <Text
-                        style={ [style.item] }
-                    >
-                        Darkmode
-                    </Text>
+    constructor(props) {
+        super(props);
 
-                    <Switch
-                        value={ darkmode }
-                        onValueChange={async (value) => {
-                            setDarkmode(value);
-                            await saveDarkmode(value);
-                        }}
-                    />
-                </View>
-            </Card>
-        </View>
-    );
+        this.state = {
+            darkmode: false
+        };
+    }
+
+    render() {
+        return (
+            <View>
+                <Card>
+                    <View
+                        style={this.localStyle.container}
+                    >
+                        <Text
+                            style={this.localStyle.item}
+                        >
+                            Darkmode
+                        </Text>
+
+                        <Switch
+                            value={this.state.darkmode}
+                            onValueChange={async (value) => {
+                                this.setState({ darkmode: value });
+
+                                await saveDarkmode(value);
+                            }}
+                        />
+                    </View>
+                </Card>
+            </View>
+        );
+    }
 }
 
 export default Settings;
