@@ -184,6 +184,35 @@ class SingleServer extends React.Component {
                                         </View>
                                     </ListItem.Content>
                                 </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                                title='Server Capabilities'
+                                                color='#e5a00d'
+                                                onPress={async () => {
+                                                    try {
+                                                        this.setState({ spinner: true });
+
+                                                        let serverCapabilities = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/?X-Plex-Token=${this.state.server.token}`);
+
+                                                        this.props.navigation.navigate('ServerCapabilities', {
+                                                            serverCapabilities: serverCapabilities.data.MediaContainer,
+                                                            server: this.state.server
+                                                        });
+
+                                                        this.setState({ spinner: false });
+                                                    } catch (e) {
+                                                        this.setState({ spinner: false });
+
+                                                        Alert.alert('Error', 'Something went wrong while server capabilities fetch!');
+                                                    }
+                                                }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
                             </ListItem.Accordion>
                         </>
                     </Card>

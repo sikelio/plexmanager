@@ -16,6 +16,7 @@ import NewestMovies from './screens/NewestMovies';
 import ActiveSessions from './screens/ActiveSessions';
 import TranscodingSessions from './screens/TranscodingSessions';
 import Activities from './screens/Activities';
+import ServerCapabilities from './screens/ServerCapabilities';
 
 const Stack = createNativeStackNavigator();
 
@@ -98,6 +99,11 @@ export default class App extends React.Component {
                         name="Activities"
                         component={ Activities }
                         options={({ route }) => ({ title: 'All Activities' })}
+                    />
+                    <Stack.Screen
+                        name="ServerCapabilities"
+                        component={ ServerCapabilities }
+                        options={({ route }) => ({ title: 'Server Capabilities' })}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

@@ -47,7 +47,6 @@ class Activities extends React.Component {
 
             this.setState({ activities: activities.data.MediaContainer });
         } catch (e) {
-            console.error(e);
             Alert.alert('Error', 'Somenthing went wront during activities fetch!');
         }
     }
