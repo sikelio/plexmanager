@@ -645,7 +645,7 @@ class SingleServer extends React.Component {
                                               title='Stop Clean Old Bundles Task'
                                               color='#e5a00d'
                                               onPress={() => {
-                                                  sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/OptimizeDatabase?X-Plex-Token=${this.state.server.token}`);
+                                                  sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldBundles?X-Plex-Token=${this.state.server.token}`);
                                               }}
                                             />
                                         </View>
