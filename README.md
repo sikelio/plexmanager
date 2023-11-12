@@ -103,8 +103,8 @@ Coming soon...
     - [X] [Stop Clean Old Bundles Task](https://github.com/sikelio/plexmanager/issues/70)
     - [X] [Run Clean Old Cache Files Task](https://github.com/sikelio/plexmanager/issues/71)
     - [X] [Stop Clean Old Cache Files Task](https://github.com/sikelio/plexmanager/issues/72)
-    - [ ] [Run Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/73)
-    - [ ] [Stop Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/74)
+    - [X] [Run Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/73)
+    - [X] [Stop Refresh Libraries Task](https://github.com/sikelio/plexmanager/issues/74)
 - Troubleshooting
     - [X] [Download the Databases](https://github.com/sikelio/plexmanager/issues/31)
     - [X] [Download the Logs](https://github.com/sikelio/plexmanager/issues/32)
