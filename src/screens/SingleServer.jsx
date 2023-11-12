@@ -4,7 +4,7 @@ import { Button, ScrollView, View, Text, RefreshControl, Alert, Linking, StyleSh
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
-import { sendPostRequest, sendPutRequest, sendRequest } from '../functions/ServerRequest';
+import { sendDeleteRequest, sendPostRequest, sendPutRequest, sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from '../functions/GlobalUtiles';
 import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTitle } from '../functions/ServerManageUtiles';
 import { useNavigation } from '@react-navigation/native';
@@ -576,6 +576,20 @@ class SingleServer extends React.Component {
                                                 color='#e5a00d'
                                                 onPress={() => {
                                                     sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
+                                                }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                                title='Stop All Scheduled Tasks'
+                                                color='#e5a00d'
+                                                onPress={() => {
+                                                    sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/?X-Plex-Token=${this.state.server.token}`);
                                                 }}
                                             />
                                         </View>
