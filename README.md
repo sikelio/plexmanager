@@ -5,8 +5,8 @@ A cross-platform app build in [React Native](https://reactnative.dev/), based on
 
 | Labels      | Version     | Branch                                                               |
 |-------------|-------------|----------------------------------------------------------------------|
-| Current     | v0.0.3-beta | [0.0.3-beta](https://github.com/sikelio/plexmanager/tree/0.0.3-beta) |
-| Development | v0.0.4-beta | [dev](https://github.com/sikelio/plexmanager/tree/dev)               |
+| Current     | v0.0.4-beta | [0.0.4-beta](https://github.com/sikelio/plexmanager/tree/0.0.4-beta) |
+| Development | v0.0.5-beta | [dev](https://github.com/sikelio/plexmanager/tree/dev)               |
 
 ## Install
 
