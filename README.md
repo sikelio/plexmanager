@@ -95,9 +95,8 @@ Coming soon...
 - Scheduled Tasks
     - [X] [Get All Scheduled Tasks](https://github.com/sikelio/plexmanager/issues/29)
     - [X] [Run Backup Database Task](https://github.com/sikelio/plexmanager/issues/30)
-    - [ ] [Stop All Scheduled Tasks](https://github.com/sikelio/plexmanager/issues/64)
-    - [ ] [Run Backup Database Task](https://github.com/sikelio/plexmanager/issues/65)
-    - [ ] [Stop Backup Database Task](https://github.com/sikelio/plexmanager/issues/66)
+    - [X] [Stop Backup Database Task](https://github.com/sikelio/plexmanager/issues/66)
+    - [X] [Stop All Scheduled Tasks](https://github.com/sikelio/plexmanager/issues/64)
     - [ ] [Run Optimize Database Task](https://github.com/sikelio/plexmanager/issues/67)
     - [ ] [Stop Optimize Database Task](https://github.com/sikelio/plexmanager/issues/68)
     - [ ] [Run Clean Old Bundles Task](https://github.com/sikelio/plexmanager/issues/69)

@@ -572,11 +572,25 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Backup database'
+                                                title='Start Backup Database Task'
                                                 color='#e5a00d'
                                                 onPress={() => {
                                                     sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
                                                 }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Stop Backup Database Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
+                                              }}
                                             />
                                         </View>
                                     </ListItem.Content>
