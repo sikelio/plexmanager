@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Alert, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, RefreshControl, ScrollView, StyleSheet, View, Text } from 'react-native';
 import { Card, Button, ListItem, Avatar } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -19,6 +19,9 @@ class SingleLibrary extends React.Component {
         },
         upperContainer: {
             marginBottom: 10
+        },
+        bottomContainer: {
+            marginTop: 10
         }
     });
 
@@ -75,7 +78,9 @@ class SingleLibrary extends React.Component {
                 >
                     <Card>
                         <Card.Title>Actions</Card.Title>
+
                         <Card.Divider />
+
                         <View style={[this.localStyle.container, this.localStyle.upperContainer]}>
                             <Button
                                 title='Scan'
@@ -118,6 +123,40 @@ class SingleLibrary extends React.Component {
                                 }}
                             />
                         </View>
+
+                        {this.state.library.type === 'movie' ? (
+                            <View style={[this.localStyle.container, this.localStyle.bottomContainer]}>
+                                <Button
+                                    title='Newest Movies'
+                                    containerStyle={{
+                                        width: '100%'
+                                    }}
+                                    buttonStyle={{
+                                        backgroundColor: 'green'
+                                    }}
+                                    onPress={async () => {
+                                        try {
+                                            this.setState({ spinner: true });
+
+                                            let newestMovies = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/library/sections/${this.state.library.key}/newest?X-Plex-Token=${this.state.server.token}`);
+
+                                            this.props.navigation.navigate('NewestMovies', {
+                                                title: `Newest Movies - ${this.state.library.title}`,
+                                                movies: newestMovies.data.MediaContainer.Metadata,
+                                                server: this.state.server,
+                                                libraryKey: this.state.library.key
+                                            });
+
+                                            this.setState({ spinner: false });
+                                        } catch (e) {
+                                            Alert.alert('Error', 'Something went wrong during newest movies fetch!');
+                                        }
+                                    }}
+                                />
+                            </View>
+                        ) : (
+                            <View></View>
+                        )}
                     </Card>
 
                     <Card>

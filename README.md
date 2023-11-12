@@ -79,7 +79,7 @@ Under construction
     - [X] [Refresh Metadata for a Library](https://github.com/sikelio/plexmanager/issues/12)
 - Media
     - [X] [Get All Movies](https://github.com/sikelio/plexmanager/issues/13)
-    - [ ] [Get Newest Movies](https://github.com/sikelio/plexmanager/issues/14)
+    - [X] [Get Newest Movies](https://github.com/sikelio/plexmanager/issues/14)
     - [ ] [Update Movie Details](https://github.com/sikelio/plexmanager/issues/15)
     - [X] [Get All TV Shows](https://github.com/sikelio/plexmanager/issues/16)
     - [X] [Get All TV Show Seasons](https://github.com/sikelio/plexmanager/issues/17)

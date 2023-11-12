@@ -12,6 +12,8 @@ import SingleMedia from './screens/SingleMedia';
 import ScheduledTasks from './screens/ScheduledTasks';
 import SingleSeason from './screens/SingleSeason';
 import SingleEpisode from './screens/SingleEpisode';
+import NewestMovies from "./screens/NewestMovies";
+import title from "react-native-paper/src/components/Typography/v2/Title";
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +75,11 @@ export default class App extends React.Component {
                     <Stack.Screen
                         name="SingleEpisode"
                         component={ SingleEpisode }
+                        options={({ route }) => ({ title: route.params.title })}
+                    />
+                    <Stack.Screen
+                        name="NewestMovies"
+                        component={ NewestMovies }
                         options={({ route }) => ({ title: route.params.title })}
                     />
                 </Stack.Navigator>
