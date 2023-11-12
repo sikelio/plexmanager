@@ -69,7 +69,7 @@ Under construction
     - [ ] [Perform Search](https://github.com/sikelio/plexmanager/issues/61)
 - Session
     - [X] [Get Active Sessions](https://github.com/sikelio/plexmanager/issues/9)
-    - [ ] [Get All Transcode Sessions](https://github.com/sikelio/plexmanager/issues/10)
+    - [X] [Get All Transcode Sessions](https://github.com/sikelio/plexmanager/issues/10)
     - [ ] [Terminate a Session](https://github.com/sikelio/plexmanager/issues/11)
     - [X] [Get Session History](https://github.com/sikelio/plexmanager/issues/62)
 - Library

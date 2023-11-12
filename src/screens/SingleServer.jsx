@@ -433,10 +433,45 @@ class SingleServer extends React.Component {
                                 </ListItem>
 
                                 <ListItem
-                                    onPress={async () => {}}
+                                    onPress={async () => {
+                                        try {
+                                            this.setState({ spinner: true });
+
+                                            let [
+                                                activeSessions,
+                                                transcodingSessions
+                                            ] = await Promise.all([
+                                                axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/status/sessions?X-Plex-Token=${this.state.server.token}`),
+                                                axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/transcode/sessions?X-Plex-Token=${this.state.server.token}`)
+                                            ]);
+
+                                            let filteredTrancodeSession = [];
+
+                                            transcodingSessions.data.MediaContainer.TranscodeSession.forEach(transcodingSession => {
+                                                if (transcodingSession.videoDecision === 'transcode') {
+                                                    const filteredSessions = activeSessions.data.MediaContainer.Metadata.filter((activeSession) => {
+                                                        return activeSession.TranscodeSession.key === `/transcode/sessions/${transcodingSession.key}`;
+                                                    });
+    
+                                                    filteredTrancodeSession.push(filteredSessions[0]);
+                                                }
+                                            });
+
+                                            this.props.navigation.navigate('TranscodingSessions', {
+                                                sessions: filteredTrancodeSession,
+                                                server: this.state.server
+                                            });
+
+                                            this.setState({ spinner: false });
+                                        } catch (e) {
+                                            this.setState({ spinner: false });
+
+                                            Alert.alert('Error', 'Something went wrong during transcoding sessions fetch!');
+                                        }
+                                    }}
                                 >
                                     <ListItem.Content>
-                                        <ListItem.Title>Transcode Sessions</ListItem.Title>
+                                        <ListItem.Title>Transcoding Sessions</ListItem.Title>
                                     </ListItem.Content>
                                     <ListItem.Chevron color='black' />
                                 </ListItem>

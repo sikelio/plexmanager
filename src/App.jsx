@@ -14,6 +14,7 @@ import SingleSeason from './screens/SingleSeason';
 import SingleEpisode from './screens/SingleEpisode';
 import NewestMovies from './screens/NewestMovies';
 import ActiveSessions from './screens/ActiveSessions';
+import TranscodingSessions from './screens/TranscodingSessions';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +87,11 @@ export default class App extends React.Component {
                         name="ActiveSessions"
                         component={ ActiveSessions }
                         options={({ route }) => ({ title: 'Active Sessions' })}
+                    />
+                    <Stack.Screen
+                        name="TranscodingSessions"
+                        component={ TranscodingSessions }
+                        options={({ route }) => ({ title: 'Transcoding Sessions' })}
                     />
                 </Stack.Navigator>
             </NavigationContainer>
