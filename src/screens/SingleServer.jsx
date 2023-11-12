@@ -770,7 +770,7 @@ class SingleServer extends React.Component {
                                                 title='Download the databases'
                                                 color='#e5a00d'
                                                 onPress={() => {
-                                                    Linking.openURL(`${server.protocol}://${server.ip}:${server.port}/diagnostics/databases/?X-Plex-Token=${server.token}`);
+                                                    Linking.openURL(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/diagnostics/databases/?X-Plex-Token=${this.state.server.token}`);
                                                 }}
                                             />
                                         </View>
@@ -782,7 +782,7 @@ class SingleServer extends React.Component {
                                                 title='Download the logs'
                                                 color='#e5a00d'
                                                 onPress={() => {
-                                                    Linking.openURL(`${server.protocol}://${server.ip}:${server.port}/diagnostics/logs/?X-Plex-Token=${server.token}`);
+                                                    Linking.openURL(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/diagnostics/logs/?X-Plex-Token=${this.state.server.token}`);
                                                 }}
                                             />
                                         </View>
