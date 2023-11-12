@@ -4,7 +4,7 @@ import { Button, ScrollView, View, Text, RefreshControl, Alert, Linking, StyleSh
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
-import { sendPostRequest, sendPutRequest, sendRequest } from '../functions/ServerRequest';
+import { sendDeleteRequest, sendPostRequest, sendPutRequest, sendRequest } from "../functions/ServerRequest";
 import { getDateFromTimestamp, getTimeFromTimestamp } from '../functions/GlobalUtiles';
 import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTitle } from '../functions/ServerManageUtiles';
 import { useNavigation } from '@react-navigation/native';
@@ -572,11 +572,141 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Backup database'
+                                              title='Start Backup Database Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                                title='Stop Backup Database Task'
                                                 color='#e5a00d'
                                                 onPress={() => {
-                                                    sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
+                                                    sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
                                                 }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Run Optimize Database Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/OptimizeDatabase?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                                title='Stop Optimize Database Task'
+                                                color='#e5a00d'
+                                                onPress={() => {
+                                                    sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/OptimizeDatabase?X-Plex-Token=${this.state.server.token}`);
+                                                }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Run Clean Old Bundles Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldBundles?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                                title='Stop Clean Old Bundles Task'
+                                                color='#e5a00d'
+                                                onPress={() => {
+                                                    sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldBundles?X-Plex-Token=${this.state.server.token}`);
+                                                }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Run Clean Old Cache Files Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldCacheFiles?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                                title='Stop Clean Old Cache Files Task'
+                                                color='#e5a00d'
+                                                onPress={() => {
+                                                    sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldCacheFiles?X-Plex-Token=${this.state.server.token}`);
+                                                }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Run Refresh Libraries Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/RefreshLibraries?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Stop Refresh Libraries Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/RefreshLibraries?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Stop All Scheduled Tasks'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/?X-Plex-Token=${this.state.server.token}`);
+                                              }}
                                             />
                                         </View>
                                     </ListItem.Content>

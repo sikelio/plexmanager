@@ -44,11 +44,13 @@ export const editServer = async (data, index) => {
  * Get server list
  */
 export const getServer = async () => {
-    try {
-        return await AsyncStorage.getItem('servers');
-    } catch (e) {
-        console.error(e)
+    let servers = await AsyncStorage.getItem('servers');
+
+    if (servers === null) {
+        servers = JSON.stringify([]);
     }
+
+    return servers;
 }
 
 export const deleteServer = async (index) => {

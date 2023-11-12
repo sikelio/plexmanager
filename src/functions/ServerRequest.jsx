@@ -27,3 +27,11 @@ export const sendPostRequest = (url) => {
         Alert.alert('Error', 'Something went wrong');
     });
 }
+
+export const sendDeleteRequest = (url) => {
+    axios.delete(url).then((data) => {
+        Alert.alert('Success', 'Request sent');
+    }).catch((err) => {
+        Alert.alert('Error', 'Something went wrong');
+    });
+};
