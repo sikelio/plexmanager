@@ -64,7 +64,7 @@ Under construction
     - [X] [Get Devices](https://github.com/sikelio/plexmanager/issues/5)
     - [~~Get a Single Device~~ (No additional infos)](https://github.com/sikelio/plexmanager/issues/6)
     - [X] [Get All Activities](https://github.com/sikelio/plexmanager/issues/7)
-    - [ ] [Stop an Activity](https://github.com/sikelio/plexmanager/issues/8)
+    - [X] [Stop an Activity](https://github.com/sikelio/plexmanager/issues/8)
     - [ ] [Get Transient Token](https://github.com/sikelio/plexmanager/issues/60)
     - [ ] [Perform Search](https://github.com/sikelio/plexmanager/issues/61)
 - Session

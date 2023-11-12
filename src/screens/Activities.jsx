@@ -92,13 +92,26 @@ class Activities extends React.Component {
                                     <ListItem
                                             key={index}
                                             bottomDivider
-                                            // onPress={() => {
-                                            //     this.props.navigation.navigate('SingleSession', {
-                                            //         title: session.Session.id,
-                                            //         server: this.state.server,
-                                            //         session: session
-                                            //     });
-                                            // }}
+                                            onPress={() => {
+                                                Alert.alert('Confirmation', 'Are you sure you want to cancel this activity ?', [
+                                                    {
+                                                        text: 'Yes',
+                                                        style: 'destructive',
+                                                        onPress: async () => {
+                                                            try {
+                                                                await axios.delete(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/activities/${activity.uuid}?X-Plex-Token=${this.state.server.token}`);
+
+                                                                Alert.alert('Success', 'The activity has been successfully canceled!');
+                                                            } catch (e) {
+                                                                Alert.alert('Error', 'Something went wrong during the cancelation of the activity! May be the activity is already done.');
+                                                            }
+                                                        }
+                                                    }, {
+                                                        text: 'No',
+                                                        style: 'cancel'
+                                                    }
+                                                ]);
+                                            }}
                                         >
                                             <ListItem.Content>
                                                 <ListItem.Title>{activity.title}</ListItem.Title>
