@@ -1,20 +1,17 @@
-// Dependencies
 import React from 'react';
-// Components
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tabs from './components/Tabs';
-// Screens
-import SingleServer from "./screens/SingleServer";
-import EditServer from "./screens/EditServer";
-import SingleSession from "./screens/SingleSession";
-import SingleAccount from "./screens/SingleAccount";
-import ServerPreferences from "./screens/ServerPreferences";
-import SingleLibrary from "./screens/SingleLibrary";
-import SingleMedia from "./screens/SingleMedia";
-import ScheduledTasks from "./screens/ScheduledTasks";
-import SingleSeason from "./screens/SingleSeason";
-import SingleEpisode from "./screens/SingleEpisode";
+import SingleServer from './screens/SingleServer';
+import EditServer from './screens/EditServer';
+import SingleSession from './screens/SingleSession';
+import SingleAccount from './screens/SingleAccount';
+import ServerPreferences from './screens/ServerPreferences';
+import SingleLibrary from './screens/SingleLibrary';
+import SingleMedia from './screens/SingleMedia';
+import ScheduledTasks from './screens/ScheduledTasks';
+import SingleSeason from './screens/SingleSeason';
+import SingleEpisode from './screens/SingleEpisode';
 
 const Stack = createNativeStackNavigator();
 
