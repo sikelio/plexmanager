@@ -3,50 +3,55 @@
 
 A cross-platform app build in [React Native](https://reactnative.dev/), based on the [Plex API](https://www.plexopedia.com/plex-media-server/api/) for managing Plex Media Servers from a phone.
 
-| Labels      | Version    | Branch                                                                |
-|-------------|------------|-----------------------------------------------------------------------|
-| Current     | 0.0.3-beta | [v0.0.3-beta](https://github.com/sikelio/plexmanager/tree/0.0.3-beta) |
-| Development | 0.0.4-beta | [dev](https://github.com/sikelio/plexmanager/tree/dev)                |
+| Labels      | Version     | Branch                                                               |
+|-------------|-------------|----------------------------------------------------------------------|
+| Current     | v0.0.3-beta | [0.0.3-beta](https://github.com/sikelio/plexmanager/tree/0.0.3-beta) |
+| Development | v0.0.4-beta | [dev](https://github.com/sikelio/plexmanager/tree/dev)               |
 
 ## Install
 
-- Play Store : [Open Beta](https://play.google.com/store/apps/details?id=wtf.plexmanager)
+- Play Store : [Early Access](https://play.google.com/store/apps/details?id=wtf.plexmanager)
 - App Store : [One day may be...](#ios)
-## Run
+
+## Run in dev mode
 
 Clone the project
 
-```bash
-git clone https://github.com/sikelio/plexmanager
+```
+$ git clone https://github.com/sikelio/plexmanager
 ```
 
 Go to the project directory
 
-```bash
-cd plex-manager
+```
+$ cd plex-manager
 ```
 
 Install dependencies
 
-```bash
-yarn install
+```
+$ yarn install
 ```
 
 Start the app
 
 - Android :
-```bash
-yarn android
+```
+$ yarn android
 ```
 
-- IOS
-```bash
-yarn ios
+- iOS (make sure to link the dependencies before)
+
+I didn't test the app on iOS so don't be surprised if it don't work
+```
+$ yarn ios
 ```
 
 ## Documentation
 
-Coming soon...
+Under construction
+
+- [Getting Plex Media Server Access Token](https://github.com/sikelio/plexmanager/wiki/Getting-Plex-Media-Server-Access-Token)
 
 ## Features
 
@@ -57,7 +62,7 @@ Coming soon...
     - [X] [Get Accounts](https://github.com/sikelio/plexmanager/issues/4)
     - [X] [Get a Single Account](https://github.com/sikelio/plexmanager/issues/4)
     - [X] [Get Devices](https://github.com/sikelio/plexmanager/issues/5)
-    - [ ] [~~Get a Single Device~~ (No additional infos)](https://github.com/sikelio/plexmanager/issues/6)
+    - [~~Get a Single Device~~ (No additional infos)](https://github.com/sikelio/plexmanager/issues/6)
     - [ ] [Get All Activities](https://github.com/sikelio/plexmanager/issues/7)
     - [ ] [Stop an Activity](https://github.com/sikelio/plexmanager/issues/8)
     - [ ] [Get Transient Token](https://github.com/sikelio/plexmanager/issues/60)
@@ -122,4 +127,4 @@ The app is configured to be installed on Android >= 5.0 (SDK 21) but the app is 
 I don't own an Apple device and an Apple developer licence for publishing the app on the App Store. For this reason the app is currently not available for iOS devices.
 ## License
 
-[GLP v3](https://choosealicense.com/licenses/gpl-3.0/)
+[GLP v3](https://github.com/sikelio/plexmanager/blob/main/LICENCE.md)
