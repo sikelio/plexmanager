@@ -56,7 +56,7 @@ Under construction
 ## Features
 
 - Server
-    - [ ] [Server Capabilities](https://github.com/sikelio/plexmanager/issues/1)
+    - [X] [Server Capabilities](https://github.com/sikelio/plexmanager/issues/1)
     - [X] [Server Identity](https://github.com/sikelio/plexmanager/issues/2)
     - [X] [Server Preferences](https://github.com/sikelio/plexmanager/issues/3)
     - [X] [Get Accounts](https://github.com/sikelio/plexmanager/issues/4)
