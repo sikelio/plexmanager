@@ -15,6 +15,7 @@ import SingleEpisode from './screens/SingleEpisode';
 import NewestMovies from './screens/NewestMovies';
 import ActiveSessions from './screens/ActiveSessions';
 import TranscodingSessions from './screens/TranscodingSessions';
+import Activities from './screens/Activities';
 
 const Stack = createNativeStackNavigator();
 
@@ -92,6 +93,11 @@ export default class App extends React.Component {
                         name="TranscodingSessions"
                         component={ TranscodingSessions }
                         options={({ route }) => ({ title: 'Transcoding Sessions' })}
+                    />
+                    <Stack.Screen
+                        name="Activities"
+                        component={ Activities }
+                        options={({ route }) => ({ title: 'All Activities' })}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

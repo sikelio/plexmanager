@@ -48,6 +48,7 @@ class SingleServer extends React.Component {
             devicesList: false,
             sessionsList: false,
             sessionHistoryList: false,
+            activitiesList: false,
             refreshing: false,
             spinner: false,
             librariesList: false,
@@ -513,6 +514,42 @@ class SingleServer extends React.Component {
                                         );
                                     })
                                 )}
+                            </ListItem.Accordion>
+                        </>
+                    </Card>
+
+                    <Card>
+                        <>
+                            <ListItem.Accordion
+                                content={
+                                    <ListItem.Content>
+                                        <ListItem.Title style={this.localStyle.accordionTitle}>Activities</ListItem.Title>
+                                    </ListItem.Content>
+                                }
+                                isExpanded={ this.state.activitiesList }
+                                onPress={() => {
+                                    this.setState({ activitiesList: !this.state.activitiesList });
+                                }}
+                            >
+                                <ListItem
+                                    onPress={async () => {
+                                        try {
+                                            const activities = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/activities?X-Plex-Token=${this.state.server.token}`);
+
+                                            this.props.navigation.navigate('Activities', {
+                                                server: this.state.server,
+                                                activities: activities.data.MediaContainer
+                                            });
+                                        } catch (e) {
+                                            Alert.alert('Error', 'Somenthing went wront during activities fetch!');
+                                        }
+                                    }}
+                                >
+                                    <ListItem.Content>
+                                        <ListItem.Title>All activities</ListItem.Title>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron color='black' />
+                                </ListItem>
                             </ListItem.Accordion>
                         </>
                     </Card>
