@@ -572,17 +572,15 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Start Backup Database Task'
-                                                color='#e5a00d'
-                                                onPress={() => {
-                                                    sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
-                                                }}
+                                              title='Start Backup Database Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/BackupDatabase?X-Plex-Token=${this.state.server.token}`);
+                                              }}
                                             />
                                         </View>
                                     </ListItem.Content>
-                                </ListItem>
 
-                                <ListItem>
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -600,17 +598,15 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Run Optimize Database Task'
-                                                color='#e5a00d'
-                                                onPress={() => {
-                                                    sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/OptimizeDatabase?X-Plex-Token=${this.state.server.token}`);
-                                                }}
+                                              title='Run Optimize Database Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/OptimizeDatabase?X-Plex-Token=${this.state.server.token}`);
+                                              }}
                                             />
                                         </View>
                                     </ListItem.Content>
-                                </ListItem>
 
-                                <ListItem>
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -628,17 +624,15 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Run Clean Old Bundles Task'
-                                                color='#e5a00d'
-                                                onPress={() => {
-                                                    sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldBundles?X-Plex-Token=${this.state.server.token}`);
-                                                }}
+                                              title='Run Clean Old Bundles Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldBundles?X-Plex-Token=${this.state.server.token}`);
+                                              }}
                                             />
                                         </View>
                                     </ListItem.Content>
-                                </ListItem>
 
-                                <ListItem>
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -656,21 +650,19 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Run Clean Old Cache Files Task'
-                                                color='#e5a00d'
-                                                onPress={() => {
-                                                    sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldCacheFiles?X-Plex-Token=${this.state.server.token}`);
-                                                }}
+                                              title='Run Clean Old Cache Files Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldCacheFiles?X-Plex-Token=${this.state.server.token}`);
+                                              }}
                                             />
                                         </View>
                                     </ListItem.Content>
-                                </ListItem>
 
-                                <ListItem>
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Run Clean Old Cache Files Task'
+                                                title='Stop Clean Old Cache Files Task'
                                                 color='#e5a00d'
                                                 onPress={() => {
                                                     sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/CleanOldCacheFiles?X-Plex-Token=${this.state.server.token}`);
@@ -692,9 +684,7 @@ class SingleServer extends React.Component {
                                             />
                                         </View>
                                     </ListItem.Content>
-                                </ListItem>
 
-                                <ListItem>
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -712,11 +702,11 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Stop All Scheduled Tasks'
-                                                color='#e5a00d'
-                                                onPress={() => {
-                                                    sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/?X-Plex-Token=${this.state.server.token}`);
-                                                }}
+                                              title='Stop All Scheduled Tasks'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/?X-Plex-Token=${this.state.server.token}`);
+                                              }}
                                             />
                                         </View>
                                     </ListItem.Content>
