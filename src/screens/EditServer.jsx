@@ -89,8 +89,6 @@ class EditServer extends React.Component {
                 }
             ]);
         } catch (e) {
-            console.error(e);
-
             Alert.alert(
                 'Error',
                 `Something went wrong!\nIf the error persist leave a issue on my repo.\n\nhttps://github.com/sikelio/plexmanager/issues`

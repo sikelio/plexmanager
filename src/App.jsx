@@ -12,6 +12,11 @@ import SingleMedia from './screens/SingleMedia';
 import ScheduledTasks from './screens/ScheduledTasks';
 import SingleSeason from './screens/SingleSeason';
 import SingleEpisode from './screens/SingleEpisode';
+import NewestMovies from './screens/NewestMovies';
+import ActiveSessions from './screens/ActiveSessions';
+import TranscodingSessions from './screens/TranscodingSessions';
+import Activities from './screens/Activities';
+import ServerCapabilities from './screens/ServerCapabilities';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +79,31 @@ export default class App extends React.Component {
                         name="SingleEpisode"
                         component={ SingleEpisode }
                         options={({ route }) => ({ title: route.params.title })}
+                    />
+                    <Stack.Screen
+                        name="NewestMovies"
+                        component={ NewestMovies }
+                        options={({ route }) => ({ title: route.params.title })}
+                    />
+                    <Stack.Screen
+                        name="ActiveSessions"
+                        component={ ActiveSessions }
+                        options={({ route }) => ({ title: 'Active Sessions' })}
+                    />
+                    <Stack.Screen
+                        name="TranscodingSessions"
+                        component={ TranscodingSessions }
+                        options={({ route }) => ({ title: 'Transcoding Sessions' })}
+                    />
+                    <Stack.Screen
+                        name="Activities"
+                        component={ Activities }
+                        options={({ route }) => ({ title: 'All Activities' })}
+                    />
+                    <Stack.Screen
+                        name="ServerCapabilities"
+                        component={ ServerCapabilities }
+                        options={({ route }) => ({ title: 'Server Capabilities' })}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

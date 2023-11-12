@@ -43,12 +43,12 @@ class SingleServer extends React.Component {
             users: this.props.route.params.users,
             identity: this.props.route.params.identity,
             devices: this.props.route.params.devices,
-            activeSessions: this.props.route.params.activeSessions,
             sessionHistory: this.props.route.params.sessionHistory,
             userList: false,
             devicesList: false,
             sessionsList: false,
             sessionHistoryList: false,
+            activitiesList: false,
             refreshing: false,
             spinner: false,
             librariesList: false,
@@ -70,7 +70,6 @@ class SingleServer extends React.Component {
                 updatedUsers,
                 updatedIdentity,
                 updatedDevices,
-                updatedActiveSessions,
                 updatedSessionHistory
             ] = await Promise.all([
                 axios.get('https://plex.tv/api/downloads/5.json'),
@@ -78,16 +77,14 @@ class SingleServer extends React.Component {
                 axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/accounts/?X-Plex-Token=${this.state.server.token}`),
                 axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/?X-Plex-Token=${this.state.server.token}`),
                 axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/devices/?X-Plex-Token=${this.state.server.token}`),
-                axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/status/sessions?X-Plex-Token=${this.state.server.token}`),
                 axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/status/sessions/history/all?X-Plex-Token=${this.state.server.token}`)
             ]);
 
-            this.setState({ plexInfo: updatedPlexInfo.data[server.serverType][updatedIdentity.data.MediaContainer.platform] });
+            this.setState({ plexInfo: updatedPlexInfo.data[this.state.server.serverType][updatedIdentity.data.MediaContainer.platform] });
             this.setState({ libraries: updatedLibraries.data.MediaContainer.Directory });
             this.setState({ users: updatedUsers.data.MediaContainer.Account });
             this.setState({ identity: updatedIdentity.data.MediaContainer });
             this.setState({ devices: updatedDevices.data.MediaContainer.Device });
-            this.setState({ activeSessions: updatedActiveSessions.data.MediaContainer.Metadata });
             this.setState({ sessionHistory: updatedSessionHistory.data.MediaContainer });
         } catch (e) {
             Alert.alert('Error', 'Something went wrong during the server fetch!');
@@ -119,9 +116,11 @@ class SingleServer extends React.Component {
                     textContent={'Loading...'}
                 />
 
-                <ScrollView refreshControl={
-                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
-                }>
+                <ScrollView 
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
+                    }
+                >
                     <Card>
                         <>
                             <ListItem.Accordion
@@ -179,6 +178,35 @@ class SingleServer extends React.Component {
                                                         this.setState({ spinner: false });
                                                     } catch (e) {
                                                         Alert.alert('Error', 'Something went wrong while preferences fetch!');
+                                                    }
+                                                }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                                title='Server Capabilities'
+                                                color='#e5a00d'
+                                                onPress={async () => {
+                                                    try {
+                                                        this.setState({ spinner: true });
+
+                                                        let serverCapabilities = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/?X-Plex-Token=${this.state.server.token}`);
+
+                                                        this.props.navigation.navigate('ServerCapabilities', {
+                                                            serverCapabilities: serverCapabilities.data.MediaContainer,
+                                                            server: this.state.server
+                                                        });
+
+                                                        this.setState({ spinner: false });
+                                                    } catch (e) {
+                                                        this.setState({ spinner: false });
+
+                                                        Alert.alert('Error', 'Something went wrong while server capabilities fetch!');
                                                     }
                                                 }}
                                             />
@@ -409,42 +437,74 @@ class SingleServer extends React.Component {
                                     this.setState({ sessionsList: !this.state.sessionsList });
                                 }}
                             >
-                                {!this.state.activeSessions ? (
-                                    <ListItem>
-                                        <ListItem.Content>
-                                            <ListItem.Title>No sessions</ListItem.Title>
-                                        </ListItem.Content>
-                                    </ListItem>
-                                ) : (
-                                    this.state.activeSessions.length > 0 && this.state.activeSessions.map((session, index) => {
-                                        return (
-                                            <ListItem
-                                                key={index + 1}
-                                                bottomDivider
-                                                onPress={() => {
-                                                    this.props.navigation.navigate('SingleSession', {
-                                                        title: session.Session.id,
-                                                        server: this.state.server,
-                                                        session: session
-                                                    })
-                                                }}
-                                            >
-                                                <Avatar
-                                                    rounded
-                                                    source={{uri: session.User.thumb}}
-                                                />
-                                                <ListItem.Content>
-                                                    <ListItem.Title>{sessionTitle(session)}</ListItem.Title>
-                                                    <ListItem.Subtitle>{session.Player.state}</ListItem.Subtitle>
-                                                    <ListItem.Subtitle>{session.Player.address}</ListItem.Subtitle>
-                                                    <ListItem.Subtitle>{session.Player.product}</ListItem.Subtitle>
-                                                    <ListItem.Subtitle>{session.Player.version}</ListItem.Subtitle>
-                                                </ListItem.Content>
-                                                <ListItem.Chevron color='black' />
-                                            </ListItem>
-                                        );
-                                    })
-                                )}
+                                <ListItem
+                                    bottomDivider
+                                    onPress={async () => {
+                                        try {
+                                            this.setState({ spinner: true });
+
+                                            const activeSessions = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/status/sessions?X-Plex-Token=${this.state.server.token}`);
+
+                                            this.props.navigation.navigate('ActiveSessions', {
+                                                sessions: activeSessions.data.MediaContainer.Metadata,
+                                                server: this.state.server
+                                            });
+
+                                            this.setState({ spinner: false });
+                                        } catch (e) {
+                                            Alert.alert('Error', 'Something went wrong during active sessions fetch!');
+                                        }
+                                    }}
+                                >
+                                    <ListItem.Content>
+                                        <ListItem.Title>Active Sessions</ListItem.Title>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron color='black' />
+                                </ListItem>
+
+                                <ListItem
+                                    onPress={async () => {
+                                        try {
+                                            this.setState({ spinner: true });
+
+                                            let [
+                                                activeSessions,
+                                                transcodingSessions
+                                            ] = await Promise.all([
+                                                axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/status/sessions?X-Plex-Token=${this.state.server.token}`),
+                                                axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/transcode/sessions?X-Plex-Token=${this.state.server.token}`)
+                                            ]);
+
+                                            let filteredTrancodeSession = [];
+
+                                            transcodingSessions.data.MediaContainer.TranscodeSession.forEach(transcodingSession => {
+                                                if (transcodingSession.videoDecision === 'transcode') {
+                                                    const filteredSessions = activeSessions.data.MediaContainer.Metadata.filter((activeSession) => {
+                                                        return activeSession.TranscodeSession.key === `/transcode/sessions/${transcodingSession.key}`;
+                                                    });
+    
+                                                    filteredTrancodeSession.push(filteredSessions[0]);
+                                                }
+                                            });
+
+                                            this.props.navigation.navigate('TranscodingSessions', {
+                                                sessions: filteredTrancodeSession,
+                                                server: this.state.server
+                                            });
+
+                                            this.setState({ spinner: false });
+                                        } catch (e) {
+                                            this.setState({ spinner: false });
+
+                                            Alert.alert('Error', 'Something went wrong during transcoding sessions fetch!');
+                                        }
+                                    }}
+                                >
+                                    <ListItem.Content>
+                                        <ListItem.Title>Transcoding Sessions</ListItem.Title>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron color='black' />
+                                </ListItem>
                             </ListItem.Accordion>
                         </>
                     </Card>
@@ -483,6 +543,42 @@ class SingleServer extends React.Component {
                                         );
                                     })
                                 )}
+                            </ListItem.Accordion>
+                        </>
+                    </Card>
+
+                    <Card>
+                        <>
+                            <ListItem.Accordion
+                                content={
+                                    <ListItem.Content>
+                                        <ListItem.Title style={this.localStyle.accordionTitle}>Activities</ListItem.Title>
+                                    </ListItem.Content>
+                                }
+                                isExpanded={ this.state.activitiesList }
+                                onPress={() => {
+                                    this.setState({ activitiesList: !this.state.activitiesList });
+                                }}
+                            >
+                                <ListItem
+                                    onPress={async () => {
+                                        try {
+                                            const activities = await axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/activities?X-Plex-Token=${this.state.server.token}`);
+
+                                            this.props.navigation.navigate('Activities', {
+                                                server: this.state.server,
+                                                activities: activities.data.MediaContainer
+                                            });
+                                        } catch (e) {
+                                            Alert.alert('Error', 'Somenthing went wront during activities fetch!');
+                                        }
+                                    }}
+                                >
+                                    <ListItem.Content>
+                                        <ListItem.Title>All activities</ListItem.Title>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron color='black' />
+                                </ListItem>
                             </ListItem.Accordion>
                         </>
                     </Card>
