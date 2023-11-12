@@ -121,6 +121,6 @@ class NewestMovies extends React.Component {
 }
 
 export default (props) => {
-  const navigation = useNavigation();
-  return <NewestMovies {...props} navigation={navigation} />;
+    const navigation = useNavigation();
+    return <NewestMovies {...props} navigation={navigation} />;
 };

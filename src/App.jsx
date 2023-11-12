@@ -12,8 +12,8 @@ import SingleMedia from './screens/SingleMedia';
 import ScheduledTasks from './screens/ScheduledTasks';
 import SingleSeason from './screens/SingleSeason';
 import SingleEpisode from './screens/SingleEpisode';
-import NewestMovies from "./screens/NewestMovies";
-import title from "react-native-paper/src/components/Typography/v2/Title";
+import NewestMovies from './screens/NewestMovies';
+import ActiveSessions from './screens/ActiveSessions';
 
 const Stack = createNativeStackNavigator();
 
@@ -81,6 +81,11 @@ export default class App extends React.Component {
                         name="NewestMovies"
                         component={ NewestMovies }
                         options={({ route }) => ({ title: route.params.title })}
+                    />
+                    <Stack.Screen
+                        name="ActiveSessions"
+                        component={ ActiveSessions }
+                        options={({ route }) => ({ title: 'Active Sessions' })}
                     />
                 </Stack.Navigator>
             </NavigationContainer>
