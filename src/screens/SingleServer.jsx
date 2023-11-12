@@ -600,6 +600,34 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
+                                              title='Run Optimize Database Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendPostRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/OptimizeDatabase?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
+                                              title='Stop Optimize Database Task'
+                                              color='#e5a00d'
+                                              onPress={() => {
+                                                  sendDeleteRequest(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/butler/OptimizeDatabase?X-Plex-Token=${this.state.server.token}`);
+                                              }}
+                                            />
+                                        </View>
+                                    </ListItem.Content>
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItem.Content>
+                                        <View style={{ width: '100%' }}>
+                                            <Button
                                                 title='Stop All Scheduled Tasks'
                                                 color='#e5a00d'
                                                 onPress={() => {
