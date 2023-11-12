@@ -82,7 +82,7 @@ class SingleServer extends React.Component {
                 axios.get(`${this.state.server.protocol}://${this.state.server.ip}:${this.state.server.port}/status/sessions/history/all?X-Plex-Token=${this.state.server.token}`)
             ]);
 
-            this.setState({ plexInfo: updatedPlexInfo.data[server.serverType][updatedIdentity.data.MediaContainer.platform] });
+            this.setState({ plexInfo: updatedPlexInfo.data[this.state.server.serverType][updatedIdentity.data.MediaContainer.platform] });
             this.setState({ libraries: updatedLibraries.data.MediaContainer.Directory });
             this.setState({ users: updatedUsers.data.MediaContainer.Account });
             this.setState({ identity: updatedIdentity.data.MediaContainer });
@@ -90,6 +90,8 @@ class SingleServer extends React.Component {
             this.setState({ activeSessions: updatedActiveSessions.data.MediaContainer.Metadata });
             this.setState({ sessionHistory: updatedSessionHistory.data.MediaContainer });
         } catch (e) {
+            console.error(e);
+
             Alert.alert('Error', 'Something went wrong during the server fetch!');
         }
     }
