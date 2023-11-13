@@ -25,6 +25,8 @@ class EditServer extends React.Component {
 
     localStyle = StyleSheet.create({
         input: {
+            color: '#000',
+            backgroundColor: '#FFF',
             height: 55,
             borderColor: 'gray',
             borderWidth: 1,
@@ -34,10 +36,13 @@ class EditServer extends React.Component {
             fontSize: 15
         },
         picker: {
+            color: '#000',
+            backgroundColor: '#FFF',
             borderColor: 'gray',
             borderWidth: 1,
             marginBottom: 10,
-            paddingLeft: 10
+            paddingLeft: 10,
+            color: 'black'
         },
         required: {
             color: '#e5a00d',
@@ -148,6 +153,9 @@ class EditServer extends React.Component {
                             <Picker
                                 selectedValue={values.protocol}
                                 onValueChange={handleChange('protocol')}
+                                style={{
+                                    color: 'black'
+                                }}
                             >
                                 {this.protocolOptions.map(option => (
                                     <Picker.Item key={option.value} label={option.label} value={option.value} />
@@ -161,6 +169,9 @@ class EditServer extends React.Component {
                             <Picker
                                 selectedValue={values.serverType}
                                 onValueChange={handleChange('serverType')}
+                                style={{
+                                    color: 'black'
+                                }}
                             >
                                 {this.serverTypeOptions.map(option => (
                                     <Picker.Item key={option.value} label={option.label} value={option.value} />
@@ -176,6 +187,7 @@ class EditServer extends React.Component {
                                 value={values.name}
                                 placeholder={'Server Name'}
                                 style={this.localStyle.input}
+                                placeholderTextColor={'gray'}
                             />
                         </View>
 
@@ -187,6 +199,7 @@ class EditServer extends React.Component {
                                 value={values.ip}
                                 placeholder={'IP / Hostname'}
                                 style={this.localStyle.input}
+                                placeholderTextColor={'gray'}
                             />
                         </View>
 
@@ -199,6 +212,7 @@ class EditServer extends React.Component {
                                 placeholder={'Port'}
                                 style={this.localStyle.input}
                                 keyboardType='numeric'
+                                placeholderTextColor={'gray'}
                             />
                         </View>
 
@@ -211,6 +225,7 @@ class EditServer extends React.Component {
                                 placeholder={'Token'}
                                 style={this.localStyle.input}
                                 secureTextEntry={true}
+                                placeholderTextColor={'gray'}
                             />
 
                             <View
