@@ -22,11 +22,6 @@ class Tabs extends React.Component {
                 barStyle={{
                     backgroundColor: Colors.PlexBlack,
                 }}
-                screenOptions={{
-                    tabBarStyle: {
-                        backgroundColor: '#ff0000'
-                    }
-                }}
             >
                 <Tab.Screen
                     name={'Servers'}
