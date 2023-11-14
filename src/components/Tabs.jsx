@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import NewServer from '../screens/NewServer';
 import Servers from "../screens/Servers";
 import About from "../screens/About";
+import Colors from '../utiles/Colors';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -14,31 +15,48 @@ class Tabs extends React.Component {
 
     render() {
         return (
-            <Tab.Navigator>
+            <Tab.Navigator
+                activeColor={Colors.PlexYellow}
+                inactiveColor={Colors.White}
+                initialRouteName={'Servers'}
+                barStyle={{
+                    backgroundColor: Colors.PlexBlack,
+                }}
+                screenOptions={{
+                    tabBarStyle: {
+                        backgroundColor: '#ff0000'
+                    }
+                }}
+            >
                 <Tab.Screen
                     name={'Servers'}
                     component={Servers}
                     options={{
+                        tabBarLabel: 'Servers',
                         tabBarIcon: ({focused, color}) => (
-                            <Icon name={'server'} color={color} size={16} />
-                        ),
+                            <Icon name={'server'} color={focused ? Colors.PlexYellow : Colors.White} size={16} />
+                        )
                     }}
                 />
+
                 <Tab.Screen
                     name={'New Server'}
                     component={NewServer}
                     options={{
+                        tabBarLabel: 'New Server',
                         tabBarIcon: ({focused, color}) => (
-                            <Icon name={'plus'} color={color} size={16} />
+                            <Icon name={'plus'} color={focused ? Colors.PlexYellow : Colors.White} size={16} />
                         )
                     }}
                 />
+
                 <Tab.Screen
                     name={'About'}
                     component={About}
                     options={{
+                        tabBarLabel: 'About',
                         tabBarIcon: ({focused, color}) => (
-                            <Icon name={'info'} color={color} size={16} />
+                            <Icon name={'info'} color={focused ? Colors.PlexYellow : Colors.White} size={16} />
                         )
                     }}
                 />
