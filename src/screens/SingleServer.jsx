@@ -163,7 +163,7 @@ class SingleServer extends React.Component {
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Preferences'
+                                                title='Server Preferences'
                                                 color='#e5a00d'
                                                 onPress={async () => {
                                                     try {
