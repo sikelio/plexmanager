@@ -11,6 +11,7 @@ import { Picker } from '@react-native-picker/picker';
 import { editServer } from '../functions/ServerStorage';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
+import Colors from '../utiles/Colors';
 
 class EditServer extends React.Component {
     protocolOptions = [
@@ -25,27 +26,27 @@ class EditServer extends React.Component {
 
     localStyle = StyleSheet.create({
         input: {
-            color: '#000',
-            backgroundColor: '#FFF',
+            color: Colors.White,
+            backgroundColor: Colors.PlexBlack,
             height: 55,
-            borderColor: 'gray',
+            borderColor: Colors.White,
             borderWidth: 1,
             marginBottom: 10,
             paddingLeft: 17.5,
             paddingRight: 17.5,
-            fontSize: 15
+            fontSize: 15,
         },
         picker: {
-            color: '#000',
-            backgroundColor: '#FFF',
-            borderColor: 'gray',
+            color: Colors.White,
+            backgroundColor: Colors.PlexBlack,
+            borderColor: Colors.White,
             borderWidth: 1,
             marginBottom: 10,
             paddingLeft: 10,
-            color: 'black'
+            color: Colors.White
         },
         required: {
-            color: '#e5a00d',
+            color: Colors.PlexYellow,
             fontWeight: 'bold',
             fontSize: 15
         },
@@ -55,7 +56,7 @@ class EditServer extends React.Component {
         helpLink: {
             textDecorationLine: 'underline',
             marginBottom: 10,
-            color: 'black'
+            color: Colors.White
         }
     });
 
@@ -145,7 +146,11 @@ class EditServer extends React.Component {
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, resetForm }) => (
                     <View
-                        style={{padding: 20}}
+                        style={{
+                            padding: 20,
+                            backgroundColor: Colors.PlexGrey,
+                            flex: 1
+                        }}
                     >
                         <View
                             style={this.localStyle.picker}
@@ -154,7 +159,7 @@ class EditServer extends React.Component {
                                 selectedValue={values.protocol}
                                 onValueChange={handleChange('protocol')}
                                 style={{
-                                    color: 'black'
+                                    color: Colors.White
                                 }}
                             >
                                 {this.protocolOptions.map(option => (
@@ -170,7 +175,7 @@ class EditServer extends React.Component {
                                 selectedValue={values.serverType}
                                 onValueChange={handleChange('serverType')}
                                 style={{
-                                    color: 'black'
+                                    color: Colors.White
                                 }}
                             >
                                 {this.serverTypeOptions.map(option => (

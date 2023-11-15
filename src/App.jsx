@@ -48,7 +48,16 @@ export default class App extends React.Component {
                     <Stack.Screen
                         name="EditServer"
                         component={ EditServer }
-                        options={({ route }) => ({ title: `Edit ${route.params.title}` })}
+                        options={({ route }) => ({
+                            title: `Edit ${route.params.title}`,
+                            headerStyle: {
+                                backgroundColor: Colors.PlexBlack
+                            },
+                            headerTitleStyle: {
+                                color: Colors.White
+                            },
+                            headerTintColor: Colors.White
+                        })}
                     />
                     <Stack.Screen
                         name="SingleSession"

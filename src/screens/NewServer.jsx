@@ -9,8 +9,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { Formik } from 'formik';
-import { storeServer } from "../functions/ServerStorage";
-import Colors from "../utiles/Colors";
+import { storeServer } from '../functions/ServerStorage';
+import Colors from '../utiles/Colors';
 
 export default class NewServer extends React.Component {
     protocolOptions = [
@@ -45,7 +45,7 @@ export default class NewServer extends React.Component {
             color: Colors.White
         },
         required: {
-            color: '#e5a00d',
+            color: Colors.PlexYellow,
             fontWeight: 'bold',
             fontSize: 15
         },
