@@ -1,9 +1,10 @@
 import React from 'react';
-import { ScrollView, Linking, RefreshControl, Alert, StyleSheet } from 'react-native';
+import { ScrollView, Linking, RefreshControl, Alert, StyleSheet, View } from 'react-native';
 import axios from 'axios';
 import info from '../../package.json';
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
+import Colors from '../utiles/Colors';
 
 export default class About extends React.Component {
     localStyle = StyleSheet.create({
@@ -18,7 +19,6 @@ export default class About extends React.Component {
 
         this.state = {
             refreshing: false,
-            aboutList: true,
             authorsList: true,
             authors: []
         };
@@ -55,22 +55,23 @@ export default class About extends React.Component {
                 refreshControl={
                     <RefreshControl refreshing={ this.state.refreshing } onRefresh={ this.refresh } />
                 }
+                style={{
+                    backgroundColor: Colors.PlexGrey
+                }}
             >
-                <Card>
-                    <ListItem.Accordion
-                        content={
-                            <ListItem.Content>
-                                <ListItem.Title style={this.localStyle.accordionTitle}>About</ListItem.Title>
-                            </ListItem.Content>
-                        }
-                        isExpanded={ this.state.aboutList }
-                        onPress={() => {
-                            this.setState({ aboutList: !this.state.aboutList });
-                        }}
-                    >
+                <Card
+                    containerStyle={{
+                        backgroundColor: Colors.PlexBlack,
+                        borderColor: Colors.PlexYellow
+                    }}
+                >
+                    <View>
                         <ListItem
                             onPress={() => {
                                 Linking.openURL('https://github.com/sikelio/plexmanager/releases/tag/0.0.2-beta')
+                            }}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack
                             }}
                         >
                             <Avatar
@@ -83,7 +84,7 @@ export default class About extends React.Component {
                                             position: 'absolute'
                                         }}
                                         source={ require('../assets/img/logo.png') }
-                                        resizeMode={ FastImage.resizeMode.contain }
+                                        resizeMode={FastImage.resizeMode.contain}
                                     />
                                 )}
                                 overlayContainerStyle={{
@@ -93,15 +94,30 @@ export default class About extends React.Component {
                             />
 
                             <ListItem.Content>
-                                <ListItem.Title>Version</ListItem.Title>
-                                <ListItem.Subtitle>{ info.version }</ListItem.Subtitle>
+                                <ListItem.Title
+                                    style={{
+                                        color: Colors.White
+                                    }}
+                                >
+                                    Version
+                                </ListItem.Title>
+                                <ListItem.Subtitle
+                                    style={{
+                                        color: Colors.White
+                                    }}
+                                >
+                                    {info.version}
+                                </ListItem.Subtitle>
                             </ListItem.Content>
-                            <ListItem.Chevron color='black' />
+                            <ListItem.Chevron color={Colors.White} />
                         </ListItem>
 
                         <ListItem
                             onPress={() => {
                                 Linking.openURL('https://github.com/sikelio/plexmanager')
+                            }}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack
                             }}
                         >
                             <Avatar
@@ -126,14 +142,23 @@ export default class About extends React.Component {
                             />
 
                             <ListItem.Content>
-                                <ListItem.Title>Source code</ListItem.Title>
+                                <ListItem.Title
+                                    style={{
+                                        color: Colors.White
+                                    }}
+                                >
+                                    Source code
+                                </ListItem.Title>
                             </ListItem.Content>
-                            <ListItem.Chevron color='black' />
+                            <ListItem.Chevron color={Colors.White} />
                         </ListItem>
 
                         <ListItem
                             onPress={() => {
                                 Linking.openURL('https://choosealicense.com/licenses/gpl-3.0/')
+                            }}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack
                             }}
                         >
                             <Avatar
@@ -158,32 +183,35 @@ export default class About extends React.Component {
                             />
 
                             <ListItem.Content>
-                                <ListItem.Title>GNU General Public License v3.0</ListItem.Title>
+                                <ListItem.Title
+                                    style={{
+                                        color: Colors.White
+                                    }}
+                                >
+                                    GNU General Public License v3.0
+                                </ListItem.Title>
                             </ListItem.Content>
-                            <ListItem.Chevron color='black' />
+                            <ListItem.Chevron color={Colors.White} />
                         </ListItem>
-                    </ListItem.Accordion>
+                    </View>
                 </Card>
 
-                <Card>
-                    <ListItem.Accordion
-                        content={
-                            <ListItem.Content>
-                                <ListItem.Title style={this.localStyle.accordionTitle}>Authors</ListItem.Title>
-                            </ListItem.Content>
-                        }
-                        isExpanded={ this.state.authorsList }
-                        onPress={() => {
-                            this.setState({ authorsList: !this.state.authorsList });
-                        }}
-                    >
+                <Card
+                    containerStyle={{
+                        backgroundColor: Colors.PlexBlack,
+                        borderColor: Colors.PlexYellow
+                    }}
+                >
+                    <View>
                         {this.state.authors.map((author, index) => {
                             return (
                                 <ListItem
                                     key={ index }
-                                    bottomDivider
                                     onPress={() => {
                                         Linking.openURL(author.html_url);
+                                    }}
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
                                     }}
                                 >
                                     <Avatar
@@ -199,7 +227,7 @@ export default class About extends React.Component {
                                                     uri: author.avatar_url,
                                                     priority: FastImage.priority.normal,
                                                 }}
-                                                resizeMode={ FastImage.resizeMode.contain }
+                                                resizeMode={FastImage.resizeMode.contain}
                                             />
                                         )}
                                         overlayContainerStyle={{
@@ -209,14 +237,27 @@ export default class About extends React.Component {
                                     />
 
                                     <ListItem.Content>
-                                        <ListItem.Title>{ author.login }</ListItem.Title>
-                                        <ListItem.Subtitle>{ author.type }</ListItem.Subtitle>
+                                        <ListItem.Title
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            {author.login}
+                                        </ListItem.Title>
+                                        <ListItem.Subtitle
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            {author.type}
+                                        </ListItem.Subtitle>
                                     </ListItem.Content>
-                                    <ListItem.Chevron color='black' />
+
+                                    <ListItem.Chevron color={Colors.White} />
                                 </ListItem>
                             );
                         })}
-                    </ListItem.Accordion>
+                    </View>
                 </Card>
             </ScrollView>
         );
