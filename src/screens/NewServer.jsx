@@ -9,7 +9,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 import { Formik } from 'formik';
-import { storeServer } from "../functions/ServerStorage";
+import { storeServer } from '../functions/ServerStorage';
+import Colors from '../utiles/Colors';
 
 export default class NewServer extends React.Component {
     protocolOptions = [
@@ -24,10 +25,10 @@ export default class NewServer extends React.Component {
 
     localStyle = StyleSheet.create({
         input: {
-            color: '#000',
-            backgroundColor: '#FFF',
+            color: Colors.White,
+            backgroundColor: Colors.PlexBlack,
             height: 55,
-            borderColor: 'gray',
+            borderColor: Colors.White,
             borderWidth: 1,
             marginBottom: 10,
             paddingLeft: 17.5,
@@ -35,16 +36,16 @@ export default class NewServer extends React.Component {
             fontSize: 15,
         },
         picker: {
-            color: '#000',
-            backgroundColor: '#FFF',
-            borderColor: 'gray',
+            color: Colors.White,
+            backgroundColor: Colors.PlexBlack,
+            borderColor: Colors.White,
             borderWidth: 1,
             marginBottom: 10,
             paddingLeft: 10,
-            color: 'black'
+            color: Colors.White
         },
         required: {
-            color: '#e5a00d',
+            color: Colors.PlexYellow,
             fontWeight: 'bold',
             fontSize: 15
         },
@@ -54,7 +55,7 @@ export default class NewServer extends React.Component {
         helpLink: {
             textDecorationLine: 'underline',
             marginBottom: 10,
-            color: 'black'
+            color: Colors.White
         }
     });
 
@@ -130,7 +131,11 @@ export default class NewServer extends React.Component {
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, resetForm }) => (
                     <View
-                        style={{padding: 20}}
+                        style={{
+                            padding: 20,
+                            backgroundColor: Colors.PlexGrey,
+                            flex: 1
+                        }}
                     >
                         <View
                             style={this.localStyle.picker}
@@ -139,7 +144,7 @@ export default class NewServer extends React.Component {
                                 selectedValue={values.protocol}
                                 onValueChange={handleChange('protocol')}
                                 style={{
-                                    color: 'black'
+                                    color: Colors.White
                                 }}
                             >
                                 {this.protocolOptions.map(option => (
@@ -155,7 +160,7 @@ export default class NewServer extends React.Component {
                                 selectedValue={values.serverType}
                                 onValueChange={handleChange('serverType')}
                                 style={{
-                                    color: 'black'
+                                    color: Colors.White
                                 }}
                             >
                                 {this.serverTypeOptions.map(option => (

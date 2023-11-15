@@ -6,6 +6,7 @@ import { deleteServer, getServer } from '../functions/ServerStorage';
 import { Card, Text } from '@rneui/themed';
 import ServerButton from '../components/ServerButton';
 import axios from 'axios';
+import Colors from '../utiles/Colors';
 
 class Servers extends React.Component {
     localStyle = StyleSheet.create({
@@ -18,11 +19,12 @@ class Servers extends React.Component {
             width: '100%'
         },
         textColor: {
-            color: '#000',
+            color: Colors.White,
             marginBottom: 10
         },
         textLabel: {
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            color: Colors.PlexYellow
         }
     });
 
@@ -85,8 +87,15 @@ class Servers extends React.Component {
 
                 <ScrollView
                     refreshControl={
-                        <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.refresh}
+                            colors={[Colors.PlexYellow]}
+                        />
                     }
+                    style={{
+                        backgroundColor: Colors.PlexGrey
+                    }}
                 >
                     <View>
                         {this.state.isServerListEmpty === true ? (
@@ -101,8 +110,20 @@ class Servers extends React.Component {
                             </View>
                         ) : (
                             this.state.serverList.map((server, index) => (
-                                <Card key={index}>
-                                    <Card.Title>{server.name}</Card.Title>
+                                <Card
+                                    key={index}
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack,
+                                        borderColor: Colors.PlexYellow
+                                    }}
+                                >
+                                    <Card.Title
+                                        style={{
+                                            color: Colors.White
+                                        }}
+                                    >
+                                        {server.name}
+                                    </Card.Title>
                                     <Card.Divider />
                                     <View key={index}>
                                         <Text style={this.localStyle.textColor}>
