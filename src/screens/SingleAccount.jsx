@@ -4,11 +4,12 @@ import { Card } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
 import { getCountryFlag } from '../functions/SingleAccountUtilities';
 import { useNavigation } from '@react-navigation/native';
+import Colors from '../utiles/Colors';
 
 class SingleAccount extends React.Component {
     localStyle = StyleSheet.create({
         textColor: {
-            color: '#000',
+            color: Colors.White,
             marginBottom: 10
         },
         textLabel: {
@@ -26,10 +27,26 @@ class SingleAccount extends React.Component {
 
     render() {
         return (
-            <ScrollView>
-                <Card>
-                    <Card.Title>{this.state.userDetails.name}</Card.Title>
+            <ScrollView
+                style={{
+                    backgroundColor: Colors.PlexGrey
+                }}
+            >
+                <Card
+                    containerStyle={{
+                        backgroundColor: Colors.PlexBlack
+                    }}
+                >
+                    <Card.Title
+                        style={{
+                            color: Colors.PlexYellow
+                        }}
+                    >
+                        {this.state.userDetails.name}
+                    </Card.Title>
+
                     <Card.Divider />
+
                     <View>
                         <Text style={this.localStyle.textColor}>
                             <Text style={this.localStyle.textLabel}>Auto select audio: </Text>
