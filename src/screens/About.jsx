@@ -5,6 +5,7 @@ import info from '../../package.json';
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
 import Colors from '../utiles/Colors';
+import { addEventListener } from '@react-native-community/netinfo';
 
 export default class About extends React.Component {
     localStyle = StyleSheet.create({
@@ -12,7 +13,7 @@ export default class About extends React.Component {
             fontWeight: 'bold',
             fontSize: 14
         }
-    })
+    });
 
     constructor() {
         super();
@@ -20,7 +21,8 @@ export default class About extends React.Component {
         this.state = {
             refreshing: false,
             authorsList: true,
-            authors: []
+            authors: [],
+            connected: false
         };
 
         this.refresh = this.refresh.bind(this);
@@ -37,23 +39,31 @@ export default class About extends React.Component {
     }
 
     async componentDidMount() {
+        addEventListener(state => {
+            this.setState({ connected: state.isConnected });
+        });
+
         await this.fetchAuthors();
     }
 
     refresh() {
         this.setState({ refreshing: true });
 
-        this.fetchAuthors()
-            .finally(() => {
-                this.setState({ refreshing: false });
-            });
+        if (this.state.connected === true) {
+            this.fetchAuthors()
+                .finally(() => {
+                    this.setState({ refreshing: false });
+                });
+        } else {
+            this.setState({ refreshing: false });
+        }
     }
 
     render() {
         return (
             <ScrollView
                 refreshControl={
-                    <RefreshControl refreshing={ this.state.refreshing } onRefresh={ this.refresh } />
+                    <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
                 }
                 style={{
                     backgroundColor: Colors.PlexGrey
@@ -122,7 +132,7 @@ export default class About extends React.Component {
                             }}
                         >
                             <Avatar
-                                containerStylecontainerStyle={{ backgroundColor: '#E3E3E3' }}
+                                containerStyle={{ backgroundColor: Colors.PlexGrey }}
                                 rounded
                                 ImageComponent={() => (
                                     <FastImage
@@ -163,7 +173,7 @@ export default class About extends React.Component {
                             }}
                         >
                             <Avatar
-                                containerStyle={{ backgroundColor: '#E3E3E3' }}
+                                containerStyle={{ backgroundColor: Colors.PlexGrey }}
                                 rounded
                                 ImageComponent={() => (
                                     <FastImage
@@ -205,60 +215,80 @@ export default class About extends React.Component {
                     }}
                 >
                     <View>
-                        {this.state.authors.map((author, index) => {
-                            return (
+                        {this.state.connected === true ? (
+                            this.state.authors.map((author, index) => {
+                                return (
+                                    <ListItem
+                                        key={ index }
+                                        onPress={() => {
+                                            Linking.openURL(author.html_url);
+                                        }}
+                                        containerStyle={{
+                                            backgroundColor: Colors.PlexBlack
+                                        }}
+                                    >
+                                        <Avatar
+                                            ImageComponent={() => (
+                                                <FastImage
+                                                    style={{
+                                                        width: 32,
+                                                        height: 32,
+                                                        borderRadius: 25,
+                                                        position: 'absolute'
+                                                    }}
+                                                    source={{
+                                                        uri: author.avatar_url,
+                                                        priority: FastImage.priority.normal,
+                                                    }}
+                                                    resizeMode={FastImage.resizeMode.contain}
+                                                />
+                                            )}
+                                            overlayContainerStyle={{
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                        />
+
+                                        <ListItem.Content>
+                                            <ListItem.Title
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                {author.login}
+                                            </ListItem.Title>
+                                            <ListItem.Subtitle
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                {author.type}
+                                            </ListItem.Subtitle>
+                                        </ListItem.Content>
+
+                                        <ListItem.Chevron color={Colors.White} />
+                                    </ListItem>
+                                ); 
+                            })
+                        ) : (
+                            <View>
                                 <ListItem
-                                    key={ index }
-                                    onPress={() => {
-                                        Linking.openURL(author.html_url);
-                                    }}
                                     containerStyle={{
                                         backgroundColor: Colors.PlexBlack
                                     }}
                                 >
-                                    <Avatar
-                                        ImageComponent={() => (
-                                            <FastImage
-                                                style={{
-                                                    width: 32,
-                                                    height: 32,
-                                                    borderRadius: 25,
-                                                    position: 'absolute'
-                                                }}
-                                                source={{
-                                                    uri: author.avatar_url,
-                                                    priority: FastImage.priority.normal,
-                                                }}
-                                                resizeMode={FastImage.resizeMode.contain}
-                                            />
-                                        )}
-                                        overlayContainerStyle={{
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}
-                                    />
-
                                     <ListItem.Content>
                                         <ListItem.Title
                                             style={{
                                                 color: Colors.White
                                             }}
                                         >
-                                            {author.login}
+                                            Not connected to internet
                                         </ListItem.Title>
-                                        <ListItem.Subtitle
-                                            style={{
-                                                color: Colors.White
-                                            }}
-                                        >
-                                            {author.type}
-                                        </ListItem.Subtitle>
                                     </ListItem.Content>
-
-                                    <ListItem.Chevron color={Colors.White} />
                                 </ListItem>
-                            );
-                        })}
+                            </View>
+                        )}
                     </View>
                 </Card>
             </ScrollView>
