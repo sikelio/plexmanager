@@ -33,7 +33,7 @@ class SingleMedia extends React.Component {
         this.state = {
             library: this.props.route.params.library,
             server: this.props.route.params.server,
-            seasonsList: false,
+            seasonsList: true,
             spinner: false,
             refreshing: false,
             media: this.props.route.params.media,

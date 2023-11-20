@@ -33,7 +33,7 @@ class SingleSeason extends React.Component {
             season: this.props.route.params.season,
             server: this.props.route.params.server,
             media: this.props.route.params.media,
-            episodesList: false,
+            episodesList: true,
             spinner: false,
             refreshing: false,
             episodes: this.props.route.params.episodes

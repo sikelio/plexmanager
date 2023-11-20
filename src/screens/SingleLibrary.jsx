@@ -38,7 +38,7 @@ class SingleLibrary extends React.Component {
         this.state = {
             library: this.props.route.params.library,
             server: this.props.route.params.server,
-            mediaList: false,
+            mediaList: true,
             spinner: false,
             refreshing: false,
             medias: this.props.route.params.medias
