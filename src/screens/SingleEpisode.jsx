@@ -3,6 +3,7 @@ import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Card } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
+import Colors from '../utiles/Colors';
 
 class SingleEpisode extends React.Component {
     mainImgWidth = Dimensions.get('window').width;
@@ -10,7 +11,7 @@ class SingleEpisode extends React.Component {
 
     localStyle = StyleSheet.create({
         textColor: {
-            color: '#000'
+            color: Colors.White
         },
         textLabel: {
             fontWeight: 'bold'
@@ -28,8 +29,19 @@ class SingleEpisode extends React.Component {
 
     render() {
         return (
-            <ScrollView>
-                <Card>
+            <ScrollView
+                style={{
+                    backgroundColor: Colors.PlexGrey,
+                    flex: 1
+                }}
+            >
+                <Card
+                    containerStyle={{
+                        backgroundColor: Colors.PlexBlack,
+                        borderColor: Colors.White,
+                        borderWidth: 1
+                    }}
+                >
                     <View>
                         <FastImage
                             style={{
@@ -44,7 +56,17 @@ class SingleEpisode extends React.Component {
                         />
                     </View>
 
-                    <Text style={[this.localStyle.textColor, this.localStyle.textLabel]}>{this.state.episode.title}</Text>
+                    <Text
+                        style={
+                            [
+                                {color: Colors.PlexYellow},
+                                this.localStyle.textLabel
+                            ]
+                        }
+                    >
+                        {this.state.episode.title}
+                    </Text>
+
                     <Card.Divider />
 
                     <Text style={this.localStyle.textColor}>
