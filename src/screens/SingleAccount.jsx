@@ -34,7 +34,9 @@ class SingleAccount extends React.Component {
             >
                 <Card
                     containerStyle={{
-                        backgroundColor: Colors.PlexBlack
+                        backgroundColor: Colors.PlexBlack,
+                        borderColor: Colors.White,
+                        borderWidth: 1
                     }}
                 >
                     <Card.Title

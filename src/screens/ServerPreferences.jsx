@@ -38,7 +38,8 @@ class ServerPreferences extends React.Component {
                             key={index}
                             containerStyle={{
                                 backgroundColor: Colors.PlexBlack,
-                                borderColor: Colors.White
+                                borderColor: Colors.White,
+                                borderWidth: 1
                             }}
                         >
                             <Card.Title

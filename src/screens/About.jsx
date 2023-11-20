@@ -62,7 +62,8 @@ export default class About extends React.Component {
                 <Card
                     containerStyle={{
                         backgroundColor: Colors.PlexBlack,
-                        borderColor: Colors.PlexYellow
+                        borderColor: Colors.PlexYellow,
+                        borderWidth: 1
                     }}
                 >
                     <View>
@@ -199,7 +200,8 @@ export default class About extends React.Component {
                 <Card
                     containerStyle={{
                         backgroundColor: Colors.PlexBlack,
-                        borderColor: Colors.PlexYellow
+                        borderColor: Colors.PlexYellow,
+                        borderWidth: 1
                     }}
                 >
                     <View>
