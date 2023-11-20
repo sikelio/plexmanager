@@ -76,6 +76,10 @@ class SingleLibrary extends React.Component {
                 <Spinner
                     visible={this.state.spinner}
                     textContent={'Loading...'}
+                    color={Colors.White}
+                    textStyle={{
+                        color: Colors.White
+                    }}
                 />
 
                 <ScrollView
