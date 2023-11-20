@@ -100,11 +100,29 @@ class Servers extends React.Component {
                     <View>
                         {this.state.isServerListEmpty === true ? (
                             <View>
-                                <Card>
-                                    <Card.Title>No server</Card.Title>
+                                <Card
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack,
+                                        borderColor: Colors.White,
+                                        borderWidth: 1
+                                    }}
+                                >
+                                    <Card.Title
+                                        style={{
+                                            color: Colors.PlexYellow
+                                        }}
+                                    >
+                                        No server
+                                    </Card.Title>
                                     <Card.Divider></Card.Divider>
                                     <View>
-                                        <Text>Add one in the "New Server" tab</Text>
+                                        <Text
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            Add one in the "New Server" tab
+                                        </Text>
                                     </View>
                                 </Card>
                             </View>
@@ -114,12 +132,13 @@ class Servers extends React.Component {
                                     key={index}
                                     containerStyle={{
                                         backgroundColor: Colors.PlexBlack,
-                                        borderColor: Colors.PlexYellow
+                                        borderColor: Colors.White,
+                                        borderWidth: 1
                                     }}
                                 >
                                     <Card.Title
                                         style={{
-                                            color: Colors.White
+                                            color: Colors.PlexYellow
                                         }}
                                     >
                                         {server.name}
