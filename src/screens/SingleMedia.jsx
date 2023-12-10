@@ -5,7 +5,9 @@ import { Avatar, Card, ListItem } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { getDateFromTimestamp, getTimeFromTimestamp } from '../functions/GlobalUtiles';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import Colors from '../utiles/Colors';
 
 class SingleMedia extends React.Component {
     mainImgWidth = Dimensions.get('window').width;
@@ -13,14 +15,15 @@ class SingleMedia extends React.Component {
 
     localStyle = StyleSheet.create({
         textColor: {
-            color: '#000'
+            color: Colors.White
         },
         textLabel: {
             fontWeight: 'bold'
         },
         accordionTitle: {
             fontWeight: 'bold',
-            fontSize: 14
+            fontSize: 14,
+            color: Colors.PlexYellow
         }
     });
 
@@ -30,7 +33,7 @@ class SingleMedia extends React.Component {
         this.state = {
             library: this.props.route.params.library,
             server: this.props.route.params.server,
-            seasonsList: false,
+            seasonsList: true,
             spinner: false,
             refreshing: false,
             media: this.props.route.params.media,
@@ -65,18 +68,35 @@ class SingleMedia extends React.Component {
 
     render() {
         return (
-            <View>
+            <View
+                style={{
+                    flex: 1
+                }}
+            >
                 <Spinner
                     visible={this.state.spinner}
                     textContent={'Loading...'}
+                    color={Colors.White}
+                    textStyle={{
+                        color: Colors.White
+                    }}
                 />
 
                 <ScrollView
                     refreshControl={
                         <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
                     }
+                    style={{
+                        backgroundColor: Colors.PlexGrey
+                    }}
                 >
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <View>
                             <FastImage
                                 style={{
@@ -90,7 +110,17 @@ class SingleMedia extends React.Component {
                                 resizeMode={FastImage.resizeMode.contain}
                             />
 
-                            <Text style={[this.localStyle.textColor, this.localStyle.textLabel]}>{this.state.media.title} {this.state.media.studio ? `- ${this.state.media.studio}` : ''}</Text>
+                            <Text
+                                style={
+                                    [
+                                        {color: Colors.PlexYellow},
+                                        this.localStyle.textLabel
+                                    ]
+                                }
+                            >
+                                {this.state.media.title} {this.state.media.studio ? `- ${this.state.media.studio}` : ''}
+                            </Text>
+
                             <Card.Divider />
 
                             <Text style={this.localStyle.textColor}>
@@ -116,7 +146,13 @@ class SingleMedia extends React.Component {
                     </Card>
 
                     {this.state.library.type === 'show' ? (
-                        <Card>
+                        <Card
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack,
+                                borderColor: Colors.White,
+                                borderWidth: 1
+                            }}
+                        >
                             <ListItem.Accordion
                                 content={
                                     <ListItem.Content>
@@ -127,12 +163,16 @@ class SingleMedia extends React.Component {
                                 onPress={() => {
                                     this.setState({ seasonsList: !this.state.seasonsList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 {this.state.seasons.map((season, index) => {
                                     return (
                                         <ListItem
                                             key={index}
-                                            bottomDivider
                                             onPress={async () => {
                                                 try {
                                                     this.setState({ spinner: true });
@@ -151,6 +191,9 @@ class SingleMedia extends React.Component {
                                                 } catch (e) {
                                                     Alert.alert('Error', 'Something went wrong during episodes fetch!');
                                                 }
+                                            }}
+                                            containerStyle={{
+                                                backgroundColor: Colors.PlexBlack
                                             }}
                                         >
                                             <Avatar
@@ -175,10 +218,23 @@ class SingleMedia extends React.Component {
                                             />
 
                                             <ListItem.Content>
-                                                <ListItem.Title>{season.title}</ListItem.Title>
-                                                <ListItem.Subtitle>{season.year ? season.year : season.parentYear}</ListItem.Subtitle>
+                                                <ListItem.Title
+                                                    style={{
+                                                        color: Colors.White
+                                                    }}
+                                                >
+                                                    {season.title}
+                                                </ListItem.Title>
+
+                                                <ListItem.Subtitle
+                                                    style={{
+                                                        color: Colors.White
+                                                    }}
+                                                >
+                                                    {season.year ? season.year : season.parentYear}
+                                                </ListItem.Subtitle>
                                             </ListItem.Content>
-                                            <ListItem.Chevron color='black' />
+                                            <ListItem.Chevron color={Colors.White} />
                                         </ListItem>
                                     )
                                 })}

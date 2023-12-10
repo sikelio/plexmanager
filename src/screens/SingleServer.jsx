@@ -8,6 +8,8 @@ import { sendDeleteRequest, sendPostRequest, sendPutRequest, sendRequest } from 
 import { getDateFromTimestamp, getTimeFromTimestamp } from '../functions/GlobalUtiles';
 import { getDeviceIcon, getLibraryIcon, getHistoryUser, historyTitle, sessionTitle } from '../functions/ServerManageUtiles';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import Colors from '../utiles/Colors';
 
 class SingleServer extends React.Component {
     localStyle = StyleSheet.create({
@@ -18,15 +20,15 @@ class SingleServer extends React.Component {
             fontWeight: 'bold'
         },
         serverIdValue: {
-            color: '#000000'
+            color: Colors.White
         },
         item: {
-            color: '#000',
             width: '33%'
         },
         accordionTitle: {
             fontWeight: 'bold',
-            fontSize: 14
+            fontSize: 14,
+            color: Colors.PlexYellow
         },
         updateAllView: {
             width: '100%'
@@ -114,14 +116,28 @@ class SingleServer extends React.Component {
                 <Spinner
                     visible={this.state.spinner}
                     textContent={'Loading...'}
+                    color={Colors.White}
+                    textStyle={{
+                        color: Colors.White
+                    }}
                 />
 
                 <ScrollView 
                     refreshControl={
                         <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
                     }
+                    style={{
+                        backgroundColor: Colors.PlexGrey,
+                        borderColor: Colors.White
+                    }}
                 >
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -133,9 +149,16 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ identityList: !this.state.identityList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 <ListItem
-                                    bottomDivider
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
                                         <Text style={this.localStyle.serverIdValue}>
@@ -145,25 +168,37 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <Text style={this.localStyle.serverIdValue}>
                                         <Text style={this.localStyle.serverIdLabel}>Machine ID: </Text>
                                         {this.state.identity.machineIdentifier}
                                     </Text>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <Text style={this.localStyle.serverIdValue}>
                                         <Text style={this.localStyle.serverIdLabel}>Plex Pass: </Text>
                                         {this.state.identity.myPlexSubscription.toString()}
                                     </Text>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
-                                                title='Preferences'
+                                                title='Server Preferences'
                                                 color='#e5a00d'
                                                 onPress={async () => {
                                                     try {
@@ -185,7 +220,11 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -217,7 +256,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -229,9 +274,16 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ librariesList: !this.state.librariesList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 <ListItem
-                                    bottomDivider
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
                                         <View style={this.localStyle.updateAllView}>
@@ -250,7 +302,6 @@ class SingleServer extends React.Component {
                                     return (
                                         <ListItem
                                             key={index}
-                                            bottomDivider
                                             onPress={async () => {
                                                 try {
                                                     this.setState({ spinner: true });
@@ -269,9 +320,12 @@ class SingleServer extends React.Component {
                                                     Alert.alert('Error', 'Something went wrong during librairies fetch!');
                                                 }
                                             }}
+                                            containerStyle={{
+                                                backgroundColor: Colors.PlexBlack
+                                            }}
                                         >
                                             <Avatar
-                                                containerStyle={{ backgroundColor: '#E3E3E3' }}
+                                                containerStyle={{ backgroundColor: Colors.PlexGrey }}
                                                 rounded
                                                 ImageComponent={() => (
                                                     <FastImage
@@ -291,9 +345,15 @@ class SingleServer extends React.Component {
                                             />
 
                                             <ListItem.Content>
-                                                <ListItem.Title>{library.title}</ListItem.Title>
+                                                <ListItem.Title
+                                                    style={{
+                                                        color: Colors.White
+                                                    }}
+                                                >
+                                                    {library.title}
+                                                </ListItem.Title>
                                             </ListItem.Content>
-                                            <ListItem.Chevron color='black' />
+                                            <ListItem.Chevron color={Colors.White} />
                                         </ListItem>
                                     );
                                 })}
@@ -301,7 +361,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -313,13 +379,17 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ userList: !this.state.userList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 {this.state.users.map((user, index) => {
                                     if (user.name) {
                                         return (
                                             <ListItem
                                                 key={index}
-                                                bottomDivider
                                                 onPress={async () => {
                                                     try {
                                                         this.setState({ spinner: true });
@@ -337,9 +407,12 @@ class SingleServer extends React.Component {
                                                         Alert.alert('Error', 'Something went wront during acoount fetch!');
                                                     }
                                                 }}
+                                                containerStyle={{
+                                                    backgroundColor: Colors.PlexBlack
+                                                }}
                                             >
                                                 <Avatar
-                                                    containerStyle={{ backgroundColor: '#E3E3E3' }}
+                                                    containerStyle={{ backgroundColor: Colors.PlexGrey }}
                                                     rounded
                                                     ImageComponent={() => (
                                                         <FastImage
@@ -360,9 +433,15 @@ class SingleServer extends React.Component {
                                                 />
 
                                                 <ListItem.Content>
-                                                    <ListItem.Title>{user.name}</ListItem.Title>
+                                                    <ListItem.Title
+                                                        style={{
+                                                            color: Colors.White
+                                                        }}
+                                                    >
+                                                        {user.name}
+                                                    </ListItem.Title>
                                                 </ListItem.Content>
-                                                <ListItem.Chevron color='black' />
+                                                <ListItem.Chevron color={Colors.White} />
                                             </ListItem>
                                         );
                                     }
@@ -371,7 +450,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -383,15 +468,23 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ devicesList: !this.state.devicesList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 {this.state.devices.map((device, index) => {
                                     if (device.name) {
                                         return (
                                             <ListItem
                                                 key={index + 1}
+                                                containerStyle={{
+                                                    backgroundColor: Colors.PlexBlack
+                                                }}
                                             >
                                                 <Avatar
-                                                    containerStyle={{ backgroundColor: '#E3E3E3' }}
+                                                    containerStyle={{ backgroundColor: Colors.PlexGrey }}
                                                     rounded
                                                     ImageComponent={() => (
                                                         <FastImage
@@ -412,9 +505,29 @@ class SingleServer extends React.Component {
                                                 />
 
                                                 <ListItem.Content>
-                                                    <ListItem.Title>{device.name} - {device.platform}</ListItem.Title>
-                                                    <ListItem.Subtitle>Client ID: {device.clientIdentifier}</ListItem.Subtitle>
-                                                    <ListItem.Subtitle>Created at: {getDateFromTimestamp(device.createdAt)}</ListItem.Subtitle>
+                                                    <ListItem.Title
+                                                        style={{
+                                                            color: Colors.White
+                                                        }}
+                                                    >
+                                                        {device.name} - {device.platform}
+                                                    </ListItem.Title>
+
+                                                    <ListItem.Subtitle
+                                                        style={{
+                                                            color: Colors.White
+                                                        }}
+                                                    >
+                                                        Client ID: {device.clientIdentifier}
+                                                    </ListItem.Subtitle>
+
+                                                    <ListItem.Subtitle
+                                                        style={{
+                                                            color: Colors.White
+                                                        }}
+                                                    >
+                                                        Created at: {getDateFromTimestamp(device.createdAt)}
+                                                    </ListItem.Subtitle>
                                                 </ListItem.Content>
                                             </ListItem>
                                         );
@@ -424,7 +537,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -436,9 +555,13 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ sessionsList: !this.state.sessionsList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 <ListItem
-                                    bottomDivider
                                     onPress={async () => {
                                         try {
                                             this.setState({ spinner: true });
@@ -455,11 +578,20 @@ class SingleServer extends React.Component {
                                             Alert.alert('Error', 'Something went wrong during active sessions fetch!');
                                         }
                                     }}
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
-                                        <ListItem.Title>Active Sessions</ListItem.Title>
+                                        <ListItem.Title
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            Active Sessions
+                                        </ListItem.Title>
                                     </ListItem.Content>
-                                    <ListItem.Chevron color='black' />
+                                    <ListItem.Chevron color={Colors.White} />
                                 </ListItem>
 
                                 <ListItem
@@ -499,17 +631,33 @@ class SingleServer extends React.Component {
                                             Alert.alert('Error', 'Something went wrong during transcoding sessions fetch!');
                                         }
                                     }}
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
-                                        <ListItem.Title>Transcoding Sessions</ListItem.Title>
+                                        <ListItem.Title
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            Transcoding Sessions
+                                        </ListItem.Title>
                                     </ListItem.Content>
-                                    <ListItem.Chevron color='black' />
+
+                                    <ListItem.Chevron color={Colors.White} />
                                 </ListItem>
                             </ListItem.Accordion>
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -521,11 +669,26 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ sessionHistoryList: !this.state.sessionHistoryList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 {!this.state.sessionHistory.size > 0 ? (
                                     <ListItem>
-                                        <ListItem.Content>
-                                            <ListItem.Title>No session history</ListItem.Title>
+                                        <ListItem.Content
+                                            containerStyle={{
+                                                backgroundColor: Colors.PlexBlack
+                                            }}
+                                        >
+                                            <ListItem.Title
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                No session history
+                                            </ListItem.Title>
                                         </ListItem.Content>
                                     </ListItem>
                                 ) : (
@@ -533,11 +696,34 @@ class SingleServer extends React.Component {
                                         return (
                                             <ListItem
                                                 key={index}
+                                                containerStyle={{
+                                                    backgroundColor: Colors.PlexBlack
+                                                }}
                                             >
                                                 <ListItem.Content>
-                                                    <ListItem.Title>{historyTitle(session)}</ListItem.Title>
-                                                    <ListItem.Subtitle>Viewed at: {getTimeFromTimestamp(session.viewedAt)} - {getDateFromTimestamp(session.viewedAt)}</ListItem.Subtitle>
-                                                    <ListItem.Subtitle>By: {getHistoryUser(session, this.state.users)}</ListItem.Subtitle>
+                                                    <ListItem.Title
+                                                        style={{
+                                                            color: Colors.White
+                                                        }}
+                                                    >
+                                                        {historyTitle(session)}
+                                                    </ListItem.Title>
+
+                                                    <ListItem.Subtitle
+                                                        style={{
+                                                            color: Colors.White
+                                                        }}
+                                                    >
+                                                        Viewed at: {getTimeFromTimestamp(session.viewedAt)} - {getDateFromTimestamp(session.viewedAt)}
+                                                    </ListItem.Subtitle>
+
+                                                    <ListItem.Subtitle
+                                                        style={{
+                                                            color: Colors.White
+                                                        }}
+                                                    >
+                                                        By: {getHistoryUser(session, this.state.users)}
+                                                    </ListItem.Subtitle>
                                                 </ListItem.Content>
                                             </ListItem>
                                         );
@@ -547,7 +733,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -555,10 +747,15 @@ class SingleServer extends React.Component {
                                         <ListItem.Title style={this.localStyle.accordionTitle}>Activities</ListItem.Title>
                                     </ListItem.Content>
                                 }
-                                isExpanded={ this.state.activitiesList }
+                                isExpanded={this.state.activitiesList}
                                 onPress={() => {
                                     this.setState({ activitiesList: !this.state.activitiesList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 <ListItem
                                     onPress={async () => {
@@ -573,17 +770,33 @@ class SingleServer extends React.Component {
                                             Alert.alert('Error', 'Somenthing went wront during activities fetch!');
                                         }
                                     }}
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
-                                        <ListItem.Title>All activities</ListItem.Title>
+                                        <ListItem.Title
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            All activities
+                                        </ListItem.Title>
                                     </ListItem.Content>
-                                    <ListItem.Chevron color='black' />
+
+                                    <ListItem.Chevron color={Colors.White} />
                                 </ListItem>
                             </ListItem.Accordion>
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -595,8 +808,17 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ maintenanceList: !this.state.maintenanceList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -610,7 +832,11 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -627,7 +853,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -639,6 +871,11 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ scheduledTaskList: !this.state.scheduledTaskList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 <ListItem
                                     bottomDivider
@@ -657,14 +894,28 @@ class SingleServer extends React.Component {
                                             Alert.alert('Error', 'Something went wront during scheduled tasks fetch!');
                                         }
                                     }}
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
-                                        <ListItem.Title>All scheduled tasks</ListItem.Title>
+                                        <ListItem.Title
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            All scheduled tasks
+                                        </ListItem.Title>
                                     </ListItem.Content>
-                                    <ListItem.Chevron color='black' />
+
+                                    <ListItem.Chevron color={Colors.White} />
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -690,7 +941,11 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -716,7 +971,11 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -742,7 +1001,11 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -768,7 +1031,11 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -794,7 +1061,11 @@ class SingleServer extends React.Component {
                                     </ListItem.Content>
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
                                     <ListItem.Content>
                                         <View style={{ width: '100%' }}>
                                             <Button
@@ -811,7 +1082,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -823,9 +1100,16 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ securityList: !this.state.securityList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 <ListItem
-                                    bottomDivider
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
                                         <View style={this.localStyle.updateAllView}>
@@ -844,7 +1128,13 @@ class SingleServer extends React.Component {
                         </>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <>
                             <ListItem.Accordion
                                 content={
@@ -856,9 +1146,16 @@ class SingleServer extends React.Component {
                                 onPress={() => {
                                     this.setState({ troubleshootingList: !this.state.troubleshootingList });
                                 }}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack
+                                }}
+                                icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                                expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                             >
                                 <ListItem
-                                    bottomDivider
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
                                 >
                                     <ListItem.Content>
                                         <View style={this.localStyle.updateAllView}>

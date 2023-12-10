@@ -6,6 +6,8 @@ import FastImage from 'react-native-fast-image';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { sendPutRequest, sendRequest } from '../functions/ServerRequest';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import Colors from '../utiles/Colors';
 
 class SingleLibrary extends React.Component {
     localStyle = StyleSheet.create({
@@ -22,6 +24,11 @@ class SingleLibrary extends React.Component {
         },
         bottomContainer: {
             marginTop: 10
+        },
+        accordionTitle: {
+            fontWeight: 'bold',
+            fontSize: 14,
+            color: Colors.PlexYellow
         }
     });
 
@@ -31,7 +38,7 @@ class SingleLibrary extends React.Component {
         this.state = {
             library: this.props.route.params.library,
             server: this.props.route.params.server,
-            mediaList: false,
+            mediaList: true,
             spinner: false,
             refreshing: false,
             medias: this.props.route.params.medias
@@ -69,15 +76,34 @@ class SingleLibrary extends React.Component {
                 <Spinner
                     visible={this.state.spinner}
                     textContent={'Loading...'}
+                    color={Colors.White}
+                    textStyle={{
+                        color: Colors.White
+                    }}
                 />
 
                 <ScrollView
                     refreshControl={
                         <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
                     }
+                    style={{
+                        backgroundColor: Colors.PlexGrey
+                    }}
                 >
-                    <Card>
-                        <Card.Title>Actions</Card.Title>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
+                        <Card.Title
+                            style={{
+                                color: Colors.PlexYellow
+                            }}
+                        >
+                            Actions
+                        </Card.Title>
 
                         <Card.Divider />
 
@@ -159,7 +185,13 @@ class SingleLibrary extends React.Component {
                         )}
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <ListItem.Accordion
                             content={
                                 <ListItem.Content>
@@ -170,12 +202,16 @@ class SingleLibrary extends React.Component {
                             onPress={() => {
                                 this.setState({ mediaList: !this.state.mediaList });
                             }}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack
+                            }}
+                            icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                            expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                         >
                             {this.state.medias.map((media, index) => {
                                 return (
                                     <ListItem
                                         key={index}
-                                        bottomDivider
                                         onPress={async () => {
                                             this.setState({ spinner: true });
 
@@ -205,6 +241,9 @@ class SingleLibrary extends React.Component {
                                                 Alert.alert('Error', 'Something went wrong while fetching the TV show seasons!');
                                             }
                                         }}
+                                        containerStyle={{
+                                            backgroundColor: Colors.PlexBlack
+                                        }}
                                     >
                                         <Avatar
                                             ImageComponent={() => (
@@ -228,10 +267,24 @@ class SingleLibrary extends React.Component {
                                         />
 
                                         <ListItem.Content>
-                                            <ListItem.Title>{media.title}</ListItem.Title>
-                                            <ListItem.Subtitle>{media.studio}</ListItem.Subtitle>
+                                            <ListItem.Title
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                {media.title}
+                                            </ListItem.Title>
+
+                                            <ListItem.Subtitle
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                {media.studio}
+                                            </ListItem.Subtitle>
                                         </ListItem.Content>
-                                        <ListItem.Chevron color='black' />
+
+                                        <ListItem.Chevron color={Colors.White} />
                                     </ListItem>
                                 );
                             })}

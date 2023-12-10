@@ -3,11 +3,12 @@ import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react
 import { useNavigation } from '@react-navigation/native';
 import { Card } from '@rneui/themed';
 import axios from 'axios';
+import Colors from '../utiles/Colors';
 
 class ServerCapabilities extends React.Component {
     localStyle = StyleSheet.create({
         cardBodyText: {
-            color: '#000'
+            color: Colors.White
         }
     });
 
@@ -48,12 +49,28 @@ class ServerCapabilities extends React.Component {
                 refreshControl={
                     <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
                 }
+                style={{
+                    backgroundColor: Colors.PlexGrey
+                }}
             >
                 {Object.keys(this.state.serverCapabilities).map((key, index) => {
                     if (key === 'Directory') {
                         return (
-                            <Card key={index}>
-                                <Card.Title>{key}</Card.Title>
+                            <Card
+                                key={index}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack,
+                                    borderColor: Colors.White,
+                                    borderWidth: 1
+                                }}
+                            >
+                                <Card.Title
+                                    style={{
+                                        color: Colors.PlexYellow
+                                    }}
+                                >
+                                    {key}
+                                </Card.Title>
 
                                 <Card.Divider />
 
@@ -75,8 +92,21 @@ class ServerCapabilities extends React.Component {
 
                     if (this.state.serverCapabilities[key] == true || this.state.serverCapabilities[key] == false) {
                         return (
-                            <Card key={index}>
-                                <Card.Title>{key}</Card.Title>
+                            <Card
+                                key={index}
+                                containerStyle={{
+                                    backgroundColor: Colors.PlexBlack,
+                                    borderColor: Colors.White,
+                                    borderWidth: 1
+                                }}
+                            >
+                                <Card.Title
+                                    style={{
+                                        color: Colors.PlexYellow
+                                    }}
+                                >
+                                    {key}
+                                </Card.Title>
 
                                 <Card.Divider />
 
@@ -92,8 +122,21 @@ class ServerCapabilities extends React.Component {
                     }
 
                     return (
-                        <Card key={index}>
-                            <Card.Title>{key}</Card.Title>
+                        <Card
+                            key={index}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack,
+                                borderColor: Colors.White,
+                                borderWidth: 1
+                            }}
+                        >
+                            <Card.Title
+                                style={{
+                                    color: Colors.PlexYellow
+                                }}
+                            >
+                                {key}
+                            </Card.Title>
 
                             <Card.Divider />
 

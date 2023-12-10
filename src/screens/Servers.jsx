@@ -7,6 +7,7 @@ import { Card, Text } from '@rneui/themed';
 import ServerButton from '../components/ServerButton';
 import axios from 'axios';
 import Colors from '../utiles/Colors';
+import { addEventListener } from '@react-native-community/netinfo';
 
 class Servers extends React.Component {
     localStyle = StyleSheet.create({
@@ -35,7 +36,8 @@ class Servers extends React.Component {
             serverList: [],
             spinner: false,
             refreshing: false,
-            isServerListEmpty: true
+            isServerListEmpty: true,
+            connected: false
         };
 
         this.refresh = this.refresh.bind(this);
@@ -61,6 +63,10 @@ class Servers extends React.Component {
     }
 
     async componentDidMount() {
+        addEventListener(state => {
+            this.setState({ connected: state.isConnected });
+        });
+
         await this.fetchServers();
 
         this.props.navigation.addListener('focus', async () => {
@@ -83,6 +89,10 @@ class Servers extends React.Component {
                 <Spinner
                     visible={this.state.spinner}
                     textContent={'Loading...'}
+                    color={Colors.White}
+                    textStyle={{
+                        color: Colors.White
+                    }}
                 />
 
                 <ScrollView
@@ -100,11 +110,29 @@ class Servers extends React.Component {
                     <View>
                         {this.state.isServerListEmpty === true ? (
                             <View>
-                                <Card>
-                                    <Card.Title>No server</Card.Title>
+                                <Card
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack,
+                                        borderColor: Colors.White,
+                                        borderWidth: 1
+                                    }}
+                                >
+                                    <Card.Title
+                                        style={{
+                                            color: Colors.PlexYellow
+                                        }}
+                                    >
+                                        No server
+                                    </Card.Title>
                                     <Card.Divider></Card.Divider>
                                     <View>
-                                        <Text>Add one in the "New Server" tab</Text>
+                                        <Text
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            Add one in the "New Server" tab
+                                        </Text>
                                     </View>
                                 </Card>
                             </View>
@@ -114,12 +142,13 @@ class Servers extends React.Component {
                                     key={index}
                                     containerStyle={{
                                         backgroundColor: Colors.PlexBlack,
-                                        borderColor: Colors.PlexYellow
+                                        borderColor: Colors.White,
+                                        borderWidth: 1
                                     }}
                                 >
                                     <Card.Title
                                         style={{
-                                            color: Colors.White
+                                            color: Colors.PlexYellow
                                         }}
                                     >
                                         {server.name}
@@ -148,6 +177,10 @@ class Servers extends React.Component {
                                                 backgroundColor={'#e5a00d'}
                                                 btnTitle={'Manage'}
                                                 onPress={async () => {
+                                                    if (this.state.connected === false) {
+                                                        return Alert.alert('Network error', 'You are not connected to internet!');
+                                                    }
+
                                                     this.setState({ spinner: true });
 
                                                     axios.interceptors.response.use(

@@ -5,6 +5,8 @@ import { Avatar, Card, ListItem } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import Colors from '../utiles/Colors';
 
 class SingleSeason extends React.Component {
     mainImgWidth = Dimensions.get('window').width;
@@ -12,14 +14,15 @@ class SingleSeason extends React.Component {
 
     localStyle = StyleSheet.create({
         textColor: {
-            color: '#000'
+            color: Colors.White
         },
         textLabel: {
             fontWeight: 'bold'
         },
         accordionTitle: {
             fontWeight: 'bold',
-            fontSize: 14
+            fontSize: 14,
+            color: Colors.PlexYellow
         }
     });
 
@@ -30,7 +33,7 @@ class SingleSeason extends React.Component {
             season: this.props.route.params.season,
             server: this.props.route.params.server,
             media: this.props.route.params.media,
-            episodesList: false,
+            episodesList: true,
             spinner: false,
             refreshing: false,
             episodes: this.props.route.params.episodes
@@ -64,18 +67,35 @@ class SingleSeason extends React.Component {
 
     render() {
         return (
-            <View>
+            <View
+                style={{
+                    flex: 1
+                }}
+            >
                 <Spinner
                     visible={this.state.spinner}
                     textContent={'Loading...'}
+                    color={Colors.White}
+                    textStyle={{
+                        color: Colors.White
+                    }}
                 />
 
                 <ScrollView
                     refreshControl={
                         <RefreshControl refreshing={this.state.refreshing} onRefresh={this.refresh} />
                     }
+                    style={{
+                        backgroundColor: Colors.PlexGrey
+                    }}
                 >
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <FastImage
                             style={{
                                 width: this.mainImgWidth * 0.85,
@@ -88,7 +108,16 @@ class SingleSeason extends React.Component {
                             resizeMode={FastImage.resizeMode.contain}
                         />
 
-                        <Text style={[this.localStyle.textColor, this.localStyle.textLabel]}>{this.state.media.title} - {this.state.season.title}</Text>
+                        <Text
+                            style={
+                                [
+                                    {color: Colors.PlexYellow},
+                                    this.localStyle.textLabel,
+                                ]
+                            }
+                        >
+                            {this.state.media.title} - {this.state.season.title}
+                        </Text>
                         <Card.Divider />
 
                         <Text style={this.localStyle.textColor}>
@@ -97,7 +126,13 @@ class SingleSeason extends React.Component {
                         </Text>
                     </Card>
 
-                    <Card>
+                    <Card
+                        containerStyle={{
+                            backgroundColor: Colors.PlexBlack,
+                            borderColor: Colors.White,
+                            borderWidth: 1
+                        }}
+                    >
                         <ListItem.Accordion
                             content={
                                 <ListItem.Content>
@@ -108,18 +143,25 @@ class SingleSeason extends React.Component {
                             onPress={() => {
                                 this.setState({ episodesList: !this.state.episodesList });
                             }}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack
+                            }}
+                            icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                            expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
                         >
                             {this.state.episodes.map((episode, index) => {
                                 return (
                                     <ListItem
                                         key={index}
-                                        bottomDivider
                                         onPress={() => {
                                             this.props.navigation.navigate('SingleEpisode', {
                                                 title: `${this.state.media.title} - ${this.state.season.title} - ${episode.title}`,
                                                 server: this.state.server,
                                                 episode: episode
                                             });
+                                        }}
+                                        containerStyle={{
+                                            backgroundColor: Colors.PlexBlack
                                         }}
                                     >
                                         <Avatar
@@ -144,10 +186,24 @@ class SingleSeason extends React.Component {
                                         />
 
                                         <ListItem.Content>
-                                            <ListItem.Title>{episode.title}</ListItem.Title>
-                                            <ListItem.Subtitle>Duration: {episode.duration ? new Date(episode.duration).toISOString().slice(11, 19) : 'unknown'}</ListItem.Subtitle>
+                                            <ListItem.Title
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                {episode.title}
+                                            </ListItem.Title>
+
+                                            <ListItem.Subtitle
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                Duration: {episode.duration ? new Date(episode.duration).toISOString().slice(11, 19) : 'unknown'}
+                                            </ListItem.Subtitle>
                                         </ListItem.Content>
-                                        <ListItem.Chevron color='black' />
+
+                                        <ListItem.Chevron color={Colors.White} />
                                     </ListItem>
                                 );
                             })}

@@ -8,11 +8,12 @@ import {
     getPreferenceValue
 } from '../functions/ServerManageUtiles';
 import { useNavigation } from '@react-navigation/native';
+import Colors from '../utiles/Colors';
 
 class ServerPreferences extends React.Component {
     localStyle = StyleSheet.create({
         cardBodyText: {
-            color: '#000'
+            color: Colors.White
         }
     });
 
@@ -26,37 +27,86 @@ class ServerPreferences extends React.Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView
+                style={{
+                    backgroundColor: Colors.PlexGrey
+                }}
+            >
                 {this.state.preferences.map((preference, index) => {
                     return (
-                        <Card key={index}>
-                            <Card.Title>{getPreferenceLabel(preference)}</Card.Title>
+                        <Card
+                            key={index}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack,
+                                borderColor: Colors.White,
+                                borderWidth: 1
+                            }}
+                        >
+                            <Card.Title
+                                style={{
+                                    color: Colors.PlexYellow
+                                }}
+                            >
+                                {getPreferenceLabel(preference)}
+                            </Card.Title>
+
                             <Card.Divider />
+
                             <View>
                                 <Text
                                     style={this.localStyle.cardBodyText}
                                 >
-                                    Summary: {getPreferenceSummary(preference)}
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >
+                                        Summary:
+                                    </Text> {getPreferenceSummary(preference)}
                                 </Text>
                                 <Text
                                     style={this.localStyle.cardBodyText}
                                 >
-                                    Group: {getPreferenceGroupName(preference)}
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >
+                                        Group:
+                                    </Text> {getPreferenceGroupName(preference)}
                                 </Text>
                                 <Text
                                     style={this.localStyle.cardBodyText}
                                 >
-                                    Value: {getPreferenceValue(preference)}
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >
+                                        Value:
+                                    </Text> {getPreferenceValue(preference)}
                                 </Text>
                                 <Text
                                     style={this.localStyle.cardBodyText}
                                 >
-                                    Advanced: {preference.advanced.toString()}
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >
+                                        Advanced:
+                                    </Text> {preference.advanced.toString()}
                                 </Text>
                                 <Text
                                     style={this.localStyle.cardBodyText}
                                 >
-                                    Hidden: {preference.hidden.toString()}
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold'
+                                        }}
+                                    >
+                                        Hidden:
+                                    </Text> {preference.hidden.toString()}
                                 </Text>
                             </View>
                         </Card>
