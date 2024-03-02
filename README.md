@@ -10,7 +10,7 @@ A cross-platform app build in [React Native](https://reactnative.dev/), based on
 
 ## Install
 
-- Play Store : [Early Access](https://play.google.com/store/apps/details?id=wtf.plexmanager)
+- Play Store : Deleted from the Play Store. Download it on the [release page](https://github.com/sikelio/plexmanager/releases)
 - App Store : [One day may be...](#ios)
 
 ## Run in dev mode
@@ -114,8 +114,7 @@ Under construction
     - [X] [Download the Databases](https://github.com/sikelio/plexmanager/issues/31)
     - [X] [Download the Logs](https://github.com/sikelio/plexmanager/issues/32)
 
-## Authors
-
+## Author
 - [@sikelio](https://www.github.com/sikelio)
 
 ## Supports
@@ -125,6 +124,7 @@ The app is configured to be installed on Android >= 5.0 (SDK 21) but the app is 
 
 ### iOS
 I don't own an Apple device and an Apple developer licence for publishing the app on the App Store. For this reason the app is currently not available for iOS devices.
+
 ## License
 
 [GLP v3](https://github.com/sikelio/plexmanager/blob/main/LICENCE.md)
