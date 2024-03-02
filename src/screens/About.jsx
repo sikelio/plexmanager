@@ -1,17 +1,20 @@
 import React from 'react';
-import { ScrollView, Linking, RefreshControl, Alert, StyleSheet, View } from 'react-native';
+import { ScrollView, Linking, RefreshControl, Alert, StyleSheet, View, Text } from 'react-native';
 import axios from 'axios';
 import info from '../../package.json';
 import { Card, ListItem, Avatar } from '@rneui/themed';
 import FastImage from 'react-native-fast-image';
 import Colors from '../utiles/Colors';
 import { addEventListener } from '@react-native-community/netinfo';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import packageInfo from '../../package.json';
 
 export default class About extends React.Component {
     localStyle = StyleSheet.create({
         accordionTitle: {
             fontWeight: 'bold',
-            fontSize: 14
+            fontSize: 14,
+            color: Colors.PlexYellow
         }
     });
 
@@ -22,7 +25,8 @@ export default class About extends React.Component {
             refreshing: false,
             authorsList: true,
             authors: [],
-            connected: false
+            connected: false,
+            dependenciesList: true
         };
 
         this.refresh = this.refresh.bind(this);
@@ -86,6 +90,8 @@ export default class About extends React.Component {
                             }}
                         >
                             <Avatar
+                                containerStyle={{ backgroundColor: Colors.PlexGrey }}
+                                rounded
                                 ImageComponent={() => (
                                     <FastImage
                                         style={{
@@ -228,6 +234,8 @@ export default class About extends React.Component {
                                         }}
                                     >
                                         <Avatar
+                                            containerStyle={{ backgroundColor: Colors.PlexGrey }}
+                                            rounded
                                             ImageComponent={() => (
                                                 <FastImage
                                                     style={{
@@ -289,6 +297,85 @@ export default class About extends React.Component {
                                 </ListItem>
                             </View>
                         )}
+                    </View>
+                </Card>
+
+                <Card
+                    containerStyle={{
+                        backgroundColor: Colors.PlexBlack,
+                        borderColor: Colors.PlexYellow,
+                        borderWidth: 1
+                    }}
+                >
+                    <View>
+                        <ListItem.Accordion
+                            content={
+                                <ListItem.Content>
+                                    <ListItem.Title style={this.localStyle.accordionTitle}>Used dependencies</ListItem.Title>
+                                </ListItem.Content>
+                            }
+                            isExpanded={this.state.dependenciesList}
+                            onPress={() => {
+                                this.setState({ dependenciesList: !this.state.dependenciesList });
+                            }}
+                            containerStyle={{
+                                backgroundColor: Colors.PlexBlack
+                            }}
+                            icon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                            expandIcon={<Icon name={'chevron-down'} type={'material-community'} color={Colors.PlexYellow} />}
+                        >
+                            {Object.entries(packageInfo.dependencies).map((dependencies, index) => (
+                                <ListItem
+                                    key={index}
+                                    onPress={() => {
+                                        Linking.openURL(`https://www.npmjs.com/package/${dependencies[0]}`);
+                                    }}
+                                    containerStyle={{
+                                        backgroundColor: Colors.PlexBlack
+                                    }}
+                                >
+                                    <Avatar
+                                        containerStyle={{ backgroundColor: Colors.PlexGrey }}
+                                        rounded
+                                        ImageComponent={() => (
+                                            <FastImage
+                                                style={{
+                                                    width: 32,
+                                                    height: 32,
+                                                    borderRadius: 25,
+                                                    position: 'absolute'
+                                                }}
+                                                source={ require('../assets/icons/npm.png') }
+                                                resizeMode={FastImage.resizeMode.contain}
+                                            />
+                                        )}
+                                        overlayContainerStyle={{
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    />
+
+                                    <ListItem.Content>
+                                        <ListItem.Title
+                                            style={{
+                                                color: Colors.White
+                                            }}
+                                        >
+                                            {dependencies[0]}
+                                        </ListItem.Title>
+                                        <ListItem.Subtitle
+                                                style={{
+                                                    color: Colors.White
+                                                }}
+                                            >
+                                                {dependencies[1].replaceAll('^', '')}
+                                            </ListItem.Subtitle>
+                                    </ListItem.Content>
+
+                                    <ListItem.Chevron color={Colors.White} />
+                                </ListItem>
+                            ))}
+                        </ListItem.Accordion>
                     </View>
                 </Card>
             </ScrollView>
